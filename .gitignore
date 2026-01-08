@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.egg-info/
+*.py[cod]
+
+# Testing
+.pytest_cache/
+
+# Profiling
+.coverage
+coverage.json
+
+# Emacs
+*~
+
+# VS Code
+.vscode
+
+# MacOS
+.DS_store
