@@ -17,7 +17,7 @@ class Environment:
         self.schedule(self.now, coro)
 
     def sleep(self, delay):
-        return Sleep(delay)
+        return Sleep(self, delay)
 
     def schedule(self, time, coro):
         heapq.heappush(self._queue, (time, self._task_id, coro))
@@ -36,4 +36,4 @@ class Environment:
             except StopIteration:
                 continue
 
-            awaited.act(self, coro)
+            awaited.act(coro)

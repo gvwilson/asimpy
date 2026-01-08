@@ -14,10 +14,10 @@ class Resource:
         self.queue = deque()
 
     async def acquire(self):
-        await Acquire(self)
+        await Acquire(self.env, self)
 
     async def release(self):
-        await Release(self)
+        await Release(self.env, self)
 
     async def __aenter__(self):
         await self.acquire()
