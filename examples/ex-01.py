@@ -1,21 +1,26 @@
-"""Simulate peopel waiting on shared resource."""
+"""Simulate people waiting on shared resource."""
 
-from asimpy import Environment, Resource
+from asimpy import Environment, Process, Resource
 
-async def customer(env, name, counter):
-    print(f"{env.now:>4}: {name} arrives")
 
-    async with counter:
-        print(f"{env.now:>4}: {name} starts service")
-        await env.sleep(5)
-        print(f"{env.now:>4}: {name} leaves")
+class Customer(Process):
+    def init(self, name, counter):
+        self.name = name
+        self.counter = counter
+
+    async def run(self):
+        print(f"{self.env.now:>4}: {self.name} arrives")
+        async with self.counter:
+            print(f"{self.env.now:>4}: {self.name} starts service")
+            await self.env.sleep(5)
+            print(f"{self.env.now:>4}: {self.name} leaves")
 
 
 env = Environment()
 counter = Resource(env, capacity=2)
 
-env.process(customer(env, "Alice", counter))
-env.process(customer(env, "Bob", counter))
-env.process(customer(env, "Charlie", counter))
+Customer(env, "Alice", counter)
+Customer(env, "Bob", counter)
+Customer(env, "Charlie", counter)
 
 env.run()

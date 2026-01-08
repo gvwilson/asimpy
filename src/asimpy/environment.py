@@ -14,12 +14,12 @@ class Environment:
 
     def process(self, coro):
         """Start a new process immediately."""
-        self._schedule(self.now, coro)
+        self.schedule(self.now, coro)
 
     def sleep(self, delay):
         return Sleep(delay)
 
-    def _schedule(self, time, coro):
+    def schedule(self, time, coro):
         heapq.heappush(self._queue, (time, self._task_id, coro))
         self._task_id += 1
 
@@ -36,25 +36,4 @@ class Environment:
             except StopIteration:
                 continue
 
-            if isinstance(awaited, Sleep):
-                self._schedule(self.now + awaited.delay, coro)
-
-            elif isinstance(awaited, Acquire):
-                res = awaited.resource
-                if res.in_use < res.capacity:
-                    res.in_use += 1
-                    self._schedule(self.now, coro)
-                else:
-                    res.queue.append(coro)
-
-            elif isinstance(awaited, Release):
-                res = awaited.resource
-                res.in_use -= 1
-                if res.queue:
-                    next_coro = res.queue.popleft()
-                    res.in_use += 1
-                    self._schedule(self.now, next_coro)
-                self._schedule(self.now, coro)
-
-            else:
-                raise RuntimeError(f"Unknown awaitable: {awaited}")
+            awaited.act(self, coro)
