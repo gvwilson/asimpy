@@ -1,11 +1,13 @@
 """Events."""
 
+
 class BaseEvent:
     """Base of all events."""
 
     def __await__(self):
         yield self
         return None
+
 
 class Sleep(BaseEvent):
     """Wait for a specified simulated time."""

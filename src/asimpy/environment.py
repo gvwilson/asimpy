@@ -1,7 +1,7 @@
 """Simulation environment."""
 
 import heapq
-from .events import Acquire, Release, Sleep
+from .events import Sleep
 
 
 class Environment:

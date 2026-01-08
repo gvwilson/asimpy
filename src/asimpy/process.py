@@ -1,5 +1,6 @@
 """Base class for processes."""
 
+
 class Process:
     def __init__(self, env, *args):
         self.env = env
