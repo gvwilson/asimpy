@@ -11,21 +11,58 @@ class Environment:
     """Simulation environment."""
 
     def __init__(self, log=False):
+        """
+        Construct a new simulation environment.
+
+        Args:
+            log: print log messages while executing.
+        """
+
         self.now = 0
         self._queue = []
         self._log = log
 
     def start(self, proc):
-        """Start a new process immediately."""
+        """
+        Start a new process immediately.
+
+        Args:
+            proc: `Process`-derived object to schedule and run.
+        """
+
         self.schedule(self.now, proc)
 
     def schedule(self, time, proc):
+        """
+        Schedule a process to run at a specified time (*not* after a delay).
+
+        Args:
+            time: when the process should be scheduled to run.
+            proc: `Process`-derived object to run.
+        """
+
         heapq.heappush(self._queue, _Pending(time, proc))
 
     def sleep(self, delay):
+        """
+        Suspend the caller for a specified length of time.
+
+        Args:
+            delay: how long to sleep.
+
+        Returns: awaitable representing delay.
+        """
+
         return _Sleep(self, delay)
 
     def run(self, until=None):
+        """
+        Run the whole simulation.
+
+        Args:
+            until: when to stop (run forever if not provided).
+        """
+
         while self._queue:
             if self._log:
                 print(self)
@@ -51,6 +88,12 @@ class Environment:
                 continue
 
     def __str__(self):
+        """
+        Format environment as printable string.
+
+        Returns: string representation of environment time and queue.
+        """
+
         return f"Env(t={self.now}, {' | '.join(str(p) for p in self._queue)})"
 
 

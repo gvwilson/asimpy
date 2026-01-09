@@ -1,4 +1,4 @@
-"""Shared resource."""
+"""Shared resource with limited capacity."""
 
 from collections import deque
 from .actions import BaseAction
@@ -8,22 +8,37 @@ class Resource:
     """Shared resource with limited capacity."""
 
     def __init__(self, env, capacity=1):
+        """
+        Create a new resource.
+
+        Args:
+            env: simulation environment.
+            capacity: maximum simultaneous users.
+        """
         self.env = env
         self.capacity = capacity
         self.in_use = 0
         self.queue = deque()
 
     async def acquire(self):
+        """Acquire one unit of the resource."""
+
         await _Acquire(self)
 
     async def release(self):
+        """Release one unit of the resource."""
+
         await _Release(self)
 
     async def __aenter__(self):
+        """Acquire one unit of the resource using `async with`."""
+
         await self.acquire()
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
+        """Release one unit of the resource acquired with `async with`."""
+
         await self.release()
 
 

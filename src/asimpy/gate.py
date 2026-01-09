@@ -4,14 +4,26 @@ from .actions import BaseAction
 
 
 class Gate:
+    """Gate that multiple processes can wait on for simultaneous release."""
+
     def __init__(self, env):
+        """
+        Construct a new gate.
+
+        Args:
+            env: simulation environment.
+        """
         self.env = env
         self.pending = []
 
     async def wait(self):
+        """Wait until gate is next opened."""
+
         await _Wait(self)
 
     async def release(self):
+        """Release all waiting processes."""
+
         await _Release(self)
 
 

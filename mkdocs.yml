@@ -3,12 +3,14 @@ docs_dir: pages
 site_dir: docs
 
 theme:
-  name: readthedocs
+  name: material
 
 plugins:
 - mkdocstrings:
     handlers:
       python:
+        options:
+          docstring_section_style: list
         paths:
           - src
 
