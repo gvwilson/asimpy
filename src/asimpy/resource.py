@@ -1,7 +1,7 @@
 """Shared resource."""
 
 from collections import deque
-from .events import Acquire, Release
+from .actions import Acquire, Release
 
 
 class Resource:

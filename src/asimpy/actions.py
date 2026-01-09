@@ -1,8 +1,8 @@
-"""Events."""
+"""Internal actions."""
 
 
-class BaseEvent:
-    """Base of all events."""
+class BaseAction:
+    """Base of all actions."""
 
     def __init__(self, env):
         self.env = env
@@ -12,7 +12,7 @@ class BaseEvent:
         return None
 
 
-class Sleep(BaseEvent):
+class Sleep(BaseAction):
     """Wait for a specified simulated time."""
 
     def __init__(self, env, delay):
@@ -23,7 +23,7 @@ class Sleep(BaseEvent):
         self.env.schedule(self.env.now + self.delay, coro)
 
 
-class Acquire(BaseEvent):
+class Acquire(BaseAction):
     """Acquire a resource."""
 
     def __init__(self, env, resource):
@@ -38,7 +38,7 @@ class Acquire(BaseEvent):
             self.resource.queue.append(coro)
 
 
-class Release(BaseEvent):
+class Release(BaseAction):
     """Release a resource."""
 
     def __init__(self, env, resource):
