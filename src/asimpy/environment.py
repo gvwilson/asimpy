@@ -1,6 +1,8 @@
 """Simulation environment."""
 
+from dataclasses import dataclass
 import heapq
+from typing import Awaitable
 from .actions import BaseAction
 
 
@@ -9,37 +11,48 @@ class Environment:
 
     def __init__(self):
         self.now = 0
-        self._task_id = 0  # to break ties
-        self._queue = []  # (time, task_id, coroutine)
+        self._proc_id = 0  # to break ties
+        self._queue = []
 
     def process(self, coro):
         """Start a new process immediately."""
         self.schedule(self.now, coro)
+        return coro
 
     def sleep(self, delay):
         return _Sleep(self, delay)
 
     def schedule(self, time, coro):
-        heapq.heappush(self._queue, (time, self._task_id, coro))
-        self._task_id += 1
+        heapq.heappush(self._queue, _Pending(time, self._proc_id, coro))
+        self._proc_id += 1
 
     def run(self, until=None):
         while self._queue:
-            time, _, coro = heapq.heappop(self._queue)
+            pending = heapq.heappop(self._queue)
 
-            if until is not None and time > until:
+            if until is not None and pending.time > until:
                 break
-            self.now = time
+            self.now = pending.time
 
             try:
-                awaited = coro.send(None)
+                awaited = pending.coro.send(None)
             except StopIteration:
                 continue
 
-            awaited.act(coro)
+            awaited.act(pending.coro)
 
 
 # ----------------------------------------------------------------------
+
+
+@dataclass
+class _Pending:
+    time: float
+    proc_id: int
+    coro: Awaitable
+
+    def __lt__(self, other):
+        return (self.time < other.time) or (self.proc_id < other.proc_id)
 
 
 class _Sleep(BaseAction):

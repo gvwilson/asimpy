@@ -5,4 +5,4 @@ class Process:
     def __init__(self, env, *args):
         self.env = env
         self.init(*args)
-        self.env.process(self.run())
+        self.proc = self.env.process(self.run())
