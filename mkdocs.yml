@@ -1,0 +1,20 @@
+site_name: asimpy
+docs_dir: pages
+site_dir: docs
+
+theme:
+  name: readthedocs
+
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        paths:
+          - src
+
+markdown_extensions:
+- markdown_include.include:
+    base_path: docs
+
+exclude_docs: >
+  *~
