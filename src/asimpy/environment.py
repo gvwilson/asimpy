@@ -1,7 +1,7 @@
 """Simulation environment."""
 
 import heapq
-from .actions import Sleep
+from .actions import BaseAction
 
 
 class Environment:
@@ -17,7 +17,7 @@ class Environment:
         self.schedule(self.now, coro)
 
     def sleep(self, delay):
-        return Sleep(self, delay)
+        return _Sleep(self, delay)
 
     def schedule(self, time, coro):
         heapq.heappush(self._queue, (time, self._task_id, coro))
@@ -37,3 +37,17 @@ class Environment:
                 continue
 
             awaited.act(coro)
+
+
+# ----------------------------------------------------------------------
+
+
+class _Sleep(BaseAction):
+    """Wait for a specified simulated time."""
+
+    def __init__(self, env, delay):
+        super().__init__(env)
+        self.delay = delay
+
+    def act(self, coro):
+        self.env.schedule(self.env.now + self.delay, coro)
