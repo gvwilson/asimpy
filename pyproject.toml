@@ -41,12 +41,23 @@ dev = [
 [tool.taskipy.tasks]
 build = {help = "build package", cmd = "python -m build"}
 check = {help = "check code issues", cmd = "ruff check ."}
-clean = {help = "clean up", cmd = "rm -rf ./dist && find . -path './.venv' -prune -o -type d -name '__pycache__' -exec rm -rf {} + && find . -path './.venv' -prune -o -type f -name '*~' -exec rm {} +"}
+clean = {help = "clean up", cmd = """
+rm -rf ./dist &&
+find . -path './.venv' -prune -o -type d -name '__pycache__' -exec rm -rf {} + &&
+find . -path './.venv' -prune -o -type f -name '*~' -exec rm {} +
+"""}
 docs = {help = "build documentation", cmd = "mkdocs build"}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
 lint = {help = "run all code checks", cmd = "task check && task types"}
+examples = {help = "regenerate example output", cmd = """
+mkdir -p output &&
+for file in examples/*.py
+do
+    name=$(basename "$file" .py)
+    python "$file" > "output/$name.txt" 2>&1
+done
+"""}
 publish = {help = "publish using ~/.pypirc credentials", cmd = "twine upload --verbose dist/*"}
 serve = {help = "serve documentation", cmd = "python -m http.server -d docs"}
 types = {help = "check types", cmd = "ty check ."}
-

@@ -1,0 +1,22 @@
+Env(t=0, Pend(0, actor+None) | Pend(0, interrupter+None))
+   0: actor start
+   0/0: actor about to sleep
+Env(t=0, Pend(0, interrupter+None) | Pend(2, actor+None))
+   0: interrupter start
+Env(t=0, Pend(2, actor+None) | Pend(3, interrupter+None))
+   2/0: actor wakes with None
+   2/1: actor about to sleep
+Env(t=2, Pend(3, interrupter+None) | Pend(4, actor+None))
+   3/0: scheduling interrupt
+Env(t=3, Pend(4, actor+Interrupt(message)) | Pend(6, interrupter+None))
+   4/1: actor interrupted with message
+   4/2: actor about to sleep
+Env(t=4, Pend(6, interrupter+None) | Pend(6, actor+None))
+   6/1: scheduling interrupt
+   6: interrupter end
+Env(t=6, Pend(6, actor+Interrupt(message)))
+   6/2: actor interrupted with message
+   6/3: actor about to sleep
+Env(t=6, Pend(8, actor+None))
+   8/3: actor wakes with None
+   8: actor end

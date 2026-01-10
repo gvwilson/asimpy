@@ -1,0 +1,9 @@
+   0: Alice arrives
+   0: Bob arrives
+   0: Charlie arrives
+   0: Alice starts service
+   0: Bob starts service
+   5: Alice leaves
+   5: Bob leaves
+   5: Charlie starts service
+  10: Charlie leaves

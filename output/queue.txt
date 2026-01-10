@@ -1,0 +1,12 @@
+producer putting item-0 at 0
+consumer waiting for 0 at 0
+producer sleeping at 0
+consumer got item-0 at 0
+consumer waiting for 1 at 0
+producer putting item-1 at 2
+consumer got item-1 at 2
+consumer waiting for 2 at 2
+producer sleeping at 2
+producer putting item-2 at 4
+consumer got item-2 at 4
+producer sleeping at 4
