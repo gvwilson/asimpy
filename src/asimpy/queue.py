@@ -1,18 +1,33 @@
 """Queues."""
 
 from abc import ABC, abstractmethod
+import heapq
+from typing import TYPE_CHECKING
 from .actions import BaseAction
+
+if TYPE_CHECKING:
+    from .environment import Environment
 
 
 class BaseQueue(ABC):
-    def __init__(self, env):
+    """Base class for all queues."""
+
+    def __init__(self, env: "Environment"):
+        """
+        Generic queue construction.
+
+        Args:
+            env: simulation environment.
+        """
         self._env = env
         self._gets = []
 
     async def get(self):
+        """Get an item from the queue when one is available."""
         return await _Get(self)
 
     async def put(self, obj):
+        """Add an item to the queue."""
         await _Put(self, obj)
 
     @abstractmethod
@@ -28,8 +43,19 @@ class BaseQueue(ABC):
         pass
 
 
+# ----------------------------------------------------------------------
+
+
 class Queue(BaseQueue):
+    """FIFO queue."""
+
     def __init__(self, env):
+        """
+        Construct queue.
+
+        Args:
+            env: simulation environment.
+        """
         super().__init__(env)
         self._items = []
 
@@ -50,7 +76,39 @@ class Queue(BaseQueue):
 # ----------------------------------------------------------------------
 
 
+class PriorityQueue(BaseQueue):
+    """Priority queue (lower values have higher priority)."""
+
+    def __init__(self, env):
+        """
+        Construct queue.
+
+        Args:
+            env: simulation environment.
+        """
+        super().__init__(env)
+        self._items = []
+
+    def _dequeue(self):
+        assert len(self._items) > 0
+        return heapq.heappop(self._items)
+
+    def _enqueue(self, obj):
+        heapq.heappush(self._items, obj)
+
+    def _empty(self):
+        return len(self._items) == 0
+
+    def __str__(self):
+        return f"PriorityQueue({', '.join(str(i) for i in self._items)})"
+
+
+# ----------------------------------------------------------------------
+
+
 class _Get(BaseAction):
+    """Get an item from the queue."""
+
     def __init__(self, queue):
         super().__init__(queue._env)
         self._queue = queue
@@ -71,6 +129,8 @@ class _Get(BaseAction):
 
 
 class _Put(BaseAction):
+    """Put an item in a queue."""
+
     def __init__(self, queue, obj):
         super().__init__(queue._env)
         self._queue = queue

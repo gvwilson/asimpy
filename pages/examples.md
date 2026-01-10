@@ -27,13 +27,22 @@
 {!../output/resource.txt!}
 ```
 
-## Job Queue
+## FIFO Queue
 
 ```python
 {!../examples/queue.py!}
 ```
 ```text
 {!../output/queue.txt!}
+```
+
+## Priority Queue
+
+```python
+{!../examples/priqueue.py!}
+```
+```text
+{!../output/priqueue.txt!}
 ```
 
 ## Interrupts
