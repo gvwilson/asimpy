@@ -4,7 +4,7 @@ from asimpy import Environment, Process, Resource
 
 
 class Customer(Process):
-    def init(self, name, counter):
+    def init(self, name: str, counter: Resource):
         self.name = name
         self.counter = counter
 

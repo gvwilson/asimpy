@@ -4,7 +4,7 @@ from asimpy import Environment, Process, Gate
 
 
 class Waiter(Process):
-    def init(self, name, gate):
+    def init(self, name: str, gate: Gate):
         self.name = name
         self.gate = gate
 
@@ -15,7 +15,7 @@ class Waiter(Process):
 
 
 class Releaser(Process):
-    def init(self, name, gate):
+    def init(self, name: str, gate: Gate):
         self.name = name
         self.gate = gate
 

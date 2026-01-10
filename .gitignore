@@ -2,8 +2,8 @@
 .venv/
 
 # Python
+dist/
 __pycache__/
-*.egg-info/
 *.py[cod]
 
 # Testing

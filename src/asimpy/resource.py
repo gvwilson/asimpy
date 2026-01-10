@@ -1,13 +1,17 @@
 """Shared resource with limited capacity."""
 
-from collections import deque
+from typing import TYPE_CHECKING
 from .actions import BaseAction
+from .process import Process
+
+if TYPE_CHECKING:
+    from .environment import Environment
 
 
 class Resource:
     """Shared resource with limited capacity."""
 
-    def __init__(self, env, capacity=1):
+    def __init__(self, env: "Environment", capacity: int = 1):
         """
         Create a new resource.
 
@@ -15,30 +19,26 @@ class Resource:
             env: simulation environment.
             capacity: maximum simultaneous users.
         """
-        self.env = env
-        self.capacity = capacity
-        self.in_use = 0
-        self.queue = deque()
+        self._env = env
+        self._capacity = capacity
+        self._count = 0
+        self._waiting = []
 
     async def acquire(self):
         """Acquire one unit of the resource."""
-
         await _Acquire(self)
 
     async def release(self):
         """Release one unit of the resource."""
-
         await _Release(self)
 
     async def __aenter__(self):
         """Acquire one unit of the resource using `async with`."""
-
         await self.acquire()
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
         """Release one unit of the resource acquired with `async with`."""
-
         await self.release()
 
 
@@ -48,29 +48,29 @@ class Resource:
 class _Acquire(BaseAction):
     """Acquire a resource."""
 
-    def __init__(self, resource):
-        super().__init__(resource.env)
-        self.resource = resource
+    def __init__(self, resource: Resource):
+        super().__init__(resource._env)
+        self._resource = resource
 
-    def act(self, coro):
-        if self.resource.in_use < self.resource.capacity:
-            self.resource.in_use += 1
-            self.env.schedule(self.env.now, coro)
+    def act(self, proc: Process):
+        if self._resource._count < self._resource._capacity:
+            self._resource._count += 1
+            self._env.schedule(self._env.now, proc)
         else:
-            self.resource.queue.append(coro)
+            self._resource._waiting.append(proc)
 
 
 class _Release(BaseAction):
     """Release a resource."""
 
-    def __init__(self, resource):
-        super().__init__(resource.env)
-        self.resource = resource
+    def __init__(self, resource: Resource):
+        super().__init__(resource._env)
+        self._resource = resource
 
-    def act(self, coro):
-        self.resource.in_use -= 1
-        if self.resource.queue:
-            next_coro = self.resource.queue.popleft()
-            self.resource.in_use += 1
-            self.env.schedule(self.env.now, next_coro)
-        self.env.schedule(self.env.now, coro)
+    def act(self, proc: Process):
+        self._resource._count -= 1
+        if self._resource._waiting:
+            next_proc = self._resource._waiting.pop(0)
+            self._resource._count += 1
+            self._env.schedule(self._env.now, next_proc)
+        self._env.schedule(self._env.now, proc)
