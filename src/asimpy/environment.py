@@ -71,12 +71,12 @@ class Environment:
 
             try:
                 if proc._interrupt is None:
-                    awaited = proc._coro.send(None)
+                    action = proc._coro.send(None)
                 else:
                     exc, proc._interrupt = proc._interrupt, None
-                    awaited = proc._coro.throw(exc)
+                    action = proc._coro.throw(exc)
 
-                awaited.act(proc)
+                action._action(proc)
 
             except StopIteration:
                 continue
