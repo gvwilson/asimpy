@@ -1,18 +1,27 @@
 from .event import Event
+from ._adapt import ensure_event
 
 
 class AllOf(Event):
-    """Wait for multiple events to complete."""
-
     def __init__(self, **events):
         assert len(events) > 0
-        first_evt = next(iter(events.values()))
-        super().__init__(first_evt._env)
 
-        self._events = events
+        first = next(iter(events.values()))
+        if isinstance(first, Event):
+            env = first._env
+        else:
+            raise TypeError("Cannot infer environment")
+
+        super().__init__(env)
+
+        self._events = {}
         self._results = {}
-        for key, evt in events.items():
+
+        for key, obj in events.items():
+            evt = ensure_event(env, obj)
+            self._events[key] = evt
             evt._add_waiter(_AllOfWatcher(self, key))
+
 
     def _child_done(self, key, value):
         self._results[key] = value

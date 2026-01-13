@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 import heapq
+import itertools
 from typing import Callable
 
 from .timeout import Timeout
@@ -40,5 +41,11 @@ class Environment:
 
 @dataclass(order=True)
 class _Pending:
+    _counter = itertools.count()
+
     time: float
+    serial: int = field(init=False, repr=False, compare=True)
     callback: Callable = field(compare=False)
+
+    def __post_init__(self):
+        self.serial = next(self._counter)

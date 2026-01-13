@@ -11,12 +11,34 @@ class Resource:
         self._waiters = []
 
     async def acquire(self):
+        # Case 1: capacity available → reserve immediately
         if self._count < self.capacity:
             self._count += 1
+            evt = Event(self._env)
+
+            def cancel():
+                # Roll back reservation
+                self._count -= 1
+
+            evt._on_cancel = cancel
+            self._env._immediate(evt.succeed)
+            await evt
             return
+
+        # Case 2: must wait
         evt = Event(self._env)
         self._waiters.append(evt)
+
+        def cancel():
+            # Remove from waiter list if canceled
+            if evt in self._waiters:
+                self._waiters.remove(evt)
+
+        evt._on_cancel = cancel
+
         await evt
+
+        # Commit acquisition *after* winning
         self._count += 1
 
     async def release(self):

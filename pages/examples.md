@@ -63,11 +63,20 @@
 {!../output/allof.txt!}
 ```
 
-## FirstOf
+## FirstOf with Timeout
 
 ```python
-{!../examples/firstof.py!}
+{!../examples/firstof_timeout.py!}
 ```
 ```text
-{!../output/firstof.txt!}
+{!../output/firstof_timeout.txt!}
+```
+
+## FirstOf with Queue
+
+```python
+{!../examples/firstof_queue.py!}
+```
+```text
+{!../output/firstof_queue.txt!}
 ```

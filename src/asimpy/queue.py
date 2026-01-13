@@ -13,7 +13,12 @@ class Queue:
 
     async def get(self):
         if self._items:
-            return self._items.pop(0)
+            item = self._items.pop(0)
+            evt = Event(self._env)
+            self._env._immediate(lambda: evt.succeed(item))
+            evt._on_cancel = lambda: self._items.insert(0, item)
+            return await evt
+
         evt = Event(self._env)
         self._getters.append(evt)
         return await evt
