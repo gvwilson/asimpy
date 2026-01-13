@@ -14,16 +14,16 @@ class Resource:
         if self._count < self.capacity:
             self._count += 1
             return
-        ev = Event(self._env)
-        self._waiters.append(ev)
-        await ev
+        evt = Event(self._env)
+        self._waiters.append(evt)
+        await evt
         self._count += 1
 
     async def release(self):
         self._count -= 1
         if self._waiters:
-            ev = self._waiters.pop(0)
-            ev.succeed()
+            evt = self._waiters.pop(0)
+            evt.succeed()
 
     async def __aenter__(self):
         await self.acquire()

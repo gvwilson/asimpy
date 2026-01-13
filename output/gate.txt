@@ -2,7 +2,7 @@
    0: Charlie arrives
    0: Bob arrives
    0: Zemu starts
-   2: Bob leaves
+   2: Zemu finishes
    2: Alice leaves
    2: Charlie leaves
-   2: Zemu finishes
+   2: Bob leaves

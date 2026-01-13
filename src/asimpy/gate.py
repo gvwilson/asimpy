@@ -9,11 +9,11 @@ class Gate:
         self._waiters = []
 
     async def wait(self):
-        ev = Event(self._env)
-        self._waiters.append(ev)
-        await ev
+        evt = Event(self._env)
+        self._waiters.append(evt)
+        await evt
 
     async def release(self):
-        for ev in self._waiters:
-            ev.succeed()
+        for evt in self._waiters:
+            evt.succeed()
         self._waiters.clear()

@@ -12,8 +12,8 @@ class AllOf(BaseAction):
 
     def act(self, proc):
         self._proc = proc
-        for ev in self._events.values():
-            ev._parent = self
+        for evt in self._events.values():
+            evt._parent = self
 
     def notify(self, child, value=None):
         self._done.add(child)

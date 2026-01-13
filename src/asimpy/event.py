@@ -45,8 +45,8 @@ class AllOf(Event):
         super().__init__(env)
         self._events = events
         self._results = {}
-        for key, ev in events.items():
-            ev._add_waiter(_AllOfWatcher(self, key))
+        for key, evt in events.items():
+            evt._add_waiter(_AllOfWatcher(self, key))
 
     def _child_done(self, key, value):
         self._results[key] = value

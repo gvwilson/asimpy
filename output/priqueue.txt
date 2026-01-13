@@ -2,5 +2,5 @@ producer putting 3 at 0
 producer putting 2 at 0
 producer putting 1 at 0
 consumer got 1
-consumer got 2
 consumer got 3
+consumer got 2

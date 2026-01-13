@@ -14,14 +14,14 @@ class Queue:
     async def get(self):
         if self._items:
             return self._items.pop(0)
-        ev = Event(self._env)
-        self._getters.append(ev)
-        return await ev
+        evt = Event(self._env)
+        self._getters.append(evt)
+        return await evt
 
     async def put(self, item):
         if self._getters:
-            ev = self._getters.pop(0)
-            ev.succeed(item)
+            evt = self._getters.pop(0)
+            evt.succeed(item)
         else:
             self._items.append(item)
 
@@ -30,5 +30,5 @@ class PriorityQueue(Queue):
     async def put(self, item):
         heapq.heappush(self._items, item)
         if self._getters:
-            ev = self._getters.pop(0)
-            ev.succeed(heapq.heappop(self._items))
+            evt = self._getters.pop(0)
+            evt.succeed(heapq.heappop(self._items))
