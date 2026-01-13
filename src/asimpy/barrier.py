@@ -1,9 +1,9 @@
-"""Gate that holds multiple processes until released."""
+"""Barrier that holds multiple processes until released."""
 
 from .event import Event
 
 
-class Gate:
+class Barrier:
     def __init__(self, env):
         self._env = env
         self._waiters = []

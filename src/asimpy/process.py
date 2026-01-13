@@ -31,6 +31,11 @@ class Process(ABC):
     def run(self):
         pass
 
+    def interrupt(self, cause):
+        if not self._done:
+            self._interrupt = Interrupt(cause)
+            self._env._immediate(self._loop)
+
     def _loop(self, value=None):
         if self._done:
             return
@@ -43,8 +48,10 @@ class Process(ABC):
                 self._interrupt = None
                 yielded = self._coro.throw(exc)
             yielded._add_waiter(self)
+
         except StopIteration:
             self._done = True
+
         except Exception as exc:
             self._done = True
             raise exc
@@ -52,8 +59,3 @@ class Process(ABC):
     def _resume(self, value=None):
         if not self._done:
             self._env._immediate(lambda: self._loop(value))
-
-    def interrupt(self, cause):
-        if not self._done:
-            self._interrupt = Interrupt(cause)
-            self._env._immediate(self._loop)

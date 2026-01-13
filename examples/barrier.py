@@ -1,37 +1,37 @@
 """Simulate people waiting on shared resource."""
 
-from asimpy import Environment, Process, Gate
+from asimpy import Environment, Process, Barrier
 
 
 class Waiter(Process):
-    def init(self, name: str, gate: Gate):
+    def init(self, name: str, barrier: Barrier):
         self.name = name
-        self.gate = gate
+        self.barrier = barrier
 
     async def run(self):
         print(f"{self.now:>4}: {self.name} arrives")
-        await self.gate.wait()
+        await self.barrier.wait()
         print(f"{self.now:>4}: {self.name} leaves")
 
 
 class Releaser(Process):
-    def init(self, name: str, gate: Gate):
+    def init(self, name: str, barrier: Barrier):
         self.name = name
-        self.gate = gate
+        self.barrier = barrier
 
     async def run(self):
         print(f"{self.now:>4}: {self.name} starts")
         await self.timeout(2)
-        await self.gate.release()
+        await self.barrier.release()
         print(f"{self.now:>4}: {self.name} finishes")
 
 
 env = Environment()
-gate = Gate(env)
+barrier = Barrier(env)
 
-Waiter(env, "Alice", gate)
-Waiter(env, "Bob", gate)
-Waiter(env, "Charlie", gate)
-Releaser(env, "Zemu", gate)
+Waiter(env, "Alice", barrier)
+Waiter(env, "Bob", barrier)
+Waiter(env, "Charlie", barrier)
+Releaser(env, "Zemu", barrier)
 
 env.run()
