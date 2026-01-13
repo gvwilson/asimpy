@@ -47,6 +47,26 @@ rm -rf ./dist &&
 find . -path './.venv' -prune -o -type d -name '__pycache__' -exec rm -rf {} + &&
 find . -path './.venv' -prune -o -type f -name '*~' -exec rm {} +
 """}
+concat = {help = "concatenate files", cmd = """
+for f in src/asimpy/*.py
+do
+    echo '# ====' $f
+    echo ''
+    cat $f
+    echo ''
+done
+for f in examples/*.py
+do
+    echo '# ====' $f
+    echo ''
+    cat $f
+    echo ''
+    echo '# ----'
+    echo ''
+    cat output/$(basename $f .py).txt
+    echo ''
+done
+"""}
 docs = {help = "build documentation", cmd = "mkdocs build"}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
