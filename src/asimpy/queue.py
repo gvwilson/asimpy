@@ -121,7 +121,7 @@ class _Get(BaseAction):
             self._queue._gets.append(self)
         else:
             self._item = self._queue._dequeue()
-            self._env.schedule(self._env.now, proc)
+            self._env.immediate(proc)
 
     def __await__(self):
         yield self
@@ -142,6 +142,6 @@ class _Put(BaseAction):
         if len(self._queue._gets) > 0:
             waiting_get = self._queue._gets.pop(0)
             waiting_get._item = self._queue._dequeue()
-            self._env.schedule(self._env.now, waiting_get._proc)
+            self._env.immediate(waiting_get._proc)
 
-        self._env.schedule(self._env.now, proc)
+        self._env.immediate(proc)

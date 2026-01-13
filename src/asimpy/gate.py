@@ -53,5 +53,5 @@ class _Release(BaseAction):
 
     def act(self, proc: Process):
         while self._gate._waiting:
-            self._env.schedule(self._env.now, self._gate._waiting.pop())
-        self._env.schedule(self._env.now, proc)
+            self._env.immediate(self._gate._waiting.pop())
+        self._env.immediate(proc)

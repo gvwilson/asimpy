@@ -55,7 +55,7 @@ class _Acquire(BaseAction):
     def act(self, proc: Process):
         if self._resource._count < self._resource._capacity:
             self._resource._count += 1
-            self._env.schedule(self._env.now, proc)
+            self._env.immediate(proc)
         else:
             self._resource._waiting.append(proc)
 
@@ -72,5 +72,5 @@ class _Release(BaseAction):
         if self._resource._waiting:
             next_proc = self._resource._waiting.pop(0)
             self._resource._count += 1
-            self._env.schedule(self._env.now, next_proc)
-        self._env.schedule(self._env.now, proc)
+            self._env.immediate(next_proc)
+        self._env.immediate(proc)

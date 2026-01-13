@@ -33,7 +33,10 @@ class BaseAction(ABC):
         """Perform generic action then class-specific action."""
         if self._cancelled:
             return
-        return self.act(proc)
+        if self._parent:
+            self._parent.notify(self)
+        else:
+            return self.act(proc)
 
     @abstractmethod
     def act(self, proc: "Process"):
