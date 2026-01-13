@@ -10,10 +10,10 @@ class Producer(Process):
     async def run(self):
         for i in range(3):
             item = f"item-{i}"
-            print(f"producer putting {item} at {self.env.now}")
+            print(f"producer putting {item} at {self.now}")
             await self.queue.put(item)
-            print(f"producer sleeping at {self.env.now}")
-            await self.env.timeout(2)
+            print(f"producer sleeping at {self.now}")
+            await self.timeout(2)
 
     def __str__(self):
         return "producer"
@@ -25,9 +25,9 @@ class Consumer(Process):
 
     async def run(self):
         for i in range(3):
-            print(f"consumer waiting for {i} at {self.env.now}")
+            print(f"consumer waiting for {i} at {self.now}")
             item = await self.queue.get()
-            print(f"consumer got {item} at {self.env.now}")
+            print(f"consumer got {item} at {self.now}")
 
     def __str__(self):
         return "consumer"

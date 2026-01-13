@@ -9,11 +9,11 @@ class Customer(Process):
         self.counter = counter
 
     async def run(self):
-        print(f"{self.env.now:>4}: {self.name} arrives")
+        print(f"{self.now:>4}: {self.name} arrives")
         async with self.counter:
-            print(f"{self.env.now:>4}: {self.name} starts service")
-            await self.env.timeout(5)
-            print(f"{self.env.now:>4}: {self.name} leaves")
+            print(f"{self.now:>4}: {self.name} starts service")
+            await self.timeout(5)
+            print(f"{self.now:>4}: {self.name} leaves")
 
 
 env = Environment()

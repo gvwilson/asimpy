@@ -18,4 +18,4 @@ class AllOf(BaseAction):
     def notify(self, child, value=None):
         self._done.add(child)
         if len(self._done) == len(self._events):
-            self._env.immediate(self._proc)
+            self._env._immediate(self._proc)

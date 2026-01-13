@@ -5,10 +5,10 @@ class Event:
     """Awaitable event."""
 
     def __init__(self, env):
-        self.env = env
-        self._waiters = []
+        self._env = env
         self._triggered = False
         self._value = None
+        self._waiters = []
 
     def succeed(self, value=None):
         if self._triggered:

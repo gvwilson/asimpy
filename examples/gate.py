@@ -9,9 +9,9 @@ class Waiter(Process):
         self.gate = gate
 
     async def run(self):
-        print(f"{self.env.now:>4}: {self.name} arrives")
+        print(f"{self.now:>4}: {self.name} arrives")
         await self.gate.wait()
-        print(f"{self.env.now:>4}: {self.name} leaves")
+        print(f"{self.now:>4}: {self.name} leaves")
 
 
 class Releaser(Process):
@@ -20,10 +20,10 @@ class Releaser(Process):
         self.gate = gate
 
     async def run(self):
-        print(f"{self.env.now:>4}: {self.name} starts")
-        await self.env.timeout(2)
+        print(f"{self.now:>4}: {self.name} starts")
+        await self.timeout(2)
         await self.gate.release()
-        print(f"{self.env.now:>4}: {self.name} finishes")
+        print(f"{self.now:>4}: {self.name} finishes")
 
 
 env = Environment()

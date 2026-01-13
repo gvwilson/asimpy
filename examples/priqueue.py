@@ -9,7 +9,7 @@ class Producer(Process):
 
     async def run(self):
         for i in range(3, 0, -1):
-            print(f"producer putting {i} at {self.env.now}")
+            print(f"producer putting {i} at {self.now}")
             await self.queue.put(i)
 
 
@@ -18,7 +18,7 @@ class Consumer(Process):
         self.queue = queue
 
     async def run(self):
-        await self.env.timeout(1)
+        await self.timeout(1)
         for i in range(3):
             item = await self.queue.get()
             print(f"consumer got {item}")

@@ -5,22 +5,22 @@ from .event import Event
 
 class Resource:
     def __init__(self, env, capacity=1):
-        self.env = env
+        self._env = env
         self.capacity = capacity
-        self.count = 0
+        self._count = 0
         self._waiters = []
 
     async def acquire(self):
-        if self.count < self.capacity:
-            self.count += 1
+        if self._count < self.capacity:
+            self._count += 1
             return
-        ev = Event(self.env)
+        ev = Event(self._env)
         self._waiters.append(ev)
         await ev
-        self.count += 1
+        self._count += 1
 
     async def release(self):
-        self.count -= 1
+        self._count -= 1
         if self._waiters:
             ev = self._waiters.pop(0)
             ev.succeed()

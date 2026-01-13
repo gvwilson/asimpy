@@ -5,16 +5,16 @@ from .event import Event
 import heapq
 
 
-class BaseQueue(ABC):
+class Queue:
     def __init__(self, env):
-        self.env = env
+        self._env = env
         self._items = []
         self._getters = []
 
     async def get(self):
         if self._items:
             return self._items.pop(0)
-        ev = Event(self.env)
+        ev = Event(self._env)
         self._getters.append(ev)
         return await ev
 
@@ -26,11 +26,7 @@ class BaseQueue(ABC):
             self._items.append(item)
 
 
-class Queue(BaseQueue):
-    pass
-
-
-class PriorityQueue(BaseQueue):
+class PriorityQueue(Queue):
     async def put(self, item):
         heapq.heappush(self._items, item)
         if self._getters:

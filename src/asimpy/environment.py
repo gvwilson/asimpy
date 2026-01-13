@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 import heapq
 from typing import Callable
 
+from .event import Timeout
+
 
 @dataclass(order=True)
 class _Pending:
@@ -20,12 +22,7 @@ class Environment:
     def schedule(self, time, callback):
         heapq.heappush(self._queue, _Pending(time, callback))
 
-    def immediate(self, callback):
-        self.schedule(self.now, callback)
-
     def timeout(self, delay):
-        from .event import Timeout
-
         return Timeout(self, delay)
 
     def run(self, until=None):
@@ -35,6 +32,9 @@ class Environment:
                 break
             self.now = pending.time
             pending.callback()
+
+    def _immediate(self, callback):
+        self.schedule(self.now, callback)
 
     def __str__(self):
         return f"Env(t={self.now})"

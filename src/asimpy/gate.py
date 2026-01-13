@@ -5,11 +5,11 @@ from .event import Event
 
 class Gate:
     def __init__(self, env):
-        self.env = env
+        self._env = env
         self._waiters = []
 
     async def wait(self):
-        ev = Event(self.env)
+        ev = Event(self._env)
         self._waiters.append(ev)
         await ev
 
