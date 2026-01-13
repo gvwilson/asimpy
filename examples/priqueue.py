@@ -18,7 +18,7 @@ class Consumer(Process):
         self.queue = queue
 
     async def run(self):
-        await self.env.sleep(1)
+        await self.env.timeout(1)
         for i in range(3):
             item = await self.queue.get()
             print(f"consumer got {item}")

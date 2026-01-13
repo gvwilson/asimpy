@@ -13,7 +13,7 @@ class Producer(Process):
             print(f"producer putting {item} at {self.env.now}")
             await self.queue.put(item)
             print(f"producer sleeping at {self.env.now}")
-            await self.env.sleep(2)
+            await self.env.timeout(2)
 
     def __str__(self):
         return "producer"

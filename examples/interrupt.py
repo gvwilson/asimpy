@@ -9,7 +9,7 @@ class Actor(Process):
         for i in range(4):
             try:
                 print(f"{self.env.now:>4}/{i}: actor about to sleep")
-                await self.env.sleep(2)
+                await self.env.timeout(2)
                 print(f"{self.env.now:>4}/{i}: actor wakes with {self._interrupt}")
             except Interrupt as exc:
                 print(f"{self.env.now:>4}/{i}: actor interrupted with {exc.cause}")
@@ -26,7 +26,7 @@ class Interrupter(Process):
     async def run(self):
         print(f"{self.env.now:>4}: interrupter start")
         for i in range(2):
-            await self.env.sleep(3)
+            await self.env.timeout(3)
             print(f"{self.env.now:>4}/{i}: scheduling interrupt")
             self.other.interrupt("message")
         print(f"{self.env.now:>4}: interrupter end")

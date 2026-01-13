@@ -12,7 +12,7 @@ class Customer(Process):
         print(f"{self.env.now:>4}: {self.name} arrives")
         async with self.counter:
             print(f"{self.env.now:>4}: {self.name} starts service")
-            await self.env.sleep(5)
+            await self.env.timeout(5)
             print(f"{self.env.now:>4}: {self.name} leaves")
 
 

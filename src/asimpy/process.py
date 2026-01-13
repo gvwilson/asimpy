@@ -1,56 +1,49 @@
-"""Base class for processes."""
+"""Base class for active processes with interrupt support."""
 
 from abc import ABC, abstractmethod
-from typing import Any, TYPE_CHECKING
-
 from .interrupt import Interrupt
-
-if TYPE_CHECKING:
-    from .environment import Environment
 
 
 class Process(ABC):
-    """Base class for active processes."""
-
-    def __init__(self, env: "Environment", *args: Any):
-        """
-        Construct a new process by performing common initialization,
-        calling the user-defined `init()` method (no underscores),
-        and registering the coroutine created by the `run()` method
-        with the environment.
-
-        Args:
-            env: simulation environment.
-            *args: to be passed to `init()` for custom initialization.
-        """
+    def __init__(self, env, *args):
         self.env = env
-        self._interrupt = None
-
         self.init(*args)
-
         self._coro = self.run()
-        self.env.immediate(self)
+        self._interrupt = None
+        self._done = False
+        self.env.immediate(self._step_loop)
 
-    def init(self, *args: Any, **kwargs: Any) -> None:
-        """
-        Default (do-nothing) post-initialization method.
-
-        To satisfy type-checking, derived classes must also declare `*args`
-        rather than listing specific parameters by name.
-        """
+    def init(self, *args, **kwargs):
         pass
-
-    def interrupt(self, cause: Any):
-        """
-        Interrupt this process by raising an `Interrupt` exception the
-        next time the process is scheduled to run.
-
-        Args:
-            cause: reason for interrupt (attacked to `Interrupt` exception).
-        """
-        self._interrupt = Interrupt(cause)
 
     @abstractmethod
     def run(self):
-        """Actions for this process."""
         pass
+
+    def _step_loop(self, value=None):
+        if self._done:
+            return  # already finished
+
+        try:
+            if self._interrupt is not None:
+                exc = self._interrupt
+                self._interrupt = None
+                yielded = self._coro.throw(exc)
+            else:
+                yielded = self._coro.send(value)
+            # Schedule next resume when the awaited event is ready
+            yielded._add_waiter(self)
+        except StopIteration:
+            self._done = True  # mark coroutine as finished
+        except Exception:
+            self._done = True
+            raise
+
+    def _resume(self, value=None):
+        if not self._done:
+            self.env.immediate(lambda: self._step_loop(value))
+
+    def interrupt(self, cause):
+        if not self._done:
+            self._interrupt = Interrupt(cause)
+            self.env.immediate(self._step_loop)

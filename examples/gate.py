@@ -21,7 +21,7 @@ class Releaser(Process):
 
     async def run(self):
         print(f"{self.env.now:>4}: {self.name} starts")
-        await self.env.sleep(2)
+        await self.env.timeout(2)
         await self.gate.release()
         print(f"{self.env.now:>4}: {self.name} finishes")
 
