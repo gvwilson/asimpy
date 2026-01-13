@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import heapq
 from typing import Callable
 
-from .event import Timeout
+from .timeout import Timeout
 
 
 class Environment:

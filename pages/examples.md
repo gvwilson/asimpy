@@ -54,11 +54,20 @@
 {!../output/interrupt.txt!}
 ```
 
-## Conditions
+## AllOf
 
 ```python
-{!../examples/conditions.py!}
+{!../examples/allof.py!}
 ```
 ```text
-{!../output/conditions.txt!}
+{!../output/allof.txt!}
+```
+
+## FirstOf
+
+```python
+{!../examples/firstof.py!}
+```
+```text
+{!../output/firstof.txt!}
 ```
