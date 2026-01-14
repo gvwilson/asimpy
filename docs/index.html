@@ -246,6 +246,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_triggered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _triggered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_cancelled-and-_on_cancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _cancelled and _on_cancel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_waiters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _waiters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -264,6 +314,17 @@
     <span class="md-ellipsis">
       
         Example: Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-firstof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: FirstOf
       
     </span>
   </a>
@@ -686,6 +747,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_triggered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _triggered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_cancelled-and-_on_cancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _cancelled and _on_cancel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_waiters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _waiters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -704,6 +815,17 @@
     <span class="md-ellipsis">
       
         Example: Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-firstof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: FirstOf
       
     </span>
   </a>
@@ -773,6 +895,76 @@ When a process runs:</p>
 <li>All waiting processes are resumed.</li>
 <li>Each of those processes receives <code>value</code> as the result of <code>await</code>.</li>
 </ol>
+<p>One way to understand <code>Event</code> is to look at the purpose of its key attributes.</p>
+<h3 id="_triggered"><code>_triggered</code></h3>
+<p>The Boolean <code>_triggered</code> indicates whether this event has already successfully occurred.
+It is initially <code>False</code>,
+and is set to <code>True</code> when <code>evt.succeed(value)</code> is called.
+If the event has been triggered before,
+and some process wants to wait on it later,
+that process is immediately resumed with the store <code>_value</code>.
+This prevents lost or duplicated notifications.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">succeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triggered</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_triggered</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">_resume</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="_cancelled-and-_on_cancel"><code>_cancelled</code> and <code>_on_cancel</code></h3>
+<p>The Boolean <code>_cancelled</code> indicates whether the event was aborted before it could succeed.
+It is also initially <code>False</code>,
+and is used in both <code>succeed()</code> (shown above) and in <code>cancel()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triggered</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_cancel</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_on_cancel</span><span class="p">()</span>
+</code></pre></div>
+<p>If a cancellation callback has been registered with the event,
+the callback is executed to do resource cleanup.
+For example,
+suppose a program is using <code>FirstOf</code> to wait until an item is available
+on one or the other of two queues.
+If both queues become ready at the same simulated time,
+the program might take one item from both queues
+when it should instead take an item from one or the other queue.
+To clean this up,
+<code>Queue.get()</code> registers a callback that puts an item back at the front of the queue
+to prevent incorrect over-consumption of items:</p>
+<div class="highlight"><pre><span></span><code><span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_value"><code>_value</code></h3>
+<p>When <code>evt.succeed(value)</code> is called,
+the value passed in is saved as <code>evt._value</code>.
+Any process resuming from <code>await event</code> receives this value:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="k">yield</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+<p>This is how the framework passes results between processes:
+for example,
+the value of a <code>Queue.get()</code> event is the item retrieved from the queue.</p>
+<h3 id="_waiters"><code>_waiters</code></h3>
+<p><code>_waiters</code> is a list of processes waiting for the event to complete.
+When a process <code>await</code>s an event,
+it is added to the list by the internal method <code>_add_waiter()</code>.
+If the event has already been triggered,
+<code>_add_waiter</code> immediately resumes the process:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_add_waiter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proc</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triggered</span><span class="p">:</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">_resume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
+</code></pre></div>
+<p>When <code>succeed()</code> is called,
+every process in <code>_waiters</code> is resumed and <code>_waiters</code> is cleared.
+When <code>cancel()</code> is called, <code>_waiters</code> is cleared without resuming any process.</p>
 <h2 id="processes">Processes</h2>
 <p>The <code>Process</code> class wraps an <code>async def run()</code> coroutine.
 When a <code>Process</code> is created,
@@ -793,7 +985,7 @@ which schedules it to run.</p>
 <div class="highlight"><pre><span></span><code><span class="n">proc</span><span class="o">.</span><span class="n">_resume</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 <p>which schedules <code>_loop(value)</code> again.</p>
-<h2 id="example-timeout">Example: Timeout</h2>
+<h2 id="example-timeout">Example: <code>Timeout</code></h2>
 <p>The entire <code>Timeout</code> class is:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Timeout</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
@@ -801,6 +993,88 @@ which schedules it to run.</p>
         <span class="n">env</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">+</span> <span class="n">delay</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">())</span>
 </code></pre></div>
 <p>which simply asks the <code>Environment</code> to schedule <code>Event.succeed()</code> in the simulated future.</p>
+<h2 id="example-firstof">Example: <code>FirstOf</code></h2>
+<p>Suppose the queue <code>q1</code> contains <code>"A"</code> and the <code>q2</code> contains <code>"B"</code>,
+and a process then waits for a value from either queue with:</p>
+<div class="highlight"><pre><span></span><code><span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="n">FirstOf</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">q1</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">b</span><span class="o">=</span><span class="n">q2</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+</code></pre></div>
+<p>The sequence of events is:</p>
+<table>
+<thead>
+<tr>
+<th>Action / Event</th>
+<th>Queue State</th>
+<th>Event State</th>
+<th>Process / Waiters</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tester</code> starts</td>
+<td>q1=["A"], q2=["B"]</td>
+<td>evt_a &amp; evt_b created</td>
+<td><code>_waiters</code> in evt_a and evt_b = [Tester]</td>
+<td><code>FirstOf</code> yields to environment</td>
+</tr>
+<tr>
+<td><code>q1.get()</code> removes "A"</td>
+<td>q1=[], q2=["B"]</td>
+<td>evt_a._value=None, _triggered=False</td>
+<td>evt_a._waiters=[FirstOfWatcher]</td>
+<td>_on_cancel set to re-insert "A" if cancelled</td>
+</tr>
+<tr>
+<td><code>q2.get()</code> removes "B"</td>
+<td>q1=[], q2=[]</td>
+<td>evt_b._value=None, _triggered=False</td>
+<td>evt_b._waiters=[FirstOfWatcher]</td>
+<td>_on_cancel set to re-insert "B" if cancelled</td>
+</tr>
+<tr>
+<td>Environment immediately triggers evt_a</td>
+<td>q1=[], q2=[]</td>
+<td>evt_a._value="A", _triggered=True</td>
+<td>_waiters processed: FirstOf._child_done() called</td>
+<td>This is the winner</td>
+</tr>
+<tr>
+<td>FirstOf <code>_child_done()</code> sets <code>_done=True</code></td>
+<td>q1=[], q2=[]</td>
+<td>_done=True</td>
+<td>_events = {a: evt_a, b: evt_b}</td>
+<td>Notifies all losing events to cancel</td>
+</tr>
+<tr>
+<td>evt_b.cancel() called (loser)</td>
+<td>q1=[], q2=[]</td>
+<td>evt_b._cancelled=True</td>
+<td>_waiters cleared</td>
+<td>_on_cancel triggers: inserts "B" back at front of q2</td>
+</tr>
+<tr>
+<td><code>_on_cancel</code> restores item</td>
+<td>q1=[], q2=["B"]</td>
+<td>evt_b._triggered=False, _cancelled=True</td>
+<td>_waiters cleared</td>
+<td>Queue order preserved</td>
+</tr>
+<tr>
+<td>FirstOf succeeds with winner</td>
+<td>q1=[], q2=["B"]</td>
+<td>_value=("a","A"), _triggered=True</td>
+<td>Processes waiting on FirstOf resumed</td>
+<td><code>Tester</code> receives ("a","A")</td>
+</tr>
+<tr>
+<td><code>Tester</code> continues execution</td>
+<td>q1=[], q2=["B"]</td>
+<td>-</td>
+<td>-</td>
+<td>Remaining queue items untouched; correct order guaranteed</td>
+</tr>
+</tbody>
+</table>
 
 
 
