@@ -12,7 +12,7 @@
         <link rel="prev" href="../examples/">
       
       
-        <link rel="next" href="../environment/">
+        <link rel="next" href="../barrier/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Actions - asimpy</title>
+        <title>Allof - asimpy</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#asimpy.actions" class="md-skip">
+        <a href="#asimpy.allof" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Actions
+              Allof
             
           </span>
         </div>
@@ -307,7 +307,7 @@
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
   
 
     
@@ -325,7 +325,7 @@
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
   
 
     
@@ -349,10 +349,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#asimpy.actions" class="md-nav__link">
+  <a href="#asimpy.allof" class="md-nav__link">
     <span class="md-ellipsis">
       
-        actions
+        allof
       
     </span>
   </a>
@@ -360,30 +360,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction" class="md-nav__link">
+  <a href="#asimpy.allof.AllOf" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BaseAction
+        AllOf
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="BaseAction">
+    <nav class="md-nav" aria-label="AllOf">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction.__await__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __await__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction.__init__" class="md-nav__link">
+  <a href="#asimpy.allof.AllOf.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
@@ -402,6 +391,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -440,14 +456,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../gate/" class="md-nav__link">
+      <a href="../firstof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Gate
+    Firstof
   
 
     
@@ -521,6 +537,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../resource/" class="md-nav__link">
         
   
@@ -529,6 +572,33 @@
     
   
     Resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timeout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeout
   
 
     
@@ -566,10 +636,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#asimpy.actions" class="md-nav__link">
+  <a href="#asimpy.allof" class="md-nav__link">
     <span class="md-ellipsis">
       
-        actions
+        allof
       
     </span>
   </a>
@@ -577,30 +647,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction" class="md-nav__link">
+  <a href="#asimpy.allof.AllOf" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BaseAction
+        AllOf
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="BaseAction">
+    <nav class="md-nav" aria-label="AllOf">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction.__await__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __await__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#asimpy.actions.BaseAction.__init__" class="md-nav__link">
+  <a href="#asimpy.allof.AllOf.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
         __init__
@@ -632,16 +691,16 @@
 
 
 
-  <h1>Actions</h1>
+  <h1>Allof</h1>
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="asimpy.actions"></a>
+<a id="asimpy.allof"></a>
     <div class="doc doc-contents first">
 
-        <p>Awaitable actions.</p>
+        <p>Wait for all events in a set to complete.</p>
 
 
 
@@ -666,18 +725,20 @@
 
 
 
-<h2 id="asimpy.actions.BaseAction" class="doc doc-heading">
-            <code>BaseAction</code>
+<h2 id="asimpy.allof.AllOf" class="doc doc-heading">
+            <code>AllOf</code>
 
 
 </h2>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="asimpy.event.Event">Event</span></code></p>
 
 
 
-        <p>Base of all internal awaitable actions. Simulation authors should not use this directly.</p>
+        <p>Wait for all of a set of events.</p>
 
 
 
@@ -687,7 +748,7 @@
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/asimpy/actions.py</code></summary>
+                <summary>Source code in <code>src/asimpy/allof.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -705,24 +766,54 @@
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseAction</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base of all internal awaitable actions. Simulation authors should not use this directly.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AllOf</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for all of a set of events.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Environment</span><span class="p">,</span> <span class="o">**</span><span class="n">events</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a new awaitable action.</span>
+<span class="sd">        Construct new collective wait.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env: simulation environment.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
+<span class="sd">            events: name=thing items to wait for.</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle `await`.&quot;&quot;&quot;</span>
-        <span class="k">yield</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="kc">None</span>
+<span class="sd">        Example:</span>
+
+<span class="sd">        ```</span>
+<span class="sd">        name, value = await AllOf(env, a=q1.get(), b=q2.get())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">evt</span> <span class="o">=</span> <span class="n">ensure_event</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">evt</span>
+            <span class="n">evt</span><span class="o">.</span><span class="n">_add_waiter</span><span class="p">(</span><span class="n">_AllOfWatcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_child_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -742,44 +833,15 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="asimpy.actions.BaseAction.__await__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__await__</span><span class="p">()</span></code>
+<h3 id="asimpy.allof.AllOf.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">events</span><span class="p">)</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Handle <code>await</code>.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/asimpy/actions.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `await`.&quot;&quot;&quot;</span>
-    <span class="k">yield</span> <span class="bp">self</span>
-    <span class="k">return</span> <span class="kc">None</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="asimpy.actions.BaseAction.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Construct a new awaitable action.</p>
+        <p>Construct new collective wait.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -798,7 +860,7 @@
                 <code>env</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Environment (asimpy.environment.Environment)" href="../environment/#asimpy.environment.Environment">Environment</a></code>
+                  <code><span title="asimpy.environment.Environment">Environment</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -809,27 +871,78 @@
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>events</code>
+            </td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>name=thing items to wait for.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
       </tbody>
     </table>
+        <p>Example:</p>
+<div class="highlight"><pre><span></span><code>name, value = await AllOf(env, a=q1.get(), b=q2.get())
+</code></pre></div>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/asimpy/actions.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+              <summary>Source code in <code>src/asimpy/allof.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">):</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Environment</span><span class="p">,</span> <span class="o">**</span><span class="n">events</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Construct a new awaitable action.</span>
+<span class="sd">    Construct new collective wait.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        env: simulation environment.</span>
+<span class="sd">        events: name=thing items to wait for.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    name, value = await AllOf(env, a=q1.get(), b=q2.get())</span>
+<span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_results</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">ensure_event</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">evt</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">_add_waiter</span><span class="p">(</span><span class="n">_AllOfWatcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

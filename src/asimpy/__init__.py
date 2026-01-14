@@ -9,4 +9,4 @@ from .interrupt import Interrupt as Interrupt
 from .process import Process as Process
 from .queue import Queue as Queue, PriorityQueue as PriorityQueue
 from .resource import Resource as Resource
-from .timeout import Timeout
+from .timeout import Timeout as Timeout

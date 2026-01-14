@@ -12,7 +12,7 @@
         <link rel="prev" href="../interrupt/">
       
       
-        <link rel="next" href="../resource/">
+        <link rel="next" href="../queue/">
       
       
         
@@ -293,14 +293,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../actions/" class="md-nav__link">
+      <a href="../allof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
   
 
     
@@ -347,14 +374,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../gate/" class="md-nav__link">
+      <a href="../firstof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Gate
+    Firstof
   
 
     
@@ -480,6 +507,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#asimpy.process.Process.now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        now
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.process.Process.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -523,6 +561,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#asimpy.process.Process.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -543,6 +592,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../resource/" class="md-nav__link">
         
   
@@ -551,6 +627,33 @@
     
   
     Resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timeout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeout
   
 
     
@@ -611,6 +714,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#asimpy.process.Process.now" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        now
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.process.Process.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -654,6 +768,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#asimpy.process.Process.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -685,7 +810,7 @@
 <a id="asimpy.process"></a>
     <div class="doc doc-contents first">
 
-        <p>Base class for processes.</p>
+        <p>Base class for active process.</p>
 
 
 
@@ -723,7 +848,7 @@
 
 
 
-        <p>Base class for active processes.</p>
+        <p>Abstract base class for active process.</p>
 
 
 
@@ -778,51 +903,123 @@
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Process</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for active processes.&quot;&quot;&quot;</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Process</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for active process.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a new process by performing common initialization,</span>
-<span class="sd">        calling the user-defined `init()` method (no underscores),</span>
-<span class="sd">        and registering the coroutine created by the `run()` method</span>
-<span class="sd">        with the environment.</span>
+<span class="sd">        Construct new process.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env: simulation environment.</span>
-<span class="sd">            *args: to be passed to `init()` for custom initialization.</span>
+<span class="sd">            args: extra constructor arguments passed to `init()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_done</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Default (do-nothing) post-initialization method.</span>
-
-<span class="sd">        To satisfy type-checking, derived classes must also declare `*args`</span>
-<span class="sd">        rather than listing specific parameters by name.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Interrupt this process by raising an `Interrupt` exception the</span>
-<span class="sd">        next time the process is scheduled to run.</span>
+<span class="sd">        Extra construction after generic setup but before coroutine created.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            cause: reason for interrupt (attacked to `Interrupt` exception).</span>
+<span class="sd">            args: extra constructor arguments passed to `init()`.</span>
+<span class="sd">            kwargs: extra construct arguments passed to `init()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="n">Interrupt</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
+        <span class="k">pass</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actions for this process.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implementation of process behavior.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to access simulation time.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">now</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delay this process for a specified time.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            delay: how long to wait.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Interrupt this process</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cause: reason for interrupt.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_done</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="n">Interrupt</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_done</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">yielded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">yielded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="n">yielded</span><span class="o">.</span><span class="n">_add_waiter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_done</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_done</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">raise</span> <span class="n">exc</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_done</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -836,6 +1033,28 @@
 
 
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="asimpy.process.Process.now" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">now</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Shortcut to access simulation time.</p>
+
+    </div>
+
+</div>
+
 
 
 
@@ -843,17 +1062,14 @@
 
 
 <h3 id="asimpy.process.Process.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Construct a new process by performing common initialization,
-calling the user-defined <code>init()</code> method (no underscores),
-and registering the coroutine created by the <code>run()</code> method
-with the environment.</p>
+        <p>Construct new process.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -872,7 +1088,7 @@ with the environment.</p>
                 <code>env</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Environment (asimpy.environment.Environment)" href="../environment/#asimpy.environment.Environment">Environment</a></code>
+                  <code><span title="asimpy.environment.Environment">Environment</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -885,14 +1101,14 @@ with the environment.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>*args</code>
+                <code>args</code>
             </td>
             <td>
                   <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>to be passed to <code>init()</code> for custom initialization.</p>
+                <p>extra constructor arguments passed to <code>init()</code>.</p>
               </div>
             </td>
             <td>
@@ -918,28 +1134,20 @@ with the environment.</p>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Construct a new process by performing common initialization,</span>
-<span class="sd">    calling the user-defined `init()` method (no underscores),</span>
-<span class="sd">    and registering the coroutine created by the `run()` method</span>
-<span class="sd">    with the environment.</span>
+<span class="sd">    Construct new process.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        env: simulation environment.</span>
-<span class="sd">        *args: to be passed to `init()` for custom initialization.</span>
+<span class="sd">        args: extra constructor arguments passed to `init()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
+    <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -957,26 +1165,73 @@ with the environment.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Default (do-nothing) post-initialization method.</p>
-<p>To satisfy type-checking, derived classes must also declare <code>*args</code>
-rather than listing specific parameters by name.</p>
+        <p>Extra construction after generic setup but before coroutine created.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>args</code>
+            </td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>extra constructor arguments passed to <code>init()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kwargs</code>
+            </td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>extra construct arguments passed to <code>init()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/process.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Default (do-nothing) post-initialization method.</span>
+<span class="sd">    Extra construction after generic setup but before coroutine created.</span>
 
-<span class="sd">    To satisfy type-checking, derived classes must also declare `*args`</span>
-<span class="sd">    rather than listing specific parameters by name.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        args: extra constructor arguments passed to `init()`.</span>
+<span class="sd">        kwargs: extra construct arguments passed to `init()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
@@ -996,8 +1251,7 @@ rather than listing specific parameters by name.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Interrupt this process by raising an <code>Interrupt</code> exception the
-next time the process is scheduled to run.</p>
+        <p>Interrupt this process</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1020,7 +1274,7 @@ next time the process is scheduled to run.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>reason for interrupt (attacked to <code>Interrupt</code> exception).</p>
+                <p>reason for interrupt.</p>
               </div>
             </td>
             <td>
@@ -1033,23 +1287,25 @@ next time the process is scheduled to run.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/process.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Interrupt this process by raising an `Interrupt` exception the</span>
-<span class="sd">    next time the process is scheduled to run.</span>
+<span class="sd">    Interrupt this process</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cause: reason for interrupt (attacked to `Interrupt` exception).</span>
+<span class="sd">        cause: reason for interrupt.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="n">Interrupt</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_done</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span> <span class="o">=</span> <span class="n">Interrupt</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1071,18 +1327,86 @@ next time the process is scheduled to run.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Actions for this process.</p>
+        <p>Implementation of process behavior.</p>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/process.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of process behavior.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="asimpy.process.Process.timeout" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">timeout</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Delay this process for a specified time.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>delay</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span> | <span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>how long to wait.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/asimpy/process.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Actions for this process.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delay this process for a specified time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        delay: how long to wait.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

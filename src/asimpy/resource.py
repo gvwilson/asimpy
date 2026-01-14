@@ -1,22 +1,37 @@
-"""Shared resource."""
+"""Shared resource with limited capacity."""
 
+from typing import TYPE_CHECKING
 from .event import Event
 
+if TYPE_CHECKING:
+    from .environment import Environment
 
 class Resource:
-    def __init__(self, env, capacity=1):
+    """A shared resource with limited capacity."""
+
+    def __init__(self, env: "Environment", capacity: int = 1):
+        """
+        Construct resource.
+
+        Args:
+            env: simulation environment.
+            capacity: maximum capacity.
+        """
+        assert capacity > 0
         self._env = env
         self.capacity = capacity
         self._count = 0
         self._waiters = []
 
     async def acquire(self):
+        """Acquire one unit of resource."""
         if self._count < self.capacity:
             await self._acquire_available()
         else:
             await self._acquire_unavailable()
 
     async def release(self):
+        """Release one unit of resource."""
         self._count -= 1
         if self._waiters:
             evt = self._waiters.pop(0)

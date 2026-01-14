@@ -8,13 +8,18 @@ def ensure_event(env, obj):
 
     if inspect.iscoroutine(obj):
         evt = Event(env)
-
-        class Runner(Process):
-            async def run(self):
-                result = await obj
-                evt.succeed(result)
-
-        Runner(env)
+        _Runner(env, evt, obj)
         return evt
 
     raise TypeError(f"Expected Event or coroutine, got {type(obj)}")
+
+
+
+class _Runner(Process):
+    def init(self, evt, obj):
+        self.evt = evt
+        self.obj = obj
+
+    async def run(self):
+        result = await self.obj
+        self.evt.succeed(result)

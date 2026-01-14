@@ -165,6 +165,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    asimpy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -181,6 +199,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -301,14 +393,41 @@
   
   
     <li class="md-nav__item">
-      <a href="actions/" class="md-nav__link">
+      <a href="allof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
   
 
     
@@ -355,14 +474,14 @@
   
   
     <li class="md-nav__item">
-      <a href="gate/" class="md-nav__link">
+      <a href="firstof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Gate
+    Firstof
   
 
     
@@ -436,6 +555,33 @@
   
   
     <li class="md-nav__item">
+      <a href="queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="resource/" class="md-nav__link">
         
   
@@ -444,6 +590,33 @@
     
   
     Resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="timeout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeout
   
 
     
@@ -476,6 +649,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -500,6 +736,71 @@
 <li><a href="https://gvwilson.github.io/asimpy/examples/">Examples</a></li>
 </ul>
 <p><em>Thanks to the creators of <a href="https://simpy.readthedocs.io/">SimPy</a> for inspiration.</em></p>
+<h2 id="what-this-is">What This Is</h2>
+<p>This discrete-event simulation framework uses Python's <code>async</code>/<code>await</code> without <code>asyncio</code>.
+Key concepts include:</p>
+<ul>
+<li>Simulation time is virtual, not wall-clock time.</li>
+<li>Processes are active entities (customers, producers, actors).</li>
+<li>Events are things that happen at specific simulation times.</li>
+<li><code>await</code> is used to pause a process until an event occurs.</li>
+<li>A single-threaded event loop (the <code>Environment</code> class) advances simulated time and resumes processes.</li>
+</ul>
+<p>The result feels like writing synchronous code, but executes deterministically.</p>
+<h2 id="the-environment">The Environment</h2>
+<p>The <code>Environment</code> class is the core of <code>asimpy</code>.
+It store upcoming events in a heap that keeps entries ordered by (simulated) time.
+<code>env.run()</code> repeatedly pops the earliest scheduled callback,
+advances <code>env._now</code> to that time,
+and runs the callback.</p>
+<blockquote>
+<p>The key idea is that <em>nothing runs until the environment schedules it</em>.</p>
+</blockquote>
+<h2 id="events">Events</h2>
+<p>An <code>Event</code> represents something that may happen later (similar to an <code>asyncio</code> <code>Future</code>).
+When a process runs:</p>
+<div class="highlight"><pre><span></span><code><span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="n">some_event</span>
+</code></pre></div>
+<p>the following happens:</p>
+<ol>
+<li><code>Event.__await__()</code> yields the event object.</li>
+<li>The process is suspended.</li>
+<li>The process is registered as a waiter on that event.</li>
+</ol>
+<p>When <code>event.succeed(value)</code> is called:</p>
+<ol>
+<li>The event is marked as triggered.</li>
+<li>All waiting processes are resumed.</li>
+<li>Each of those processes receives <code>value</code> as the result of <code>await</code>.</li>
+</ol>
+<h2 id="processes">Processes</h2>
+<p>The <code>Process</code> class wraps an <code>async def run()</code> coroutine.
+When a <code>Process</code> is created,
+its constructor called <code>self.run()</code> to create a coroutine
+and then gives the <code>self._loop</code> callback to the <code>Enviroment</code>,
+which schedules it to run.</p>
+<p><code>self._loop</code> drives the coroutine by executing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">yielded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="n">yielded</span><span class="o">.</span><span class="n">_add_waiter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>The coroutine runs until it hits <code>await</code>.</li>
+<li>The <code>await</code> yields an <code>Event</code>.</li>
+<li>The process registers itself as waiting on that event.</li>
+<li>Control returns to the environment.</li>
+</ol>
+<p>When the event fires, it calls:</p>
+<div class="highlight"><pre><span></span><code><span class="n">proc</span><span class="o">.</span><span class="n">_resume</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+<p>which schedules <code>_loop(value)</code> again.</p>
+<h2 id="example-timeout">Example: Timeout</h2>
+<p>The entire <code>Timeout</code> class is:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Timeout</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">+</span> <span class="n">delay</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">())</span>
+</code></pre></div>
+<p>which simply asks the <code>Environment</code> to schedule <code>Event.succeed()</code> in the simulated future.</p>
 
 
 

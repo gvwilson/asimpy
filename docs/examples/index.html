@@ -12,7 +12,7 @@
         <link rel="prev" href="../CONTRIBUTING/">
       
       
-        <link rel="next" href="../actions/">
+        <link rel="next" href="../allof/">
       
       
         
@@ -326,10 +326,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sleeping" class="md-nav__link">
+  <a href="#timeout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sleeping
+        Timeout
       
     </span>
   </a>
@@ -337,10 +337,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gating" class="md-nav__link">
+  <a href="#barrier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Gating
+        Barrier
       
     </span>
   </a>
@@ -391,6 +391,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#allof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AllOf
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firstof-with-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf with Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firstof-with-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf with Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -406,14 +439,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../actions/" class="md-nav__link">
+      <a href="../allof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
   
 
     
@@ -460,14 +520,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../gate/" class="md-nav__link">
+      <a href="../firstof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Gate
+    Firstof
   
 
     
@@ -541,6 +601,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../resource/" class="md-nav__link">
         
   
@@ -549,6 +636,33 @@
     
   
     Resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timeout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeout
   
 
     
@@ -588,10 +702,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sleeping" class="md-nav__link">
+  <a href="#timeout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sleeping
+        Timeout
       
     </span>
   </a>
@@ -599,10 +713,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gating" class="md-nav__link">
+  <a href="#barrier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Gating
+        Barrier
       
     </span>
   </a>
@@ -653,6 +767,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#allof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AllOf
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firstof-with-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf with Timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firstof-with-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf with Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -671,7 +818,7 @@
 
 
 <h1 id="examples">Examples</h1>
-<h2 id="sleeping">Sleeping</h2>
+<h2 id="timeout">Timeout</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Repeated sleeping.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span>
@@ -679,11 +826,11 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Sleeper</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: starts&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: starts&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: finishes&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: finishes&quot;</span><span class="p">)</span>
 
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
@@ -696,53 +843,53 @@
   10
   15: finishes
 </code></pre></div></p>
-<h2 id="gating">Gating</h2>
+<h2 id="barrier">Barrier</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Simulate people waiting on shared resource.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Gate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Barrier</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Waiter</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gate</span><span class="p">:</span> <span class="n">Gate</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">barrier</span><span class="p">:</span> <span class="n">Barrier</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gate</span> <span class="o">=</span> <span class="n">gate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">barrier</span> <span class="o">=</span> <span class="n">barrier</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrives&quot;</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">gate</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> leaves&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrives&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">barrier</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> leaves&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Releaser</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gate</span><span class="p">:</span> <span class="n">Gate</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">barrier</span><span class="p">:</span> <span class="n">Barrier</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gate</span> <span class="o">=</span> <span class="n">gate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">barrier</span> <span class="o">=</span> <span class="n">barrier</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> starts&quot;</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">gate</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> finishes&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> starts&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">barrier</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> finishes&quot;</span><span class="p">)</span>
 
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
-<span class="n">gate</span> <span class="o">=</span> <span class="n">Gate</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">barrier</span> <span class="o">=</span> <span class="n">Barrier</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
-<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="p">)</span>
-<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="p">)</span>
-<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="p">)</span>
-<span class="n">Releaser</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Zemu&quot;</span><span class="p">,</span> <span class="n">gate</span><span class="p">)</span>
+<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">barrier</span><span class="p">)</span>
+<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">barrier</span><span class="p">)</span>
+<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="n">barrier</span><span class="p">)</span>
+<span class="n">Releaser</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Zemu&quot;</span><span class="p">,</span> <span class="n">barrier</span><span class="p">)</span>
 
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>0: Alice arrives
-   0: Charlie arrives
    0: Bob arrives
+   0: Charlie arrives
    0: Zemu starts
-   2: Bob leaves
-   2: Alice leaves
-   2: Charlie leaves
    2: Zemu finishes
+   2: Alice leaves
+   2: Bob leaves
+   2: Charlie leaves
 </code></pre></div></p>
 <h2 id="shared-resource">Shared Resource</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Simulate people waiting on shared resource.&quot;&quot;&quot;</span>
@@ -756,11 +903,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrives&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrives&quot;</span><span class="p">)</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> starts service&quot;</span><span class="p">)</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> leaves&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> starts service&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> leaves&quot;</span><span class="p">)</span>
 
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
@@ -795,10 +942,10 @@
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">item</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer putting </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer putting </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer sleeping at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer sleeping at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;producer&quot;</span>
@@ -810,9 +957,9 @@
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;consumer waiting for </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;consumer waiting for </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;consumer got </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;consumer got </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;consumer&quot;</span>
@@ -826,17 +973,17 @@
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>producer putting item-0 at 0
-consumer waiting for 0 at 0
 producer sleeping at 0
+consumer waiting for 0 at 0
 consumer got item-0 at 0
 consumer waiting for 1 at 0
 producer putting item-1 at 2
+producer sleeping at 2
 consumer got item-1 at 2
 consumer waiting for 2 at 2
-producer sleeping at 2
 producer putting item-2 at 4
-consumer got item-2 at 4
 producer sleeping at 4
+consumer got item-2 at 4
 </code></pre></div></p>
 <h2 id="priority-queue">Priority Queue</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Testing queueing.&quot;&quot;&quot;</span>
@@ -850,7 +997,7 @@ producer sleeping at 4
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer putting </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer putting </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
 
@@ -859,7 +1006,7 @@ producer sleeping at 4
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;consumer got </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -876,8 +1023,8 @@ producer sleeping at 4
 producer putting 2 at 0
 producer putting 1 at 0
 consumer got 1
-consumer got 2
 consumer got 3
+consumer got 2
 </code></pre></div></p>
 <h2 id="interrupts">Interrupts</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Simulate interrupts.&quot;&quot;&quot;</span>
@@ -887,15 +1034,15 @@ consumer got 3
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Actor</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: actor start&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: actor start&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor about to sleep&quot;</span><span class="p">)</span>
-                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor wakes with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor about to sleep&quot;</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor wakes with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">Interrupt</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor interrupted with </span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: actor end&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: actor interrupted with </span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: actor end&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;actor+</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -906,12 +1053,12 @@ consumer got 3
         <span class="bp">self</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="n">other</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: interrupter start&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: interrupter start&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: scheduling interrupt&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: scheduling interrupt&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="o">.</span><span class="n">interrupt</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: interrupter end&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: interrupter end&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;interrupter+</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_interrupt</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -922,28 +1069,98 @@ consumer got 3
 <span class="n">Interrupter</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">actor</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>Env(t=0, Pend(0, actor+None) | Pend(0, interrupter+None))
-   0: actor start
+<div class="highlight"><pre><span></span><code>0: actor start
    0/0: actor about to sleep
-Env(t=0, Pend(0, interrupter+None) | Pend(2, actor+None))
    0: interrupter start
-Env(t=0, Pend(2, actor+None) | Pend(3, interrupter+None))
    2/0: actor wakes with None
    2/1: actor about to sleep
-Env(t=2, Pend(3, interrupter+None) | Pend(4, actor+None))
    3/0: scheduling interrupt
-Env(t=3, Pend(4, actor+Interrupt(message)) | Pend(6, interrupter+None))
-   4/1: actor interrupted with message
-   4/2: actor about to sleep
-Env(t=4, Pend(6, interrupter+None) | Pend(6, actor+None))
+   3/1: actor interrupted with message
+   3/2: actor about to sleep
+   4/2: actor wakes with None
+   4/3: actor about to sleep
+   5/3: actor wakes with None
+   5: actor end
    6/1: scheduling interrupt
    6: interrupter end
-Env(t=6, Pend(6, actor+Interrupt(message)))
-   6/2: actor interrupted with message
-   6/3: actor about to sleep
-Env(t=6, Pend(8, actor+None))
-   8/3: actor wakes with None
-   8: actor end
+</code></pre></div></p>
+<h2 id="allof">AllOf</h2>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllOf</span><span class="p">,</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Waiter</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: starts&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">AllOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: finishes&quot;</span><span class="p">)</span>
+
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>0: starts
+  10: finishes
+</code></pre></div></p>
+<h2 id="firstof-with-timeout">FirstOf with Timeout</h2>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">FirstOf</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Waiter</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: starts&quot;</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="n">FirstOf</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: first finished -&gt; </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: finishes&quot;</span><span class="p">)</span>
+
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="n">Waiter</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>0: starts
+   5: first finished -&gt; a
+   5: finishes
+</code></pre></div></p>
+<h2 id="firstof-with-queue">FirstOf with Queue</h2>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">FirstOf</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Tester</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q1</span><span class="p">:</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">q2</span><span class="p">:</span> <span class="n">Queue</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q1</span> <span class="o">=</span> <span class="n">q1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q2</span> <span class="o">=</span> <span class="n">q2</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="n">FirstOf</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q1</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q2</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;winner got </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Drain remaining items</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q1</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;q1 still has:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q1</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q2</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;q2 still has:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q2</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q1</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q2</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+
+<span class="n">Tester</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>winner got (&#39;a&#39;, &#39;A&#39;)
 </code></pre></div></p>
 
 

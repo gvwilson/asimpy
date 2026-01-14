@@ -1,17 +1,28 @@
 """FIFO and priority queues."""
 
-from abc import ABC
-from .event import Event
 import heapq
+from typing import TYPE_CHECKING, Any
+from .event import Event
 
+if TYPE_CHECKING:
+    from .environment import Environment
 
 class Queue:
-    def __init__(self, env):
+    """FIFO queue."""
+
+    def __init__(self, env: "Environment"):
+        """
+        Construct queue.
+
+        Args:
+            env: simulation environment.
+        """
         self._env = env
         self._items = []
         self._getters = []
 
     async def get(self):
+        """Get one item from the queue."""
         if self._items:
             item = self._items.pop(0)
             evt = Event(self._env)
@@ -23,7 +34,13 @@ class Queue:
         self._getters.append(evt)
         return await evt
 
-    async def put(self, item):
+    async def put(self, item: Any):
+        """
+        Add one item to the queue.
+
+        Args:
+            item: to add to the queue.
+        """
         if self._getters:
             evt = self._getters.pop(0)
             evt.succeed(item)
@@ -32,7 +49,15 @@ class Queue:
 
 
 class PriorityQueue(Queue):
-    async def put(self, item):
+    """Ordered queue."""
+
+    async def put(self, item: Any):
+        """
+        Add one item to the queue.
+
+        Args:
+            item: comparable item to add to queue.
+        """
         heapq.heappush(self._items, item)
         if self._getters:
             evt = self._getters.pop(0)

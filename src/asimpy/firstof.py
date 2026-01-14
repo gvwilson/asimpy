@@ -1,17 +1,35 @@
+"""Wait for the first of a set of events."""
+
+from typing import Any
+from .environment import Environment
 from .event import Event
 from ._adapt import ensure_event
 
 
 class FirstOf(Event):
-    def __init__(self, env, **awaitables):
-        assert awaitables
+    """Wait for the first of a set of events."""
 
+    def __init__(self, env: Environment, **events: Any):
+        """
+        Construct new collective wait.
+
+        Args:
+            env: simulation environment.
+            events: name=thing items to wait for.
+
+        Example:
+
+        ```
+        name, value = await FirstOf(env, a=q1.get(), b=q2.get())
+        ```
+        """
+        assert len(events) > 0
         super().__init__(env)
 
         self._done = False
         self._events = {}
 
-        for key, obj in awaitables.items():
+        for key, obj in events.items():
             evt = ensure_event(env, obj)
             self._events[key] = evt
             evt._add_waiter(_FirstOfWatcher(self, key, evt))

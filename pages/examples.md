@@ -1,21 +1,21 @@
 # Examples
 
-## Sleeping
+## Timeout
 
 ```python
-{!../examples/sleep.py!}
+{!../examples/timeout.py!}
 ```
 ```text
-{!../output/sleep.txt!}
+{!../output/timeout.txt!}
 ```
 
-## Gating
+## Barrier
 
 ```python
-{!../examples/gate.py!}
+{!../examples/barrier.py!}
 ```
 ```text
-{!../output/gate.txt!}
+{!../output/barrier.txt!}
 ```
 
 ## Shared Resource

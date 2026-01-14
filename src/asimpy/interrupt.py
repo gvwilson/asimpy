@@ -7,6 +7,12 @@ class Interrupt(Exception):
     """Interrupt raised inside a process."""
 
     def __init__(self, cause: Any):
+        """
+        Construct interruption exception.
+
+        Args:
+            cause: reason for interrupt.
+        """
         super().__init__()
         self.cause = cause
 

@@ -9,8 +9,10 @@
       
       
       
-        <link rel="prev" href="../process/">
+        <link rel="prev" href="../queue/">
       
+      
+        <link rel="next" href="../timeout/">
       
       
         
@@ -291,14 +293,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../actions/" class="md-nav__link">
+      <a href="../allof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Actions
+    Allof
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
   
 
     
@@ -345,14 +374,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../gate/" class="md-nav__link">
+      <a href="../firstof/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Gate
+    Firstof
   
 
     
@@ -407,6 +436,33 @@
     
   
     Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
   
 
     
@@ -505,28 +561,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#asimpy.resource.Resource.__aenter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aenter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#asimpy.resource.Resource.__aexit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aexit__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#asimpy.resource.Resource.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -568,6 +602,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timeout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Timeout
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -618,28 +679,6 @@
   
     <nav class="md-nav" aria-label="Resource">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#asimpy.resource.Resource.__aenter__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aenter__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#asimpy.resource.Resource.__aexit__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __aexit__
-      
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#asimpy.resource.Resource.__init__" class="md-nav__link">
@@ -741,7 +780,7 @@
 
 
 
-        <p>Shared resource with limited capacity.</p>
+        <p>A shared resource with limited capacity.</p>
 
 
 
@@ -752,7 +791,9 @@
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
@@ -783,37 +824,93 @@
 <span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Resource</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shared resource with limited capacity.&quot;&quot;&quot;</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Resource</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A shared resource with limited capacity.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new resource.</span>
+<span class="sd">        Construct resource.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env: simulation environment.</span>
-<span class="sd">            capacity: maximum simultaneous users.</span>
+<span class="sd">            capacity: maximum capacity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">capacity</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span> <span class="o">=</span> <span class="n">capacity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Acquire one unit of the resource.&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="n">_Acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Acquire one unit of resource.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_available</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_unavailable</span><span class="p">()</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Release one unit of the resource.&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="n">_Release</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Release one unit of resource.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+            <span class="n">evt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_acquire_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="n">cancel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">evt</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_acquire_unavailable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">evt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+
+        <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="n">cancel</span>
+        <span class="k">await</span> <span class="n">evt</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Acquire one unit of the resource using `async with`.&quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Release one unit of the resource acquired with `async with`.&quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -834,70 +931,6 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="asimpy.resource.Resource.__aenter__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__aenter__</span><span class="p">()</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Acquire one unit of the resource using <code>async with</code>.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Acquire one unit of the resource using `async with`.&quot;&quot;&quot;</span>
-    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="asimpy.resource.Resource.__aexit__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-  </span>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Release one unit of the resource acquired with <code>async with</code>.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Release one unit of the resource acquired with `async with`.&quot;&quot;&quot;</span>
-    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
 <h3 id="asimpy.resource.Resource.__init__" class="doc doc-heading">
             <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
 
@@ -906,7 +939,7 @@
 
     <div class="doc doc-contents ">
 
-        <p>Create a new resource.</p>
+        <p>Construct resource.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -925,7 +958,7 @@
                 <code>env</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Environment (asimpy.environment.Environment)" href="../environment/#asimpy.environment.Environment">Environment</a></code>
+                  <code><span title="asimpy.environment.Environment">Environment</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -945,7 +978,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>maximum simultaneous users.</p>
+                <p>maximum capacity.</p>
               </div>
             </td>
             <td>
@@ -958,7 +991,9 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
@@ -968,19 +1003,19 @@
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="s2">&quot;Environment&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a new resource.</span>
+<span class="sd">    Construct resource.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        env: simulation environment.</span>
-<span class="sd">        capacity: maximum simultaneous users.</span>
+<span class="sd">        capacity: maximum capacity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">capacity</span> <span class="o">&gt;</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_env</span> <span class="o">=</span> <span class="n">env</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span> <span class="o">=</span> <span class="n">capacity</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1002,16 +1037,22 @@
 
     <div class="doc doc-contents ">
 
-        <p>Acquire one unit of the resource.</p>
+        <p>Acquire one unit of resource.</p>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
 <span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Acquire one unit of the resource.&quot;&quot;&quot;</span>
-    <span class="k">await</span> <span class="n">_Acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Acquire one unit of resource.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_available</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_unavailable</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1033,16 +1074,22 @@
 
     <div class="doc doc-contents ">
 
-        <p>Release one unit of the resource.</p>
+        <p>Release one unit of resource.</p>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/resource.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Release one unit of the resource.&quot;&quot;&quot;</span>
-    <span class="k">await</span> <span class="n">_Release</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Release one unit of resource.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

@@ -1,7 +1,19 @@
 """Events."""
 
+from typing import TYPE_CHECKING, Any
+if TYPE_CHECKING:
+    from .environment import Environment
+
 class Event:
-    def __init__(self, env):
+    """Manage an event."""
+
+    def __init__(self, env: "Environment"):
+        """
+        Construct a new event.
+
+        Args:
+            env: simulation environment.
+        """
         self._env = env
         self._triggered = False
         self._cancelled = False
@@ -9,7 +21,13 @@ class Event:
         self._waiters = []
         self._on_cancel = None
 
-    def succeed(self, value=None):
+    def succeed(self, value: Any = None):
+        """
+        Handle case of event succeeding.
+
+        Args:
+            value: value associated with event.
+        """
         if self._triggered or self._cancelled:
             return
         self._triggered = True
@@ -19,6 +37,7 @@ class Event:
         self._waiters.clear()
 
     def cancel(self):
+        """Cancel event."""
         if self._triggered or self._cancelled:
             return
         self._cancelled = True

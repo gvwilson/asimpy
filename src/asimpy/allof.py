@@ -1,17 +1,29 @@
+"""Wait for all events in a set to complete."""
+
+from typing import Any
+from .environment import Environment
 from .event import Event
 from ._adapt import ensure_event
 
 
 class AllOf(Event):
-    def __init__(self, **events):
+    """Wait for all of a set of events."""
+    
+    def __init__(self, env: Environment, **events: Any):
+        """
+        Construct new collective wait.
+
+        Args:
+            env: simulation environment.
+            events: name=thing items to wait for.
+
+        Example:
+
+        ```
+        name, value = await AllOf(env, a=q1.get(), b=q2.get())
+        ```
+        """
         assert len(events) > 0
-
-        first = next(iter(events.values()))
-        if isinstance(first, Event):
-            env = first._env
-        else:
-            raise TypeError("Cannot infer environment")
-
         super().__init__(env)
 
         self._events = {}
@@ -30,8 +42,6 @@ class AllOf(Event):
 
 
 class _AllOfWatcher:
-    """Adapter to notify parent AllOf event."""
-
     def __init__(self, parent, key):
         self.parent = parent
         self.key = key
