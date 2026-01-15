@@ -2,6 +2,7 @@ from environment import Environment
 from interrupt import Interrupt
 from process import Process
 
+
 class Actor(Process):
     async def run(self):
         print(f"{self.now:>4}: actor start")

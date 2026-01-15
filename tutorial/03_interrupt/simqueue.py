@@ -1,3 +1,8 @@
+from typing import Any
+from environment import Environment
+from event import Event
+
+
 class Queue:
     """Simple FIFO queue for simulation processes."""
 

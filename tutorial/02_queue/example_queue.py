@@ -1,6 +1,7 @@
 from environment import Environment
 from process import Process
-from queue import Queue
+from simqueue import Queue
+
 
 class Producer(Process):
     def __init__(self, env, queue):

@@ -7,7 +7,7 @@ packages = ["src/asimpy"]
 
 [project]
 name = "asimpy"
-version = "0.3.0"
+version = "0.4.0"
 requires-python = ">=3.13"
 authors = [
     {name = "Greg Wilson", email = "gvwilson@third-bit.com"},
@@ -67,7 +67,7 @@ do
     echo ''
 done
 """}
-docs = {help = "build documentation", cmd = "mkdocs build"}
+docs = {help = "build documentation", cmd = "mkdocs build && touch docs/.nojekyll"}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
 lint = {help = "run all code checks", cmd = "task check && task types"}
