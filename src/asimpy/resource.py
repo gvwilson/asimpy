@@ -6,6 +6,7 @@ from .event import Event
 if TYPE_CHECKING:
     from .environment import Environment
 
+
 class Resource:
     """A shared resource with limited capacity."""
 

@@ -2,6 +2,7 @@ import inspect
 from .event import Event
 from .process import Process
 
+
 def ensure_event(env, obj):
     if isinstance(obj, Event):
         return obj
@@ -12,7 +13,6 @@ def ensure_event(env, obj):
         return evt
 
     raise TypeError(f"Expected Event or coroutine, got {type(obj)}")
-
 
 
 class _Runner(Process):

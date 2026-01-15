@@ -7,6 +7,7 @@ from .event import Event
 if TYPE_CHECKING:
     from .environment import Environment
 
+
 class Queue:
     """FIFO queue."""
 

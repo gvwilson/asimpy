@@ -8,7 +8,7 @@ from ._adapt import ensure_event
 
 class AllOf(Event):
     """Wait for all of a set of events."""
-    
+
     def __init__(self, env: Environment, **events: Any):
         """
         Construct new collective wait.
@@ -33,7 +33,6 @@ class AllOf(Event):
             evt = ensure_event(env, obj)
             self._events[key] = evt
             evt._add_waiter(_AllOfWatcher(self, key))
-
 
     def _child_done(self, key, value):
         self._results[key] = value

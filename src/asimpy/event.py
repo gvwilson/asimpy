@@ -1,8 +1,10 @@
 """Events."""
 
 from typing import TYPE_CHECKING, Any
+
 if TYPE_CHECKING:
     from .environment import Environment
+
 
 class Event:
     """Manage an event."""
