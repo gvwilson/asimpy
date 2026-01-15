@@ -92,8 +92,9 @@ def _child_done(self, key, value, winner):
     self.succeed((key, value))
 ```
 
-To make this work,
-we need to add a generic `cancel` method to `Event`:
+## Changes Elsewhere
+
+We need to add a generic `cancel` method to `Event`:
 
 ```python
 class Event:

@@ -764,17 +764,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Motivation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#design" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -884,17 +873,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Motivation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#design" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -927,16 +905,6 @@
 In real simulations, processes often need to wait for each other.
 This step introduces our first coordination primitive,
 a first-in/first-out (FIFO) queue that processes can <code>await</code> using <code>get()</code> and <code>put()</code>.</p>
-<h2 id="motivation">Motivation</h2>
-<p>Consider a producer–consumer system:</p>
-<ul>
-<li>A producer generates items over time</li>
-<li>A consumer waits until an item is available</li>
-<li>If no items exist, the consumer should block</li>
-<li>When an item arrives, exactly one waiting consumer resumes</li>
-</ul>
-<p>This behavior cannot be expressed with timeouts alone,
-but it fits naturally with events.</p>
 <h2 id="design">Design</h2>
 <p>The queue maintains two internal lists:</p>
 <div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">_items</span>    <span class="c1"># items currently in the queue</span>

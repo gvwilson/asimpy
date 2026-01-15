@@ -5,18 +5,6 @@ In real simulations, processes often need to wait for each other.
 This step introduces our first coordination primitive,
 a first-in/first-out (FIFO) queue that processes can `await` using `get()` and `put()`.
 
-## Motivation
-
-Consider a producer–consumer system:
-
-- A producer generates items over time
-- A consumer waits until an item is available
-- If no items exist, the consumer should block
-- When an item arrives, exactly one waiting consumer resumes
-
-This behavior cannot be expressed with timeouts alone,
-but it fits naturally with events.
-
 ## Design
 
 The queue maintains two internal lists:

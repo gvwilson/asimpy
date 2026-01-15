@@ -850,6 +850,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#changes-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changes Elsewhere
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -919,6 +930,17 @@
     <span class="md-ellipsis">
       
         FirstOf
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changes-elsewhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changes Elsewhere
       
     </span>
   </a>
@@ -1014,8 +1036,8 @@ it would corrupt the simulation.</p>
             <span class="n">evt</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
 </code></pre></div>
-<p>To make this work,
-we need to add a generic <code>cancel</code> method to <code>Event</code>:</p>
+<h2 id="changes-elsewhere">Changes Elsewhere</h2>
+<p>We need to add a generic <code>cancel</code> method to <code>Event</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triggered</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
