@@ -1,7 +1,7 @@
 nav:
   - index.md
-  - LICENSE.md
-  - CODE_OF_CONDUCT.md
-  - CONTRIBUTING.md
+  - license.md
+  - conduct.md
+  - contributing.md
   - examples.md
   - ...
