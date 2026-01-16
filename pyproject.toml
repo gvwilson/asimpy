@@ -67,7 +67,11 @@ do
     echo ''
 done
 """}
-docs = {help = "build documentation", cmd = "mkdocs build && touch docs/.nojekyll"}
+docs = {help = "build documentation", cmd = """
+mkdocs build &&
+touch docs/.nojekyll &&
+cp docs-requirements.txt docs/requirements.txt
+"""}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
 lint = {help = "run all code checks", cmd = "task check && task types"}
