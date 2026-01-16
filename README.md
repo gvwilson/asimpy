@@ -5,7 +5,6 @@ A simple discrete event simulation framework in Python using `async`/`await`.
 -   [Documentation][docs]
 -   [Package][package]
 -   [Repository][repo]
--   [Examples][examples]
 
 *Thanks to the creators of [SimPy][simpy] for inspiration.*
 
@@ -209,8 +208,7 @@ The sequence of events is:
 | FirstOf succeeds with winner              | q1=[], q2=["B"]    | _value=("a","A"), _triggered=True       | Processes waiting on FirstOf resumed             | `Tester` receives ("a","A")                               |
 | `Tester` continues execution              | q1=[], q2=["B"]    | -                                       | -                                                | Remaining queue items untouched; correct order guaranteed |
 
-[docs]: https://gvwilson.github.io/asimpy
-[examples]: https://gvwilson.github.io/asimpy/examples/
+[docs]: https://asimpy.readthedocs.io/
 [package]: https://pypi.org/project/asimpy/
 [repo]: https://github.com/gvwilson/asimpy
 [simpy]: https://simpy.readthedocs.io/
