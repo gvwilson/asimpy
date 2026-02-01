@@ -21,3 +21,4 @@ coverage.json
 
 # MacOS
 .DS_store
+.aider*
