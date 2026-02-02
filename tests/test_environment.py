@@ -9,12 +9,6 @@ def test_environment_initialization():
     assert env.now == 0
 
 
-def test_environment_with_logging():
-    """Test environment initialization with logging enabled."""
-    env = Environment(logging=True)
-    assert env._logging
-
-
 def test_environment_schedule_single_event():
     """Test scheduling a single event."""
     env = Environment()

@@ -12,9 +12,8 @@ from .timeout import Timeout
 class Environment:
     """Simulation environment."""
 
-    def __init__(self, logging=False):
+    def __init__(self):
         self._now = 0
-        self._logging = logging
         self._pending = []
 
     @property

@@ -35,7 +35,7 @@ class Interrupter(Process):
         return f"interrupter+{self._interrupt}"
 
 
-env = Environment(logging=True)
+env = Environment()
 actor = Actor(env)
 Interrupter(env, actor)
 env.run()
