@@ -645,6 +645,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#asimpy.simqueue.PriorityQueue.get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.simqueue.PriorityQueue.put" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -968,6 +979,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#asimpy.simqueue.PriorityQueue.get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.simqueue.PriorityQueue.put" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1121,8 +1143,34 @@
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PriorityQueue</span><span class="p">(</span><span class="n">Queue</span><span class="p">):</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PriorityQueue</span><span class="p">(</span><span class="n">Queue</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ordered queue.&quot;&quot;&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get highest priority item from the queue.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+            <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+            <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1150,6 +1198,55 @@
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="asimpy.simqueue.PriorityQueue.get" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get highest priority item from the queue.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/asimpy/simqueue.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get highest priority item from the queue.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+
+    <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -1202,17 +1299,17 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/simqueue.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add one item to the queue.</span>
 
@@ -1386,7 +1483,7 @@
                 <code>env</code>
             </td>
             <td>
-                  <code><span title="asimpy.environment.Environment">Environment</span></code>
+                  <code><a class="autorefs autorefs-internal" title="Environment (asimpy.environment.Environment)" href="../environment/#asimpy.environment.Environment">Environment</a></code>
             </td>
             <td>
               <div class="doc-md-description">
