@@ -25,6 +25,12 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/asimpy"]
 
+[tool.coverage.report]
+exclude_lines = [
+    "@abstractmethod",
+    "if TYPE_CHECKING:",
+]
+
 [dependency-groups]
 dev = [
     "build>=1.4.0",
