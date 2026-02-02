@@ -28,15 +28,17 @@ packages = ["src/asimpy"]
 [dependency-groups]
 dev = [
     "build>=1.4.0",
+    "coverage>=7.13.2",
     "markdown-include>=0.8.1",
     "mkdocs>=1.6.1",
     "mkdocs-awesome-pages-plugin>=2.10.1",
     "mkdocs-material>=9.7.1",
     "mkdocstrings[python]>=1.0.0",
+    "pytest>=9.0.2",
     "ruff>=0.14.10",
     "taskipy>=1.14.1",
     "twine>=6.2.0",
-    "ty>=0.0.11"
+    "ty>=0.0.11",
 ]
 
 [tool.taskipy.tasks]
@@ -52,6 +54,10 @@ mkdocs build &&
 touch docs/.nojekyll &&
 cp docs-requirements.txt docs/requirements.txt
 """}
+coverage = {help = "run tests with coverage", cmd = """
+python -m coverage run -m pytest tests
+python -m coverage report --show-missing
+"""}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
 lint = {help = "run all code checks", cmd = "task check && task types"}
@@ -65,4 +71,5 @@ done
 """}
 publish = {help = "publish using ~/.pypirc credentials", cmd = "twine upload --verbose dist/*"}
 serve = {help = "serve documentation", cmd = "python -m http.server -d docs"}
+test = {help = "run tests", cmd = "pytest tests"}
 types = {help = "check types", cmd = "ty check ."}
