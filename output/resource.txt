@@ -4,6 +4,6 @@
    0: Alice starts service
    0: Bob starts service
    5: Alice leaves
-   5: Bob leaves
    5: Charlie starts service
+   5: Bob leaves
   10: Charlie leaves

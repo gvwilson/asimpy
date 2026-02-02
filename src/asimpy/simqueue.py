@@ -27,13 +27,13 @@ class Queue:
         if self._items:
             item = self._items.pop(0)
             evt = Event(self._env)
-            self._env._immediate(lambda: evt.succeed(item))
             evt._on_cancel = lambda: self._items.insert(0, item)
+            self._env._immediate(lambda: evt.succeed(item))
             return await evt
-
-        evt = Event(self._env)
-        self._getters.append(evt)
-        return await evt
+        else:
+            evt = Event(self._env)
+            self._getters.append(evt)
+            return await evt
 
     async def put(self, item: Any):
         """
@@ -60,10 +60,10 @@ class PriorityQueue(Queue):
             self._env._immediate(lambda: evt.succeed(item))
             evt._on_cancel = lambda: heapq.heappush(self._items, item)
             return await evt
-
-        evt = Event(self._env)
-        self._getters.append(evt)
-        return await evt
+        else:
+            evt = Event(self._env)
+            self._getters.append(evt)
+            return await evt
 
     async def put(self, item: Any):
         """

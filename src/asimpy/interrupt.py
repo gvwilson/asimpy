@@ -17,4 +17,5 @@ class Interrupt(Exception):
         self.cause = cause
 
     def __str__(self):
+        """Represent interrupt as string."""
         return f"Interrupt({self.cause})"

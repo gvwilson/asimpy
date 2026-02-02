@@ -37,6 +37,7 @@ class FirstOf(Event):
     def _child_done(self, key, value, winner):
         if self._done:
             return
+
         self._done = True
 
         for evt in self._events.values():

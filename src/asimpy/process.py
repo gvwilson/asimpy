@@ -23,7 +23,9 @@ class Process(ABC):
         self._env = env
         self._done = False
         self._interrupt = None
+
         self.init(*args, **kwargs)
+
         self._coro = self.run()
         self._env._immediate(self._loop)
 
@@ -78,6 +80,7 @@ class Process(ABC):
                 exc = self._interrupt
                 self._interrupt = None
                 yielded = self._coro.throw(exc)
+
             yielded._add_waiter(self)
 
         except StopIteration:

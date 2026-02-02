@@ -39,27 +39,25 @@ class Resource:
             evt.succeed()
 
     async def _acquire_available(self):
-        self._count += 1
-        evt = Event(self._env)
-
         def cancel():
             self._count -= 1
 
+        self._count += 1
+        evt = Event(self._env)
         evt._on_cancel = cancel
         self._env._immediate(evt.succeed)
         await evt
 
     async def _acquire_unavailable(self):
         evt = Event(self._env)
-        self._waiters.append(evt)
 
         def cancel():
             if evt in self._waiters:
                 self._waiters.remove(evt)
 
+        self._waiters.append(evt)
         evt._on_cancel = cancel
         await evt
-
         self._count += 1
 
     async def __aenter__(self):

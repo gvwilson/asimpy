@@ -1167,10 +1167,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
             <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
             <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
-
-        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1238,10 +1238,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
         <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
-
-    <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1417,13 +1417,13 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
             <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
             <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
             <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
-
-        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1561,13 +1561,13 @@
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
         <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
         <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
-
-    <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_getters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">evt</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
