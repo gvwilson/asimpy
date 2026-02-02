@@ -1,7 +1,7 @@
 """Wait for a simulated time to pass."""
 
 from typing import TYPE_CHECKING
-from .event import Event
+from .event import NO_TIME, Event
 
 if TYPE_CHECKING:
     from .environment import Environment
@@ -20,4 +20,10 @@ class Timeout(Event):
         """
         assert delay >= 0
         super().__init__(env)
-        env.schedule(env.now + delay, lambda: self.succeed())
+        env.schedule(env.now + delay, self._fire)
+
+    def _fire(self):
+        """Handle cancellation case."""
+        if self._cancelled:
+            return NO_TIME
+        self.succeed()

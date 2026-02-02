@@ -52,6 +52,19 @@ class Queue:
 class PriorityQueue(Queue):
     """Ordered queue."""
 
+    async def get(self):
+        """Get highest priority item from the queue."""
+        if self._items:
+            item = heapq.heappop(self._items)
+            evt = Event(self._env)
+            self._env._immediate(lambda: evt.succeed(item))
+            evt._on_cancel = lambda: heapq.heappush(self._items, item)
+            return await evt
+
+        evt = Event(self._env)
+        self._getters.append(evt)
+        return await evt
+
     async def put(self, item: Any):
         """
         Add one item to the queue.

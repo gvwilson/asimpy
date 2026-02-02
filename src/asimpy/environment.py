@@ -5,10 +5,13 @@ import heapq
 import itertools
 from typing import Callable
 
+from .event import NO_TIME
 from .timeout import Timeout
 
 
 class Environment:
+    """Simulation environment."""
+
     def __init__(self, logging=False):
         self._now = 0
         self._logging = logging
@@ -29,8 +32,9 @@ class Environment:
             pending = heapq.heappop(self._pending)
             if until is not None and pending.time > until:
                 break
-            self._now = pending.time
-            pending.callback()
+            result = pending.callback()
+            if (result is not NO_TIME) and (pending.time > self._now):
+                self._now = pending.time
 
     def _immediate(self, callback):
         self.schedule(self._now, callback)

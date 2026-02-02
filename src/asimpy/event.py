@@ -6,6 +6,10 @@ if TYPE_CHECKING:
     from .environment import Environment
 
 
+NO_TIME = object()
+"""Sentinel indicating that time should not advance."""
+
+
 class Event:
     """Manage an event."""
 
