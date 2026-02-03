@@ -1411,8 +1411,8 @@ consumer got 3
 <span class="n">q1</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
-<span class="n">env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q1</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
-<span class="n">env</span><span class="o">.</span><span class="n">_immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q2</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q1</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">q2</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span>
 
 <span class="n">Tester</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>

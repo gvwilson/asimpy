@@ -1013,6 +1013,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_now</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">immediate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_now</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pending</span><span class="p">,</span> <span class="n">_Pending</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">callback</span><span class="p">))</span>
 
@@ -1027,9 +1030,6 @@
             <span class="n">result</span> <span class="o">=</span> <span class="n">pending</span><span class="o">.</span><span class="n">callback</span><span class="p">()</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">NO_TIME</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pending</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_now</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_now</span> <span class="o">=</span> <span class="n">pending</span><span class="o">.</span><span class="n">time</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_immediate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_now</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Env(t=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_now</span><span class="si">}</span><span class="s2">)&quot;</span>
