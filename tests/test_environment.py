@@ -66,7 +66,7 @@ def test_environment_immediate_scheduling():
     """Test immediate callback scheduling."""
     env = Environment()
     results = []
-    env._immediate(lambda: results.append("immediate"))
+    env.immediate(lambda: results.append("immediate"))
     env.run()
     assert results == ["immediate"]
     assert env.now == 0

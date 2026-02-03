@@ -65,9 +65,9 @@ def test_event_add_waiter_after_triggered():
     evt.succeed(42)
 
     waiter = Mock()
-    waiter._resume = Mock()
+    waiter.resume = Mock()
     evt._add_waiter(waiter)
-    waiter._resume.assert_called_once_with(42)
+    waiter.resume.assert_called_once_with(42)
 
 
 def test_event_add_waiter_before_trigger():
@@ -76,7 +76,7 @@ def test_event_add_waiter_before_trigger():
     evt = Event(env)
 
     waiter = Mock()
-    waiter._resume = Mock()
+    waiter.resume = Mock()
     evt._add_waiter(waiter)
     assert len(evt._waiters) == 1
 
@@ -98,13 +98,13 @@ def test_event_succeed_notifies_waiters():
     evt = Event(env)
 
     waiter1 = Mock()
-    waiter1._resume = Mock()
+    waiter1.resume = Mock()
     waiter2 = Mock()
-    waiter2._resume = Mock()
+    waiter2.resume = Mock()
 
     evt._add_waiter(waiter1)
     evt._add_waiter(waiter2)
     evt.succeed(99)
 
-    waiter1._resume.assert_called_once_with(99)
-    waiter2._resume.assert_called_once_with(99)
+    waiter1.resume.assert_called_once_with(99)
+    waiter2.resume.assert_called_once_with(99)

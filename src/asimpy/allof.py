@@ -45,5 +45,5 @@ class _AllOfWatcher:
         self.parent = parent
         self.key = key
 
-    def _resume(self, value):
+    def resume(self, value):
         self.parent._child_done(self.key, value)

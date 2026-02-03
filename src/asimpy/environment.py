@@ -20,6 +20,9 @@ class Environment:
     def now(self):
         return self._now
 
+    def immediate(self, callback):
+        self.schedule(self._now, callback)
+
     def schedule(self, time, callback):
         heapq.heappush(self._pending, _Pending(time, callback))
 
@@ -34,9 +37,6 @@ class Environment:
             result = pending.callback()
             if (result is not NO_TIME) and (pending.time > self._now):
                 self._now = pending.time
-
-    def _immediate(self, callback):
-        self.schedule(self._now, callback)
 
     def __str__(self):
         return f"Env(t={self._now})"

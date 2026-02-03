@@ -39,7 +39,7 @@ class Event:
         self._triggered = True
         self._value = value
         for proc in self._waiters:
-            proc._resume(value)
+            proc.resume(value)
         self._waiters.clear()
 
     def cancel(self):
@@ -53,7 +53,7 @@ class Event:
 
     def _add_waiter(self, proc):
         if self._triggered:
-            proc._resume(self._value)
+            proc.resume(self._value)
         elif not self._cancelled:
             self._waiters.append(proc)
 

@@ -27,7 +27,7 @@ class Process(ABC):
         self.init(*args, **kwargs)
 
         self._coro = self.run()
-        self._env._immediate(self._loop)
+        self._env.immediate(self._loop)
 
     def init(self, *args: Any, **kwargs: Any):
         """
@@ -67,7 +67,7 @@ class Process(ABC):
         """
         if not self._done:
             self._interrupt = Interrupt(cause)
-            self._env._immediate(self._loop)
+            self._env.immediate(self._loop)
 
     def _loop(self, value=None):
         if self._done:
@@ -90,6 +90,6 @@ class Process(ABC):
             self._done = True
             raise exc
 
-    def _resume(self, value=None):
+    def resume(self, value=None):
         if not self._done:
-            self._env._immediate(lambda: self._loop(value))
+            self._env.immediate(lambda: self._loop(value))

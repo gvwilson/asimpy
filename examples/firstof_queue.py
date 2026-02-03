@@ -25,8 +25,8 @@ env = Environment()
 q1 = Queue(env)
 q2 = Queue(env)
 
-env._immediate(lambda: q1._items.append("A"))
-env._immediate(lambda: q2._items.append("B"))
+env.immediate(lambda: q1._items.append("A"))
+env.immediate(lambda: q2._items.append("B"))
 
 Tester(env, q1, q2)
 env.run()

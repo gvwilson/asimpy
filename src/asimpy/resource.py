@@ -45,7 +45,7 @@ class Resource:
         self._count += 1
         evt = Event(self._env)
         evt._on_cancel = cancel
-        self._env._immediate(evt.succeed)
+        self._env.immediate(evt.succeed)
         await evt
 
     async def _acquire_unavailable(self):

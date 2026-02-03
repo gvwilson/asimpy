@@ -28,7 +28,7 @@ class Queue:
             item = self._items.pop(0)
             evt = Event(self._env)
             evt._on_cancel = lambda: self._items.insert(0, item)
-            self._env._immediate(lambda: evt.succeed(item))
+            self._env.immediate(lambda: evt.succeed(item))
             return await evt
         else:
             evt = Event(self._env)
@@ -57,7 +57,7 @@ class PriorityQueue(Queue):
         if self._items:
             item = heapq.heappop(self._items)
             evt = Event(self._env)
-            self._env._immediate(lambda: evt.succeed(item))
+            self._env.immediate(lambda: evt.succeed(item))
             evt._on_cancel = lambda: heapq.heappush(self._items, item)
             return await evt
         else:

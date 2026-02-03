@@ -53,5 +53,5 @@ class _FirstOfWatcher:
         self.key = key
         self.evt = evt
 
-    def _resume(self, value):
+    def resume(self, value):
         self.parent._child_done(self.key, value, self.evt)
