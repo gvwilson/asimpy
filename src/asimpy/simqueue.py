@@ -39,6 +39,10 @@ class Queue:
             self._getters.append(evt)
             return await evt
 
+    def is_full(self):
+        """Has the queue reached capacity?"""
+        return self._max_capacity is not None and len(self._items) >= self._max_capacity
+
     async def put(self, item: Any):
         """
         Add one item to the queue.
@@ -50,7 +54,7 @@ class Queue:
             evt = self._getters.pop(0)
             evt.succeed(item)
         else:
-            if self._max_capacity is not None and len(self._items) >= self._max_capacity:
+            if self.is_full():
                 return
             self._put_item(item)
 
