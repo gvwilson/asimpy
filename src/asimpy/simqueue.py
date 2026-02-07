@@ -11,14 +11,18 @@ if TYPE_CHECKING:
 class Queue:
     """FIFO queue."""
 
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment", max_capacity: int | None = None):
         """
         Construct queue.
 
         Args:
             env: simulation environment.
+            max_capacity: maximum queue capacity (None for unlimited).
         """
+        if max_capacity is not None:
+            assert max_capacity > 0, "max_capacity must be a positive integer"
         self._env = env
+        self._max_capacity = max_capacity
         self._items = []
         self._getters = []
 
@@ -46,6 +50,8 @@ class Queue:
             evt = self._getters.pop(0)
             evt.succeed(item)
         else:
+            if self._max_capacity is not None and len(self._items) >= self._max_capacity:
+                return
             self._put_item(item)
 
     def _get_item(self):

@@ -1,6 +1,6 @@
 [project]
 name = "asimpy"
-version = "0.5.1"
+version = "0.6.0"
 requires-python = ">=3.12"
 authors = [
     {name = "Greg Wilson", email = "gvwilson@third-bit.com"},
