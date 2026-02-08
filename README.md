@@ -169,10 +169,15 @@ The complication is that if there *is* an item to get,
 `queue.get()` sets the `_on_cancel` callback of the event to handles cancellation
 by returning the item taken to the front of the queue.
 
-`PriorityQueue` uses `heapq` operations to maintain ordering,
+`PriorityQueue` uses `insort` operations to maintain ordering,
 which means items must be comparable (i.e., must implement `__lt__`).
 `get()` pops the minimum element;
 `put()` pushes onto the heap and potentially satisfies a waiting getter.
+
+Both kinds of queues allow creators to specify a maximum capacity.
+If someone attempts to add an item to a `Queue` that is full, the items is not added.
+If someone attempts to add to a full `PriorityQueue`,
+the item *is* added and then the lowest-priority item in the queue is discarded.
 
 ## `Resource`: Capacity-Limited Sharing
 

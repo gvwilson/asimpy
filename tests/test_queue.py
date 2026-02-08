@@ -503,9 +503,8 @@ def test_priority_queue_inherits_max_capacity():
     pq = PriorityQueue(env, max_capacity=3)
     proc = PQUser(env, pq)
     env.run()
-    # First 3 items added were 5, 2, 8 (items 1 and 9 discarded)
-    # They should come out sorted: 2, 5, 8
-    assert proc.results == [2, 5, 8]
+    assert pq._dropped == 2
+    assert proc.results == [1, 2,5]
 
 
 def test_queue_max_capacity_stress_test():

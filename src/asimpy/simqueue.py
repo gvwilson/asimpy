@@ -1,6 +1,6 @@
 """FIFO and priority queues."""
 
-import heapq
+import bisect
 from typing import TYPE_CHECKING, Any
 from .event import Event
 
@@ -25,11 +25,12 @@ class Queue:
         self._max_capacity = max_capacity
         self._items = []
         self._getters = []
+        self._dropped = 0
 
     async def get(self):
         """Get one item from the queue."""
         if self._items:
-            item = self._get_item()
+            item = self._items.pop(0)
             evt = Event(self._env)
             evt._on_cancel = lambda: self._items.insert(0, item)
             self._env.immediate(lambda: evt.succeed(item))
@@ -45,7 +46,7 @@ class Queue:
 
     async def put(self, item: Any):
         """
-        Add one item to the queue.
+        Add one item to the queue (if there is capacity).
 
         Args:
             item: to add to the queue.
@@ -55,21 +56,28 @@ class Queue:
             evt.succeed(item)
         else:
             if self.is_full():
+                self._dropped += 1
                 return
-            self._put_item(item)
-
-    def _get_item(self):
-        return self._items.pop(0)
-
-    def _put_item(self, item):
-        self._items.append(item)
+            self._items.append(item)
 
 
 class PriorityQueue(Queue):
     """Ordered queue."""
 
-    def _get_item(self):
-        return heapq.heappop(self._items)
+    async def put(self, item: Any):
+        """
+        Add one item to the queue (if there is capacity).  If there is
+        not capacity, either discard a lower-priority item or discard
+        this one.
 
-    def _put_item(self, item):
-        heapq.heappush(self._items, item)
+        Args:
+            item: to add to the queue.
+        """
+        if self._getters:
+            evt = self._getters.pop(0)
+            evt.succeed(item)
+        else:
+            bisect.insort(self._items, item)
+            if (self._max_capacity is not None) and (len(self._items) > self._max_capacity):
+                self._dropped += 1
+                self._items = self._items[:self._max_capacity]
