@@ -19,9 +19,9 @@ def test_priority_queue_ordering():
             self.results = []
 
         async def run(self):
-            await self.pq.put(3)
-            await self.pq.put(1)
-            await self.pq.put(2)
+            self.pq.put(3)
+            self.pq.put(1)
+            self.pq.put(2)
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
@@ -42,9 +42,9 @@ def test_priority_queue_with_tuples():
             self.results = []
 
         async def run(self):
-            await self.pq.put((2, "second"))
-            await self.pq.put((1, "first"))
-            await self.pq.put((3, "third"))
+            self.pq.put((2, "second"))
+            self.pq.put((1, "first"))
+            self.pq.put((3, "third"))
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
 

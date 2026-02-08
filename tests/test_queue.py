@@ -21,7 +21,7 @@ def test_queue_put_and_get():
             self.result = None
 
         async def run(self):
-            await self.q.put(42)
+            self.q.put(42)
             self.result = await self.q.get()
 
     env = Environment()
@@ -39,9 +39,9 @@ def test_queue_fifo_order():
             self.q = q
 
         async def run(self):
-            await self.q.put(1)
-            await self.q.put(2)
-            await self.q.put(3)
+            self.q.put(1)
+            self.q.put(2)
+            self.q.put(3)
 
     class Consumer(Process):
         def init(self, q):
@@ -81,7 +81,7 @@ def test_queue_blocking_get():
 
         async def run(self):
             await self.timeout(10)
-            await self.q.put(99)
+            self.q.put(99)
 
     env = Environment()
     q = Queue(env)
@@ -111,11 +111,11 @@ def test_queue_multiple_waiters():
 
         async def run(self):
             await self.timeout(1)
-            await self.q.put("a")
+            self.q.put("a")
             await self.timeout(1)
-            await self.q.put("b")
+            self.q.put("b")
             await self.timeout(1)
-            await self.q.put("c")
+            self.q.put("c")
 
     env = Environment()
     q = Queue(env)
@@ -139,7 +139,7 @@ def test_queue_default_unlimited_capacity():
 
         async def run(self):
             for i in range(100):
-                await self.q.put(i)
+                self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -170,7 +170,7 @@ def test_queue_explicit_none_capacity():
 
         async def run(self):
             for i in range(10):
-                await self.q.put(i)
+                self.q.put(i)
             for _ in range(10):
                 self.results.append(await self.q.get())
 
@@ -190,7 +190,7 @@ def test_queue_max_capacity_basic():
 
         async def run(self):
             for i in range(5):
-                await self.q.put(i)
+                self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -224,7 +224,7 @@ def test_queue_max_capacity_discard_excess():
 
         async def run(self):
             for i in range(10):
-                await self.q.put(i)
+                self.q.put(i)
                 self.put_count += 1
 
     env = Environment()
@@ -244,9 +244,9 @@ def test_queue_max_capacity_one():
             self.q = q
 
         async def run(self):
-            await self.q.put("first")
-            await self.q.put("second")
-            await self.q.put("third")
+            self.q.put("first")
+            self.q.put("second")
+            self.q.put("third")
 
     env = Environment()
     q = Queue(env, max_capacity=1)
@@ -278,7 +278,7 @@ def test_queue_max_capacity_with_waiting_getters():
             await self.timeout(1)
             # Put 5 items while 5 consumers are waiting
             for i in range(5):
-                await self.q.put(i)
+                self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=2)  # Small capacity
@@ -318,7 +318,7 @@ def test_queue_max_capacity_mixed_scenario():
         async def run(self):
             # Put items immediately (will be stored)
             for i in range(7):
-                await self.q.put(i)
+                self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=3)
@@ -355,14 +355,14 @@ def test_queue_max_capacity_refill_after_consumption():
         async def run(self):
             # Fill queue to capacity
             for i in range(3):
-                await self.q.put(i)
+                self.q.put(i)
             
             # Consume one item
             self.results.append(await self.q.get())
             
             # Add two more items
-            await self.q.put(10)
-            await self.q.put(11)
+            self.q.put(10)
+            self.q.put(11)
             
             # Consume remaining
             for _ in range(3):
@@ -384,7 +384,7 @@ def test_queue_max_capacity_concurrent_producers():
             self.value = value
 
         async def run(self):
-            await self.q.put(self.value)
+            self.q.put(self.value)
 
     env = Environment()
     q = Queue(env, max_capacity=2)
@@ -407,7 +407,7 @@ def test_queue_max_capacity_large_value():
 
         async def run(self):
             for i in range(150):
-                await self.q.put(i)
+                self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=100)
@@ -427,7 +427,7 @@ def test_queue_max_capacity_with_fifo_order():
 
         async def run(self):
             for i in range(10):
-                await self.q.put(i)
+                self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -457,7 +457,7 @@ def test_queue_max_capacity_empty_queue_behavior():
 
         async def run(self):
             await self.timeout(10)
-            await self.q.put(42)
+            self.q.put(42)
 
     class Consumer(Process):
         def init(self, q):
@@ -489,11 +489,11 @@ def test_priority_queue_inherits_max_capacity():
 
         async def run(self):
             # Put items in non-sorted order
-            await self.pq.put(5)
-            await self.pq.put(2)
-            await self.pq.put(8)
-            await self.pq.put(1)
-            await self.pq.put(9)
+            self.pq.put(5)
+            self.pq.put(2)
+            self.pq.put(8)
+            self.pq.put(1)
+            self.pq.put(9)
             
             # Get items - should be sorted and limited to capacity
             for _ in range(3):
@@ -516,7 +516,7 @@ def test_queue_max_capacity_stress_test():
 
         async def run(self):
             for i in range(1000):
-                await self.q.put(i)
+                self.q.put(i)
 
     class StressConsumer(Process):
         def init(self, q, count):

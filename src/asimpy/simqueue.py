@@ -44,40 +44,55 @@ class Queue:
         """Has the queue reached capacity?"""
         return self._max_capacity is not None and len(self._items) >= self._max_capacity
 
-    async def put(self, item: Any):
+    def put(self, item: Any) -> bool:
         """
-        Add one item to the queue (if there is capacity).
+        Add one item to the queue (if there is capacity). This is
+        a non-blocking operation, i.e., it cannot be awaited.
 
         Args:
             item: to add to the queue.
+
+        Returns:
+            `True` if item added, `False` otherwise.
         """
         if self._getters:
             evt = self._getters.pop(0)
             evt.succeed(item)
+            return True
         else:
             if self.is_full():
                 self._dropped += 1
-                return
+                return False
             self._items.append(item)
+            return True
 
 
 class PriorityQueue(Queue):
     """Ordered queue."""
 
-    async def put(self, item: Any):
+    def put(self, item: Any) -> bool:
         """
         Add one item to the queue (if there is capacity).  If there is
         not capacity, either discard a lower-priority item or discard
-        this one.
+        this one. This is a non-blocking operation, i.e., it cannot be
+        awaited.
 
         Args:
             item: to add to the queue.
+
+        Returns:
+            `True` if item added, `False` otherwise.
         """
         if self._getters:
             evt = self._getters.pop(0)
             evt.succeed(item)
+            return True
         else:
             bisect.insort(self._items, item)
-            if (self._max_capacity is not None) and (len(self._items) > self._max_capacity):
-                self._dropped += 1
-                self._items = self._items[:self._max_capacity]
+            if (self._max_capacity is None) or (len(self._items) <= self._max_capacity):
+                return True
+
+            result = item is not self._items[-1]
+            self._dropped += 1
+            self._items = self._items[:self._max_capacity]
+            return result

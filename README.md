@@ -158,6 +158,9 @@ to pass that item to the waiting process
 (which is stored in the event).
 Otherwise,
 the item is appended to `queue._items`.
+Note that `put()` is *not* an `async` operation,
+i.e.,
+it cannot be `await`ed.
 
 `Queue.get()` is a bit more complicated.
 If the queue has items,
@@ -171,8 +174,8 @@ by returning the item taken to the front of the queue.
 
 `PriorityQueue` uses `insort` operations to maintain ordering,
 which means items must be comparable (i.e., must implement `__lt__`).
-`get()` pops the minimum element;
-`put()` pushes onto the heap and potentially satisfies a waiting getter.
+`get()` returns the minimum element;
+`put()` adds an element and potentially satisfies a waiting getter.
 
 Both kinds of queues allow creators to specify a maximum capacity.
 If someone attempts to add an item to a `Queue` that is full, the items is not added.
