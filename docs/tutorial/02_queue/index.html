@@ -924,7 +924,8 @@ If so,
 the consumer is immediately resumed with the item.
 Otherwise,
 the item is appended to <code>queue._items</code>.</p>
-<p>Notice that <code>queue.get()</code> and <code>queue.put()</code> do not advance simulated time.
+<p>Notice that <code>queue.get()</code> and <code>queue.put()</code> do not advance simulated time
+(unless <code>put</code> blocks on a full queue with <code>discard=False</code>).
 If putting something in the queue or getting something from it takes time,
 the simulation needs to use <code>Timeout</code> to model that explicitly.</p>
 

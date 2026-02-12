@@ -140,7 +140,7 @@ which prevents canceled timeouts from accidentally advancing the simulation time
 Otherwise,
 `Timeout._fire()` calls `succeed()` to trigger the event.
 
-## `Queue` and `PriorityQueue`: Exchanging Data
+## `Queue`: Exchanging Data
 
 `Queue` enables processes to exchange data.
 It has two members:
@@ -158,9 +158,8 @@ to pass that item to the waiting process
 (which is stored in the event).
 Otherwise,
 the item is appended to `queue._items`.
-Note that `put()` is *not* an `async` operation,
-i.e.,
-it cannot be `await`ed.
+`put()` is an `async` operation that returns `True` if the item was added
+and `False` if it was not (e.g., because the queue is at capacity).
 
 `Queue.get()` is a bit more complicated.
 If the queue has items,
@@ -172,15 +171,19 @@ The complication is that if there *is* an item to get,
 `queue.get()` sets the `_on_cancel` callback of the event to handles cancellation
 by returning the item taken to the front of the queue.
 
-`PriorityQueue` uses `insort` operations to maintain ordering,
+If the `priority` constructor parameter is `True`,
+the queue uses `insort` operations to maintain ordering,
 which means items must be comparable (i.e., must implement `__lt__`).
 `get()` returns the minimum element;
 `put()` adds an element and potentially satisfies a waiting getter.
 
-Both kinds of queues allow creators to specify a maximum capacity.
-If someone attempts to add an item to a `Queue` that is full, the items is not added.
-If someone attempts to add to a full `PriorityQueue`,
-the item *is* added and then the lowest-priority item in the queue is discarded.
+Queues allow creators to specify a maximum capacity.
+The `discard` constructor parameter (default `True`) controls what happens
+when someone attempts to `put` an item into a full queue.
+If `discard` is `True`, a FIFO queue silently drops the new item,
+while a priority queue adds the item and then drops the lowest-priority item.
+If `discard` is `False`, the `put` call blocks until a `get` frees space in the queue.
+When `max_capacity` is `None`, `discard` has no effect.
 
 ## `Resource`: Capacity-Limited Sharing
 

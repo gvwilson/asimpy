@@ -21,7 +21,7 @@ def test_queue_put_and_get():
             self.result = None
 
         async def run(self):
-            self.q.put(42)
+            await self.q.put(42)
             self.result = await self.q.get()
 
     env = Environment()
@@ -39,9 +39,9 @@ def test_queue_fifo_order():
             self.q = q
 
         async def run(self):
-            self.q.put(1)
-            self.q.put(2)
-            self.q.put(3)
+            await self.q.put(1)
+            await self.q.put(2)
+            await self.q.put(3)
 
     class Consumer(Process):
         def init(self, q):
@@ -81,7 +81,7 @@ def test_queue_blocking_get():
 
         async def run(self):
             await self.timeout(10)
-            self.q.put(99)
+            await self.q.put(99)
 
     env = Environment()
     q = Queue(env)
@@ -111,11 +111,11 @@ def test_queue_multiple_waiters():
 
         async def run(self):
             await self.timeout(1)
-            self.q.put("a")
+            await self.q.put("a")
             await self.timeout(1)
-            self.q.put("b")
+            await self.q.put("b")
             await self.timeout(1)
-            self.q.put("c")
+            await self.q.put("c")
 
     env = Environment()
     q = Queue(env)
@@ -139,7 +139,7 @@ def test_queue_default_unlimited_capacity():
 
         async def run(self):
             for i in range(100):
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -170,7 +170,7 @@ def test_queue_explicit_none_capacity():
 
         async def run(self):
             for i in range(10):
-                self.q.put(i)
+                await self.q.put(i)
             for _ in range(10):
                 self.results.append(await self.q.get())
 
@@ -190,7 +190,7 @@ def test_queue_max_capacity_basic():
 
         async def run(self):
             for i in range(5):
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -224,7 +224,7 @@ def test_queue_max_capacity_discard_excess():
 
         async def run(self):
             for i in range(10):
-                self.q.put(i)
+                await self.q.put(i)
                 self.put_count += 1
 
     env = Environment()
@@ -244,9 +244,9 @@ def test_queue_max_capacity_one():
             self.q = q
 
         async def run(self):
-            self.q.put("first")
-            self.q.put("second")
-            self.q.put("third")
+            await self.q.put("first")
+            await self.q.put("second")
+            await self.q.put("third")
 
     env = Environment()
     q = Queue(env, max_capacity=1)
@@ -278,7 +278,7 @@ def test_queue_max_capacity_with_waiting_getters():
             await self.timeout(1)
             # Put 5 items while 5 consumers are waiting
             for i in range(5):
-                self.q.put(i)
+                await self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=2)  # Small capacity
@@ -318,7 +318,7 @@ def test_queue_max_capacity_mixed_scenario():
         async def run(self):
             # Put items immediately (will be stored)
             for i in range(7):
-                self.q.put(i)
+                await self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=3)
@@ -355,14 +355,14 @@ def test_queue_max_capacity_refill_after_consumption():
         async def run(self):
             # Fill queue to capacity
             for i in range(3):
-                self.q.put(i)
+                await self.q.put(i)
             
             # Consume one item
             self.results.append(await self.q.get())
             
             # Add two more items
-            self.q.put(10)
-            self.q.put(11)
+            await self.q.put(10)
+            await self.q.put(11)
             
             # Consume remaining
             for _ in range(3):
@@ -384,7 +384,7 @@ def test_queue_max_capacity_concurrent_producers():
             self.value = value
 
         async def run(self):
-            self.q.put(self.value)
+            await self.q.put(self.value)
 
     env = Environment()
     q = Queue(env, max_capacity=2)
@@ -407,7 +407,7 @@ def test_queue_max_capacity_large_value():
 
         async def run(self):
             for i in range(150):
-                self.q.put(i)
+                await self.q.put(i)
 
     env = Environment()
     q = Queue(env, max_capacity=100)
@@ -427,7 +427,7 @@ def test_queue_max_capacity_with_fifo_order():
 
         async def run(self):
             for i in range(10):
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q):
@@ -457,7 +457,7 @@ def test_queue_max_capacity_empty_queue_behavior():
 
         async def run(self):
             await self.timeout(10)
-            self.q.put(42)
+            await self.q.put(42)
 
     class Consumer(Process):
         def init(self, q):
@@ -478,9 +478,8 @@ def test_queue_max_capacity_empty_queue_behavior():
     assert cons.get_time == 10
 
 
-def test_priority_queue_inherits_max_capacity():
-    """Test that PriorityQueue also supports max_capacity."""
-    from asimpy import PriorityQueue
+def test_priority_queue_max_capacity():
+    """Test priority queue with max_capacity."""
 
     class PQUser(Process):
         def init(self, pq):
@@ -489,22 +488,22 @@ def test_priority_queue_inherits_max_capacity():
 
         async def run(self):
             # Put items in non-sorted order
-            self.pq.put(5)
-            self.pq.put(2)
-            self.pq.put(8)
-            self.pq.put(1)
-            self.pq.put(9)
-            
+            await self.pq.put(5)
+            await self.pq.put(2)
+            await self.pq.put(8)
+            await self.pq.put(1)
+            await self.pq.put(9)
+
             # Get items - should be sorted and limited to capacity
             for _ in range(3):
                 self.results.append(await self.pq.get())
 
     env = Environment()
-    pq = PriorityQueue(env, max_capacity=3)
+    pq = Queue(env, max_capacity=3, priority=True)
     proc = PQUser(env, pq)
     env.run()
     assert pq._dropped == 2
-    assert proc.results == [1, 2,5]
+    assert proc.results == [1, 2, 5]
 
 
 def test_queue_max_capacity_stress_test():
@@ -516,7 +515,7 @@ def test_queue_max_capacity_stress_test():
 
         async def run(self):
             for i in range(1000):
-                self.q.put(i)
+                await self.q.put(i)
 
     class StressConsumer(Process):
         def init(self, q, count):
@@ -536,3 +535,253 @@ def test_queue_max_capacity_stress_test():
     env.run()
     assert len(cons.results) == 10
     assert cons.results == list(range(10))
+
+
+def test_queue_discard_false_blocks_when_full():
+    """Test that put blocks when queue is full and discard is False."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+            self.put_times = []
+
+        async def run(self):
+            for i in range(5):
+                await self.q.put(i)
+                self.put_times.append(self.now)
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+            self.results = []
+
+        async def run(self):
+            await self.timeout(10)
+            for _ in range(5):
+                self.results.append(await self.q.get())
+
+    env = Environment()
+    q = Queue(env, max_capacity=2, discard=False)
+    prod = Producer(env, q)
+    cons = Consumer(env, q)
+    env.run()
+    # First 2 puts succeed immediately at time 0
+    # Puts 3-5 block until consumer starts getting at time 10
+    assert prod.put_times[0] == 0
+    assert prod.put_times[1] == 0
+    assert prod.put_times[2] == 10
+    assert prod.put_times[3] == 10
+    assert prod.put_times[4] == 10
+    assert cons.results == [0, 1, 2, 3, 4]
+
+
+def test_queue_discard_false_put_returns_true():
+    """Test that blocked put returns True when it eventually succeeds."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+            self.results = []
+
+        async def run(self):
+            for i in range(3):
+                result = await self.q.put(i)
+                self.results.append(result)
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+
+        async def run(self):
+            await self.timeout(1)
+            for _ in range(3):
+                await self.q.get()
+
+    env = Environment()
+    q = Queue(env, max_capacity=1, discard=False)
+    prod = Producer(env, q)
+    Consumer(env, q)
+    env.run()
+    assert prod.results == [True, True, True]
+
+
+def test_queue_discard_false_multiple_blocked_putters():
+    """Test multiple producers blocking on a full queue."""
+
+    class Producer(Process):
+        def init(self, q, value, log):
+            self.q = q
+            self.value = value
+            self.log = log
+
+        async def run(self):
+            await self.q.put(self.value)
+            self.log.append((self.value, self.now))
+
+    class Consumer(Process):
+        def init(self, q, results):
+            self.q = q
+            self.results = results
+
+        async def run(self):
+            await self.timeout(5)
+            for _ in range(4):
+                self.results.append(await self.q.get())
+
+    env = Environment()
+    q = Queue(env, max_capacity=1, discard=False)
+    log = []
+    results = []
+    # First producer fills the queue, others block
+    Producer(env, q, "A", log)
+    Producer(env, q, "B", log)
+    Producer(env, q, "C", log)
+    Producer(env, q, "D", log)
+    Consumer(env, q, results)
+    env.run()
+    assert results == ["A", "B", "C", "D"]
+    # A completes immediately, B-D unblock when consumer gets
+    assert log[0] == ("A", 0)
+    assert log[1][1] == 5
+    assert log[2][1] == 5
+    assert log[3][1] == 5
+
+
+def test_queue_discard_false_fifo_order_preserved():
+    """Test that FIFO order is preserved when putters block."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+
+        async def run(self):
+            for i in range(6):
+                await self.q.put(i)
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+            self.results = []
+
+        async def run(self):
+            await self.timeout(1)
+            for _ in range(6):
+                self.results.append(await self.q.get())
+
+    env = Environment()
+    q = Queue(env, max_capacity=3, discard=False)
+    Producer(env, q)
+    cons = Consumer(env, q)
+    env.run()
+    assert cons.results == [0, 1, 2, 3, 4, 5]
+
+
+def test_queue_discard_false_priority():
+    """Test blocking put with priority queue."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+
+        async def run(self):
+            await self.q.put(30)
+            await self.q.put(10)
+            await self.q.put(20)
+            # Queue is now full [10, 20, 30]; next put blocks
+            await self.q.put(5)
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+            self.results = []
+
+        async def run(self):
+            await self.timeout(1)
+            for _ in range(4):
+                self.results.append(await self.q.get())
+
+    env = Environment()
+    q = Queue(env, max_capacity=3, priority=True, discard=False)
+    Producer(env, q)
+    cons = Consumer(env, q)
+    env.run()
+    # First get pops 10 (smallest in queue), which wakes putter with 5.
+    # 5 is insorted into [20, 30] -> [5, 20, 30].
+    # Subsequent gets pop 5, 20, 30.
+    assert cons.results == [10, 5, 20, 30]
+
+
+def test_queue_discard_false_no_effect_without_capacity():
+    """Test that discard=False has no effect when max_capacity is None."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+
+        async def run(self):
+            for i in range(100):
+                await self.q.put(i)
+
+    env = Environment()
+    q = Queue(env, discard=False)
+    Producer(env, q)
+    env.run()
+    assert len(q._items) == 100
+
+
+def test_queue_discard_false_interleaved_put_get():
+    """Test interleaved blocking puts and gets."""
+
+    class Producer(Process):
+        def init(self, q):
+            self.q = q
+            self.put_times = []
+
+        async def run(self):
+            for i in range(4):
+                await self.q.put(i)
+                self.put_times.append(self.now)
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+            self.results = []
+
+        async def run(self):
+            # Get one item every 5 ticks
+            for _ in range(4):
+                await self.timeout(5)
+                self.results.append(await self.q.get())
+
+    env = Environment()
+    q = Queue(env, max_capacity=1, discard=False)
+    prod = Producer(env, q)
+    cons = Consumer(env, q)
+    env.run()
+    assert cons.results == [0, 1, 2, 3]
+    # First put at 0, then each subsequent put unblocks when consumer gets
+    assert prod.put_times[0] == 0
+    assert prod.put_times[1] == 5
+    assert prod.put_times[2] == 10
+    assert prod.put_times[3] == 15
+
+
+def test_queue_cancel_blocked_put():
+    """Test that cancelling a blocked put removes it from putters."""
+
+    class Filler(Process):
+        def init(self, q):
+            self.q = q
+
+        async def run(self):
+            await self.q.put(1)
+            await self.q.put(2)
+
+    env = Environment()
+    q = Queue(env, max_capacity=1, discard=False)
+    Filler(env, q)
+    env.run()
+    assert len(q._putters) == 1
+    evt, item = q._putters[0]
+    evt.cancel()
+    assert len(q._putters) == 0

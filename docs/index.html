@@ -310,10 +310,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#queue-and-priorityqueue-exchanging-data" class="md-nav__link">
+  <a href="#queue-exchanging-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Queue and PriorityQueue: Exchanging Data
+        Queue: Exchanging Data
       
     </span>
   </a>
@@ -1201,10 +1201,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#queue-and-priorityqueue-exchanging-data" class="md-nav__link">
+  <a href="#queue-exchanging-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Queue and PriorityQueue: Exchanging Data
+        Queue: Exchanging Data
       
     </span>
   </a>
@@ -1493,7 +1493,7 @@ Exceptions <em>cannot</em> be raised from the outside at arbitrary points.</p>
 which prevents canceled timeouts from accidentally advancing the simulation time.
 Otherwise,
 <code>Timeout._fire()</code> calls <code>succeed()</code> to trigger the event.</p>
-<h2 id="queue-and-priorityqueue-exchanging-data"><code>Queue</code> and <code>PriorityQueue</code>: Exchanging Data</h2>
+<h2 id="queue-exchanging-data"><code>Queue</code>: Exchanging Data</h2>
 <p><code>Queue</code> enables processes to exchange data.
 It has two members:</p>
 <ul>
@@ -1509,9 +1509,8 @@ to pass that item to the waiting process
 (which is stored in the event).
 Otherwise,
 the item is appended to <code>queue._items</code>.
-Note that <code>put()</code> is <em>not</em> an <code>async</code> operation,
-i.e.,
-it cannot be <code>await</code>ed.</p>
+<code>put()</code> is an <code>async</code> operation that returns <code>True</code> if the item was added
+and <code>False</code> if it was not (e.g., because the queue is at capacity).</p>
 <p><code>Queue.get()</code> is a bit more complicated.
 If the queue has items,
 <code>queue.get()</code> creates an event that immediately succeeds with the first item.
@@ -1520,14 +1519,18 @@ the call creates an event and adds the caller to the list of processes waiting t
 <p>The complication is that if there <em>is</em> an item to get,
 <code>queue.get()</code> sets the <code>_on_cancel</code> callback of the event to handles cancellation
 by returning the item taken to the front of the queue.</p>
-<p><code>PriorityQueue</code> uses <code>insort</code> operations to maintain ordering,
+<p>If the <code>priority</code> constructor parameter is <code>True</code>,
+the queue uses <code>insort</code> operations to maintain ordering,
 which means items must be comparable (i.e., must implement <code>__lt__</code>).
 <code>get()</code> returns the minimum element;
 <code>put()</code> adds an element and potentially satisfies a waiting getter.</p>
-<p>Both kinds of queues allow creators to specify a maximum capacity.
-If someone attempts to add an item to a <code>Queue</code> that is full, the items is not added.
-If someone attempts to add to a full <code>PriorityQueue</code>,
-the item <em>is</em> added and then the lowest-priority item in the queue is discarded.</p>
+<p>Queues allow creators to specify a maximum capacity.
+The <code>discard</code> constructor parameter (default <code>True</code>) controls what happens
+when someone attempts to <code>put</code> an item into a full queue.
+If <code>discard</code> is <code>True</code>, a FIFO queue silently drops the new item,
+while a priority queue adds the item and then drops the lowest-priority item.
+If <code>discard</code> is <code>False</code>, the <code>put</code> call blocks until a <code>get</code> frees space in the queue.
+When <code>max_capacity</code> is <code>None</code>, <code>discard</code> has no effect.</p>
 <h2 id="resource-capacity-limited-sharing"><code>Resource</code>: Capacity-Limited Sharing</h2>
 <p>The <code>Resource</code> class simulates a shared resource with limited capacity.
 It has three members:</p>

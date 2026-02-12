@@ -1,6 +1,6 @@
 """Test asimpy resource."""
 
-from asimpy import Environment, Resource, Process
+from asimpy import Environment, Event, Resource, Process
 
 
 def test_resource_initialization():
@@ -115,3 +115,46 @@ def test_resource_context_manager():
     env.run()
     assert proc.used
     assert res._count == 0
+
+
+def test_resource_cancel_available_acquire():
+    """Test that cancelling an available acquire decrements count."""
+    env = Environment()
+    res = Resource(env, capacity=1)
+
+    # Manually step _acquire_available to get the internal event
+    coro = res._acquire_available()
+    evt = coro.send(None)
+
+    assert res._count == 1
+    evt.cancel()
+    assert res._count == 0
+
+
+def test_resource_cancel_waiting_acquire():
+    """Test that cancelling a waiting acquire removes it from waiters."""
+
+    class Holder(Process):
+        def init(self, res):
+            self.res = res
+
+        async def run(self):
+            await self.res.acquire()
+            await self.timeout(100)
+
+    class BlockedAcquirer(Process):
+        def init(self, res):
+            self.res = res
+
+        async def run(self):
+            await self.timeout(1)
+            await self.res.acquire()
+
+    env = Environment()
+    res = Resource(env, capacity=1)
+    Holder(env, res)
+    BlockedAcquirer(env, res)
+    env.run(until=5)
+    assert len(res._waiters) == 1
+    res._waiters[0].cancel()
+    assert len(res._waiters) == 0

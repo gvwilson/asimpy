@@ -164,3 +164,39 @@ def test_process_done_flag():
     assert not proc._done
     env.run()
     assert proc._done
+
+
+def test_process_loop_called_after_done():
+    """Test that _loop returns early when process is already done."""
+    from asimpy import Event, Interrupt
+
+    class Worker(Process):
+        def init(self):
+            self.finished = False
+
+        async def run(self):
+            try:
+                await self.evt
+            except Interrupt:
+                self.finished = True
+
+    env = Environment()
+    evt = Event(env)
+
+    worker = Worker(env)
+    worker.evt = evt
+
+    class Driver(Process):
+        def init(self, worker, evt):
+            self.worker = worker
+            self.evt = evt
+
+        async def run(self):
+            await self.timeout(1)
+            # Both calls schedule worker._loop before either runs
+            self.evt.succeed()
+            self.worker.interrupt("done")
+
+    Driver(env, worker, evt)
+    env.run()
+    assert worker.finished

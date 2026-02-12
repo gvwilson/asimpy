@@ -30,6 +30,7 @@ the consumer is immediately resumed with the item.
 Otherwise,
 the item is appended to `queue._items`.
 
-Notice that `queue.get()` and `queue.put()` do not advance simulated time.
+Notice that `queue.get()` and `queue.put()` do not advance simulated time
+(unless `put` blocks on a full queue with `discard=False`).
 If putting something in the queue or getting something from it takes time,
 the simulation needs to use `Timeout` to model that explicitly.

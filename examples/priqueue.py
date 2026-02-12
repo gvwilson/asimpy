@@ -1,10 +1,10 @@
 """Testing queueing."""
 
-from asimpy import Environment, Process, PriorityQueue
+from asimpy import Environment, Process, Queue
 
 
 class Producer(Process):
-    def init(self, queue: PriorityQueue):
+    def init(self, queue: Queue):
         self.queue = queue
 
     async def run(self):
@@ -14,7 +14,7 @@ class Producer(Process):
 
 
 class Consumer(Process):
-    def init(self, queue: PriorityQueue):
+    def init(self, queue: Queue):
         self.queue = queue
 
     async def run(self):
@@ -25,7 +25,7 @@ class Consumer(Process):
 
 
 env = Environment()
-queue = PriorityQueue(env)
+queue = Queue(env, priority=True)
 Producer(env, queue)
 Consumer(env, queue)
 

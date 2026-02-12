@@ -1,6 +1,8 @@
 """Test asimpy FirstOf."""
 
-from asimpy import Environment, FirstOf, Process, Timeout
+import pytest
+from asimpy import Environment, Event, FirstOf, Process, Timeout
+from asimpy._adapt import ensure_event
 
 
 def test_firstof_single_event():
@@ -54,3 +56,32 @@ def test_firstof_cancels_others():
     proc = CancelTest(env)
     env.run()
     assert proc.timeout2._cancelled is True
+
+
+def test_ensure_event_rejects_invalid_type():
+    """Test that ensure_event raises TypeError for non-Event, non-coroutine."""
+    env = Environment()
+    with pytest.raises(TypeError, match="Expected Event or coroutine"):
+        ensure_event(env, 42)
+
+
+def test_firstof_already_triggered_events():
+    """Test FirstOf with events that are already triggered hits early return."""
+    env = Environment()
+    evt_a = Event(env)
+    evt_b = Event(env)
+    evt_a.succeed("first")
+    evt_b.succeed("second")
+
+    class Waiter(Process):
+        def init(self, evt_a, evt_b):
+            self.evt_a = evt_a
+            self.evt_b = evt_b
+            self.result = None
+
+        async def run(self):
+            self.result = await FirstOf(self._env, a=self.evt_a, b=self.evt_b)
+
+    proc = Waiter(env, evt_a, evt_b)
+    env.run()
+    assert proc.result == ("a", "first")
