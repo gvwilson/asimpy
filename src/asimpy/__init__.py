@@ -8,5 +8,6 @@ from .firstof import FirstOf as FirstOf
 from .interrupt import Interrupt as Interrupt
 from .process import Process as Process
 from .resource import Resource as Resource
+from .simqueue import BlockingQueue as BlockingQueue
 from .simqueue import Queue as Queue
 from .timeout import Timeout as Timeout
