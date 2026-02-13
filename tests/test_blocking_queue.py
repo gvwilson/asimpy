@@ -22,6 +22,40 @@ def test_blocking_queue_invalid_max_capacity(max_capacity):
         BlockingQueue(env, max_capacity=max_capacity)
 
 
+def test_blocking_queue_is_empty():
+    """Test is_empty method."""
+    env = Environment()
+    bq = BlockingQueue(env, max_capacity=3)
+    assert bq.is_empty() is True
+    bq._items.append(1)
+    assert bq.is_empty() is False
+    bq._items.append(2)
+    assert bq.is_empty() is False
+
+
+def test_blocking_queue_is_empty_after_get():
+    """Test is_empty after consuming all items."""
+
+    class Consumer(Process):
+        def init(self, bq):
+            self.bq = bq
+            self.empty_before = None
+            self.empty_after = None
+
+        async def run(self):
+            await self.bq.put("a")
+            self.empty_before = self.bq.is_empty()
+            await self.bq.get()
+            self.empty_after = self.bq.is_empty()
+
+    env = Environment()
+    bq = BlockingQueue(env, max_capacity=3)
+    proc = Consumer(env, bq)
+    env.run()
+    assert proc.empty_before is False
+    assert proc.empty_after is True
+
+
 def test_blocking_queue_is_full():
     """Test is_full method."""
     env = Environment()

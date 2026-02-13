@@ -1,9 +1,19 @@
-   0: Alice arrives
-   0: Bob arrives
-   0: Charlie arrives
-   0: Alice starts service
-   0: Bob starts service
-   5: Alice leaves
-   5: Charlie starts service
-   5: Bob leaves
-  10: Charlie leaves
+   0: Ahmed arrives
+   0: Bette arrives
+   0: Carlos arrives
+   0: Ahmed starts service
+   0: Bette starts service
+   5: Ahmed leaves
+   5: Carlos starts service
+   5: Bette leaves
+  10: Carlos leaves
+
+   0: Dave arrives
+   0: Eve arrives
+   0: Frank arrives
+   0: Dave starts service
+   0: Eve starts service
+   5: Dave leaves
+   5: Frank starts service
+   5: Eve leaves
+  10: Frank leaves

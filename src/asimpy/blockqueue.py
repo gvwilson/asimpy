@@ -49,6 +49,10 @@ class BlockingQueue:
             self._getters.append(evt)
             return await evt
 
+    def is_empty(self):
+        """Is the queue empty?"""
+        return len(self._items) == 0
+
     def is_full(self):
         """Has the queue reached capacity?"""
         return len(self._items) >= self._max_capacity

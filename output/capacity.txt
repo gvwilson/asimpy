@@ -1,0 +1,8 @@
+put item-0 added=True is_full=False
+put item-1 added=True is_full=False
+put item-2 added=True is_full=True
+put item-3 added=False is_full=True
+put item-4 added=False is_full=True
+dequeued item-0
+dequeued item-1
+dequeued item-2

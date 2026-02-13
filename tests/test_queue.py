@@ -408,6 +408,40 @@ def test_queue_put_returns_false_when_full():
     assert q.put(2) is False
 
 
+def test_queue_is_empty():
+    """Test is_empty method."""
+    env = Environment()
+    q = Queue(env)
+    assert q.is_empty() is True
+    q.put(1)
+    assert q.is_empty() is False
+    q.put(2)
+    assert q.is_empty() is False
+
+
+def test_queue_is_empty_after_get():
+    """Test is_empty after consuming all items."""
+
+    class Consumer(Process):
+        def init(self, q):
+            self.q = q
+            self.empty_before = None
+            self.empty_after = None
+
+        async def run(self):
+            self.q.put("a")
+            self.empty_before = self.q.is_empty()
+            await self.q.get()
+            self.empty_after = self.q.is_empty()
+
+    env = Environment()
+    q = Queue(env)
+    proc = Consumer(env, q)
+    env.run()
+    assert proc.empty_before is False
+    assert proc.empty_after is True
+
+
 def test_queue_is_full():
     """Test is_full method."""
     env = Environment()
