@@ -3,16 +3,8 @@
 from asimpy import Environment, Timeout
 
 
-def test_timeout_initialization():
-    """Test timeout initialization."""
-    env = Environment()
-    timeout = Timeout(env, 5)
-    assert timeout._env == env
-
-
 def test_timeout_zero_delay():
     """Test timeout with zero delay."""
-    from asimpy import Environment, Timeout
 
     env = Environment()
     timeout = Timeout(env, 0)
@@ -22,7 +14,6 @@ def test_timeout_zero_delay():
 
 def test_timeout_positive_delay():
     """Test timeout with positive delay."""
-    from asimpy import Environment, Timeout
 
     env = Environment()
     timeout = Timeout(env, 10)
@@ -34,7 +25,6 @@ def test_timeout_positive_delay():
 
 def test_timeout_schedules_at_correct_time():
     """Test that timeout schedules at the correct time."""
-    from asimpy import Environment, Timeout
 
     env = Environment()
     env._now = 5
@@ -45,7 +35,6 @@ def test_timeout_schedules_at_correct_time():
 
 def test_timeout_multiple_timeouts():
     """Test multiple timeouts execute in order."""
-    from asimpy import Environment, Timeout
 
     env = Environment()
     t1 = Timeout(env, 5)

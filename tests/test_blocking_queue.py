@@ -14,25 +14,12 @@ def test_blocking_queue_initialization():
     assert bq._putters == []
 
 
-def test_blocking_queue_invalid_non_int():
-    """Test that non-integer max_capacity raises assertion error."""
+@pytest.mark.parametrize("max_capacity", [0, -3])
+def test_blocking_queue_invalid_max_capacity(max_capacity):
+    """Test that invalid max_capacity raises error."""
     env = Environment()
-    with pytest.raises(AssertionError, match="max_capacity must be an integer"):
-        BlockingQueue(env, max_capacity=2.5)
-
-
-def test_blocking_queue_invalid_zero():
-    """Test that zero max_capacity raises assertion error."""
-    env = Environment()
-    with pytest.raises(AssertionError, match="max_capacity must be a positive integer"):
-        BlockingQueue(env, max_capacity=0)
-
-
-def test_blocking_queue_invalid_negative():
-    """Test that negative max_capacity raises assertion error."""
-    env = Environment()
-    with pytest.raises(AssertionError, match="max_capacity must be a positive integer"):
-        BlockingQueue(env, max_capacity=-3)
+    with pytest.raises(ValueError):
+        BlockingQueue(env, max_capacity=max_capacity)
 
 
 def test_blocking_queue_is_full():

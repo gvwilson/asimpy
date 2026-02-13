@@ -10,7 +10,7 @@ class Producer(Process):
     async def run(self):
         for i in range(3, 0, -1):
             print(f"producer putting {i} at {self.now}")
-            await self.queue.put(i)
+            self.queue.put(i)
 
 
 class Consumer(Process):

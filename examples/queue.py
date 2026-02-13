@@ -11,7 +11,7 @@ class Producer(Process):
         for i in range(3):
             item = f"item-{i}"
             print(f"producer putting {item} at {self.now}")
-            await self.queue.put(item)
+            self.queue.put(item)
             print(f"producer sleeping at {self.now}")
             await self.timeout(2)
 

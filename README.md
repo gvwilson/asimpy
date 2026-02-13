@@ -177,13 +177,26 @@ which means items must be comparable (i.e., must implement `__lt__`).
 `get()` returns the minimum element;
 `put()` adds an element and potentially satisfies a waiting getter.
 
-Queues allow creators to specify a maximum capacity.
-The `discard` constructor parameter (default `True`) controls what happens
-when someone attempts to `put` an item into a full queue.
-If `discard` is `True`, a FIFO queue silently drops the new item,
-while a priority queue adds the item and then drops the lowest-priority item.
-If `discard` is `False`, the `put` call blocks until a `get` frees space in the queue.
-When `max_capacity` is `None`, `discard` has no effect.
+Finally,
+queues allow creators to specify a maximum capacity.
+If a user attempts to add an item to a full queue,
+then:
+
+1.  If the queue is in FIFO order, the item is not added.
+2.  If the queue is in priority order, the item *is* added in priority order,
+    and then the last item in the queue is dropped to keep the length within bounds.
+    The dropped item may or may not be the one that was just added.
+
+## `BoundedQueue`: Blocking While Exchanging Data
+
+A `BoundedQueue` is a FIFO queue whose `put` operation is potentially blocking.
+A `BoundedQueue` *must* have a non-negative maximum capacity;
+if a user attempts to `put` an item when the queue is full,
+the user blocks until there is space.
+[asimpy][asimpy] provides a separate class for bounded queues
+rather than a blocking `put` operation on regular queues,
+or parametrizing regular queues with a `blocking` constructor argument,
+in order to keep the semantics clear.
 
 ## `Resource`: Capacity-Limited Sharing
 

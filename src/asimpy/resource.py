@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 from .event import Event
+from ._utils import _validate
 
 if TYPE_CHECKING:
     from .environment import Environment
@@ -17,8 +18,11 @@ class Resource:
         Args:
             env: simulation environment.
             capacity: maximum capacity.
+
+        Raises:
+            ValueError: for invalid `capacity`.
         """
-        assert capacity > 0
+        _validate(capacity > 0, "require positive capacity for resource not {capacity}")
         self._env = env
         self.capacity = capacity
         self._count = 0

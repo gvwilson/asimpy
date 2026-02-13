@@ -1,8 +1,7 @@
 """Test asimpy process."""
 
 import pytest
-
-from asimpy import Environment, Process
+from asimpy import Environment, Event, Interrupt, Process
 
 
 def test_process_basic_execution():
@@ -23,8 +22,6 @@ def test_process_basic_execution():
 
 def test_process_with_timeout():
     """Test process with timeout."""
-    from asimpy import Environment, Process
-
     class WaitingProcess(Process):
         async def run(self):
             await self.timeout(5)
@@ -38,8 +35,6 @@ def test_process_with_timeout():
 
 def test_process_init_with_args():
     """Test process initialization with arguments."""
-    from asimpy import Environment, Process
-
     class ProcessWithArgs(Process):
         def init(self, value, name=None):
             self.value = value
@@ -57,8 +52,6 @@ def test_process_init_with_args():
 
 def test_process_now_property():
     """Test process now property."""
-    from asimpy import Environment, Process
-
     class TimeCheckProcess(Process):
         async def run(self):
             self.start_time = self.now
@@ -74,8 +67,6 @@ def test_process_now_property():
 
 def test_process_interrupt():
     """Test process interruption."""
-    from asimpy import Environment, Process, Interrupt
-
     class InterruptibleProcess(Process):
         def init(self):
             self.interrupted = False
@@ -98,8 +89,6 @@ def test_process_interrupt():
 
 def test_process_multiple_interrupts():
     """Test multiple interrupts."""
-    from asimpy import Environment, Process, Interrupt
-
     class MultiInterruptProcess(Process):
         def init(self):
             self.interrupt_count = 0
@@ -124,8 +113,6 @@ def test_process_multiple_interrupts():
 
 def test_process_interrupt_already_done():
     """Test interrupting already completed process."""
-    from asimpy import Environment, Process
-
     class QuickProcess(Process):
         async def run(self):
             self.completed = True
@@ -139,8 +126,6 @@ def test_process_interrupt_already_done():
 
 def test_process_exception_handling():
     """Test process exception handling."""
-    from asimpy import Environment, Process
-
     class FailingProcess(Process):
         async def run(self):
             raise ValueError("test error")
@@ -153,8 +138,6 @@ def test_process_exception_handling():
 
 def test_process_done_flag():
     """Test process done flag."""
-    from asimpy import Environment, Process
-
     class TestProcess(Process):
         async def run(self):
             await self.timeout(5)
@@ -168,11 +151,10 @@ def test_process_done_flag():
 
 def test_process_loop_called_after_done():
     """Test that _loop returns early when process is already done."""
-    from asimpy import Event, Interrupt
-
     class Worker(Process):
-        def init(self):
+        def init(self, evt):
             self.finished = False
+            self.evt = evt
 
         async def run(self):
             try:
@@ -182,9 +164,7 @@ def test_process_loop_called_after_done():
 
     env = Environment()
     evt = Event(env)
-
-    worker = Worker(env)
-    worker.evt = evt
+    worker = Worker(env, evt)
 
     class Driver(Process):
         def init(self, worker, evt):

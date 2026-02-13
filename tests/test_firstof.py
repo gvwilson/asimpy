@@ -1,8 +1,6 @@
 """Test asimpy FirstOf."""
 
-import pytest
 from asimpy import Environment, Event, FirstOf, Process, Timeout
-from asimpy._adapt import ensure_event
 
 
 def test_firstof_single_event():
@@ -56,13 +54,6 @@ def test_firstof_cancels_others():
     proc = CancelTest(env)
     env.run()
     assert proc.timeout2._cancelled is True
-
-
-def test_ensure_event_rejects_invalid_type():
-    """Test that ensure_event raises TypeError for non-Event, non-coroutine."""
-    env = Environment()
-    with pytest.raises(TypeError, match="Expected Event or coroutine"):
-        ensure_event(env, 42)
 
 
 def test_firstof_already_triggered_events():

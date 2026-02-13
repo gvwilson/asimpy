@@ -321,6 +321,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#boundedqueue-blocking-while-exchanging-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BoundedQueue: Blocking While Exchanging Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#resource-capacity-limited-sharing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1212,6 +1223,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#boundedqueue-blocking-while-exchanging-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BoundedQueue: Blocking While Exchanging Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#resource-capacity-limited-sharing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1524,13 +1546,25 @@ the queue uses <code>insort</code> operations to maintain ordering,
 which means items must be comparable (i.e., must implement <code>__lt__</code>).
 <code>get()</code> returns the minimum element;
 <code>put()</code> adds an element and potentially satisfies a waiting getter.</p>
-<p>Queues allow creators to specify a maximum capacity.
-The <code>discard</code> constructor parameter (default <code>True</code>) controls what happens
-when someone attempts to <code>put</code> an item into a full queue.
-If <code>discard</code> is <code>True</code>, a FIFO queue silently drops the new item,
-while a priority queue adds the item and then drops the lowest-priority item.
-If <code>discard</code> is <code>False</code>, the <code>put</code> call blocks until a <code>get</code> frees space in the queue.
-When <code>max_capacity</code> is <code>None</code>, <code>discard</code> has no effect.</p>
+<p>Finally,
+queues allow creators to specify a maximum capacity.
+If a user attempts to add an item to a full queue,
+then:</p>
+<ol>
+<li>If the queue is in FIFO order, the item is not added.</li>
+<li>If the queue is in priority order, the item <em>is</em> added in priority order,
+    and then the last item in the queue is dropped to keep the length within bounds.
+    The dropped item may or may not be the one that was just added.</li>
+</ol>
+<h2 id="boundedqueue-blocking-while-exchanging-data"><code>BoundedQueue</code>: Blocking While Exchanging Data</h2>
+<p>A <code>BoundedQueue</code> is a FIFO queue whose <code>put</code> operation is potentially blocking.
+A <code>BoundedQueue</code> <em>must</em> have a non-negative maximum capacity;
+if a user attempts to <code>put</code> an item when the queue is full,
+the user blocks until there is space.
+<a href="https://asimpy.readthedocs.io/">asimpy</a> provides a separate class for bounded queues
+rather than a blocking <code>put</code> operation on regular queues,
+or parametrizing regular queues with a <code>blocking</code> constructor argument,
+in order to keep the semantics clear.</p>
 <h2 id="resource-capacity-limited-sharing"><code>Resource</code>: Capacity-Limited Sharing</h2>
 <p>The <code>Resource</code> class simulates a shared resource with limited capacity.
 It has three members:</p>

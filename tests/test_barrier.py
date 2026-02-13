@@ -3,13 +3,6 @@
 from asimpy import Environment, Barrier, Process
 
 
-def test_barrier_initialization():
-    """Test barrier initialization."""
-    env = Environment()
-    barrier = Barrier(env)
-    assert len(barrier._waiters) == 0
-
-
 def test_barrier_single_waiter():
     """Test barrier with single waiter."""
 

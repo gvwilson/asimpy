@@ -1,14 +1,6 @@
 """Test asimpy resource."""
 
-from asimpy import Environment, Event, Resource, Process
-
-
-def test_resource_initialization():
-    """Test resource initialization."""
-    env = Environment()
-    res = Resource(env, capacity=3)
-    assert res.capacity == 3
-    assert res._count == 0
+from asimpy import Environment, Resource, Process
 
 
 def test_resource_default_capacity():

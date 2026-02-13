@@ -3,7 +3,7 @@
 from typing import Any
 from .environment import Environment
 from .event import Event
-from ._adapt import ensure_event
+from ._utils import _ensure_event, _validate
 
 
 class AllOf(Event):
@@ -17,20 +17,23 @@ class AllOf(Event):
             env: simulation environment.
             events: name=thing items to wait for.
 
+        Raises:
+            ValueError: if no events provided.
+
         Example:
 
         ```
         name, value = await AllOf(env, a=q1.get(), b=q2.get())
         ```
         """
-        assert len(events) > 0
+        _validate(len(events) > 0, "AllOf requires at least one event")
         super().__init__(env)
 
         self._events = {}
         self._results = {}
 
         for key, obj in events.items():
-            evt = ensure_event(env, obj)
+            evt = _ensure_event(env, obj)
             self._events[key] = evt
             evt._add_waiter(_AllOfWatcher(self, key))
 
