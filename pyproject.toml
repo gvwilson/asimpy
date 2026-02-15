@@ -48,6 +48,7 @@ dev = [
 ]
 
 [tool.taskipy.tasks]
+benchmark = {help = "run benchmark for N=10000", cmd = "python benchmark/benchmark.py 10000"}
 build = {help = "build package", cmd = "python -m build"}
 check = {help = "check code issues", cmd = "ruff check ."}
 clean = {help = "clean up", cmd = """
@@ -55,14 +56,14 @@ rm -rf ./dist &&
 find . -path './.venv' -prune -o -type d -name '__pycache__' -exec rm -rf {} + &&
 find . -path './.venv' -prune -o -type f -name '*~' -exec rm {} +
 """}
+coverage = {help = "run tests with coverage", cmd = """
+python -m coverage run -m pytest tests
+python -m coverage report --show-missing
+"""}
 docs = {help = "build documentation", cmd = """
 mkdocs build &&
 touch docs/.nojekyll &&
 cp docs-requirements.txt docs/requirements.txt
-"""}
-coverage = {help = "run tests with coverage", cmd = """
-python -m coverage run -m pytest tests
-python -m coverage report --show-missing
 """}
 fix = {help = "fix code issues", cmd = "ruff check --fix ."}
 format = {help = "format code", cmd = "ruff format ."}
