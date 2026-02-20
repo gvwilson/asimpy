@@ -1,6 +1,6 @@
 [project]
 name = "asimpy"
-version = "0.10.2"
+version = "0.10.3"
 requires-python = ">=3.12"
 authors = [
     {name = "Greg Wilson", email = "gvwilson@third-bit.com"},
@@ -17,6 +17,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/gvwilson/asimpy"
+Documentation = "https://asimpy.readthedocs.io"
 
 [build-system]
 requires = ["hatchling"]
