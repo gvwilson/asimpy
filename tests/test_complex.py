@@ -14,7 +14,7 @@ def test_producer_consumer_pattern():
         async def run(self):
             for item in self.items:
                 await self.timeout(1)
-                self.queue.put(item)
+                await self.queue.put(item)
 
     class Consumer(Process):
         def init(self, queue, count):

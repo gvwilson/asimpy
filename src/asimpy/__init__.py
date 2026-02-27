@@ -2,7 +2,6 @@
 
 from .allof import AllOf as AllOf
 from .barrier import Barrier as Barrier
-from .blockqueue import BlockingQueue as BlockingQueue
 from .environment import Environment as Environment
 from .event import Event as Event
 from .firstof import FirstOf as FirstOf

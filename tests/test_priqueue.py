@@ -12,9 +12,9 @@ def test_priority_queue_ordering():
             self.results = []
 
         async def run(self):
-            self.pq.put(3)
-            self.pq.put(1)
-            self.pq.put(2)
+            await self.pq.put(3)
+            await self.pq.put(1)
+            await self.pq.put(2)
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
@@ -35,9 +35,9 @@ def test_priority_queue_with_tuples():
             self.results = []
 
         async def run(self):
-            self.pq.put((2, "second"))
-            self.pq.put((1, "first"))
-            self.pq.put((3, "third"))
+            await self.pq.put((2, "second"))
+            await self.pq.put((1, "first"))
+            await self.pq.put((3, "third"))
             self.results.append(await self.pq.get())
             self.results.append(await self.pq.get())
 
@@ -50,7 +50,7 @@ def test_priority_queue_with_tuples():
 
 
 def test_priority_queue_max_capacity():
-    """Test priority queue with max_capacity."""
+    """Test priority queue with max_capacity blocks when full."""
 
     class PQUser(Process):
         def init(self, pq):
@@ -58,14 +58,10 @@ def test_priority_queue_max_capacity():
             self.results = []
 
         async def run(self):
-            # Put items in non-sorted order
-            self.pq.put(5)
-            self.pq.put(2)
-            self.pq.put(8)
-            self.pq.put(1)
-            self.pq.put(9)
+            await self.pq.put(5)
+            await self.pq.put(2)
+            await self.pq.put(8)
 
-            # Get items - should be sorted and limited to capacity
             for _ in range(3):
                 self.results.append(await self.pq.get())
 
@@ -73,4 +69,4 @@ def test_priority_queue_max_capacity():
     pq = Queue(env, max_capacity=3, priority=True)
     proc = PQUser(env, pq)
     env.run()
-    assert proc.results == [1, 2, 5]
+    assert proc.results == [2, 5, 8]

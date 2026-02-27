@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
     
     
       
@@ -314,17 +314,6 @@
     <span class="md-ellipsis">
       
         Queue: Exchanging Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#boundedqueue-blocking-while-exchanging-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        BoundedQueue: Blocking While Exchanging Data
       
     </span>
   </a>
@@ -1223,17 +1212,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#boundedqueue-blocking-while-exchanging-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        BoundedQueue: Blocking While Exchanging Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#resource-capacity-limited-sharing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1517,25 +1495,30 @@ Otherwise,
 <code>Timeout._fire()</code> calls <code>succeed()</code> to trigger the event.</p>
 <h2 id="queue-exchanging-data"><code>Queue</code>: Exchanging Data</h2>
 <p><code>Queue</code> enables processes to exchange data.
-It has two members:</p>
+It has three members:</p>
 <ul>
 <li><code>_items</code> is a list of items being passed between processes.</li>
 <li><code>_getters</code> is a list of processes waiting for items.</li>
+<li><code>_putters</code> is a list of processes waiting for space in a capacity-limited queue.</li>
 </ul>
-<p>The invariant for <code>Queue</code> is that one or the other list must be empty,
+<p>The invariant for <code>Queue</code> is that <code>_items</code> and <code>_getters</code> cannot both be non-empty,
 i.e.,
 if there are processes waiting then there aren't any items to take,
 while if there are items waiting to be taken there aren't any waiting processes.</p>
-<p><code>Queue.put(item)</code> immediately calls <code>evt.succeed(item)</code> if a process is waiting
-to pass that item to the waiting process
-(which is stored in the event).
+<p><code>Queue.put(item)</code> is an <code>async</code> operation.
+It immediately calls <code>evt.succeed(item)</code> if a process is waiting
+to pass that item to the waiting process.
 Otherwise,
+if the queue is not full,
 the item is appended to <code>queue._items</code>.
-<code>put()</code> is an <code>async</code> operation that returns <code>True</code> if the item was added
-and <code>False</code> if it was not (e.g., because the queue is at capacity).</p>
+If the queue has a maximum capacity and is full,
+<code>put()</code> blocks until space is freed by a <code>get()</code>.
+Multiple blocked putters are served in FIFO order.</p>
 <p><code>Queue.get()</code> is a bit more complicated.
 If the queue has items,
 <code>queue.get()</code> creates an event that immediately succeeds with the first item.
+If putters are waiting, the first putter's item is added to the queue
+and the putter is unblocked.
 If the queue is empty,
 the call creates an event and adds the caller to the list of processes waiting to get items.</p>
 <p>The complication is that if there <em>is</em> an item to get,
@@ -1546,25 +1529,6 @@ the queue uses <code>insort</code> operations to maintain ordering,
 which means items must be comparable (i.e., must implement <code>__lt__</code>).
 <code>get()</code> returns the minimum element;
 <code>put()</code> adds an element and potentially satisfies a waiting getter.</p>
-<p>Finally,
-queues allow creators to specify a maximum capacity.
-If a user attempts to add an item to a full queue,
-then:</p>
-<ol>
-<li>If the queue is in FIFO order, the item is not added.</li>
-<li>If the queue is in priority order, the item <em>is</em> added in priority order,
-    and then the last item in the queue is dropped to keep the length within bounds.
-    The dropped item may or may not be the one that was just added.</li>
-</ol>
-<h2 id="boundedqueue-blocking-while-exchanging-data"><code>BoundedQueue</code>: Blocking While Exchanging Data</h2>
-<p>A <code>BoundedQueue</code> is a FIFO queue whose <code>put</code> operation is potentially blocking.
-A <code>BoundedQueue</code> <em>must</em> have a non-negative maximum capacity;
-if a user attempts to <code>put</code> an item when the queue is full,
-the user blocks until there is space.
-<a href="https://asimpy.readthedocs.io/">asimpy</a> provides a separate class for bounded queues
-rather than a blocking <code>put</code> operation on regular queues,
-or parametrizing regular queues with a <code>blocking</code> constructor argument,
-in order to keep the semantics clear.</p>
 <h2 id="resource-capacity-limited-sharing"><code>Resource</code>: Capacity-Limited Sharing</h2>
 <p>The <code>Resource</code> class simulates a shared resource with limited capacity.
 It has three members:</p>

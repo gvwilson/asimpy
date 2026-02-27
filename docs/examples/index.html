@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
     
     
       
@@ -1154,7 +1154,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">asimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Resource</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WithCustomer</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">counter</span><span class="p">:</span> <span class="n">Resource</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
@@ -1170,21 +1170,56 @@
 <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
 <span class="n">counter</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="n">Customer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
-<span class="n">Customer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
-<span class="n">Customer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+<span class="n">WithCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Ahmed&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+<span class="n">WithCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Bette&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+<span class="n">WithCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DirectCustomer</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">counter</span><span class="p">:</span> <span class="n">Resource</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> arrives&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> starts service&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> leaves&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">DirectCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Dave&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+<span class="n">DirectCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+<span class="n">DirectCustomer</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
 
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>0: Alice arrives
-   0: Bob arrives
-   0: Charlie arrives
-   0: Alice starts service
-   0: Bob starts service
-   5: Alice leaves
-   5: Charlie starts service
-   5: Bob leaves
-  10: Charlie leaves
+<div class="highlight"><pre><span></span><code>0: Ahmed arrives
+   0: Bette arrives
+   0: Carlos arrives
+   0: Ahmed starts service
+   0: Bette starts service
+   5: Ahmed leaves
+   5: Carlos starts service
+   5: Bette leaves
+  10: Carlos leaves
+
+   0: Dave arrives
+   0: Eve arrives
+   0: Frank arrives
+   0: Dave starts service
+   0: Eve starts service
+   5: Dave leaves
+   5: Frank starts service
+   5: Eve leaves
+  10: Frank leaves
 </code></pre></div></p>
 <h2 id="fifo-queue">FIFO Queue</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Testing queueing.&quot;&quot;&quot;</span>
@@ -1200,7 +1235,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">item</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer putting </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;producer sleeping at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
@@ -1276,12 +1311,12 @@ consumer got item-2 at 4
 
 <span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>producer putting 3 at 0
+<div class="highlight"><pre><span></span><code>/Users/gvwilson/asimpy/examples/priqueue.py:13: RuntimeWarning: coroutine &#39;Queue.put&#39; was never awaited
+  self.queue.put(i)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+producer putting 3 at 0
 producer putting 2 at 0
 producer putting 1 at 0
-consumer got 1
-consumer got 2
-consumer got 3
 </code></pre></div></p>
 <h2 id="interrupts">Interrupts</h2>
 <p><div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Simulate interrupts.&quot;&quot;&quot;</span>

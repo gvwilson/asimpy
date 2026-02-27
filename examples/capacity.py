@@ -1,24 +1,35 @@
-"""Queue with maximum capacity."""
+"""Queue with maximum capacity (put blocks when full)."""
 
 from asimpy import Environment, Process, Queue
 
 
-class Filler(Process):
+class Producer(Process):
     def init(self, queue: Queue):
         self.queue = queue
 
     async def run(self):
         for i in range(5):
-            added = self.queue.put(f"item-{i}")
-            full = self.queue.is_full()
-            print(f"put item-{i} added={added} is_full={full}")
+            item = f"item-{i}"
+            print(f"{self.now:>4}: producer wants to put {item}")
+            await self.queue.put(item)
+            print(f"{self.now:>4}: producer put {item}")
+            await self.timeout(1)
 
-        while not self.queue.is_empty():
+
+class Consumer(Process):
+    def init(self, queue: Queue):
+        self.queue = queue
+
+    async def run(self):
+        await self.timeout(3)
+        for i in range(5):
             item = await self.queue.get()
-            print(f"dequeued {item}")
+            print(f"{self.now:>4}: consumer got {item}")
+            await self.timeout(2)
 
 
 env = Environment()
-queue = Queue(env, max_capacity=3)
-Filler(env, queue)
+queue = Queue(env, max_capacity=2)
+Producer(env, queue)
+Consumer(env, queue)
 env.run()

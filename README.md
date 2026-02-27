@@ -143,27 +143,32 @@ Otherwise,
 ## `Queue`: Exchanging Data
 
 `Queue` enables processes to exchange data.
-It has two members:
+It has three members:
 
 -  `_items` is a list of items being passed between processes.
 -  `_getters` is a list of processes waiting for items.
+-  `_putters` is a list of processes waiting for space in a capacity-limited queue.
 
-The invariant for `Queue` is that one or the other list must be empty,
+The invariant for `Queue` is that `_items` and `_getters` cannot both be non-empty,
 i.e.,
 if there are processes waiting then there aren't any items to take,
 while if there are items waiting to be taken there aren't any waiting processes.
 
-`Queue.put(item)` immediately calls `evt.succeed(item)` if a process is waiting
-to pass that item to the waiting process
-(which is stored in the event).
+`Queue.put(item)` is an `async` operation.
+It immediately calls `evt.succeed(item)` if a process is waiting
+to pass that item to the waiting process.
 Otherwise,
+if the queue is not full,
 the item is appended to `queue._items`.
-`put()` is an `async` operation that returns `True` if the item was added
-and `False` if it was not (e.g., because the queue is at capacity).
+If the queue has a maximum capacity and is full,
+`put()` blocks until space is freed by a `get()`.
+Multiple blocked putters are served in FIFO order.
 
 `Queue.get()` is a bit more complicated.
 If the queue has items,
 `queue.get()` creates an event that immediately succeeds with the first item.
+If putters are waiting, the first putter's item is added to the queue
+and the putter is unblocked.
 If the queue is empty,
 the call creates an event and adds the caller to the list of processes waiting to get items.
 
@@ -176,27 +181,6 @@ the queue uses `insort` operations to maintain ordering,
 which means items must be comparable (i.e., must implement `__lt__`).
 `get()` returns the minimum element;
 `put()` adds an element and potentially satisfies a waiting getter.
-
-Finally,
-queues allow creators to specify a maximum capacity.
-If a user attempts to add an item to a full queue,
-then:
-
-1.  If the queue is in FIFO order, the item is not added.
-2.  If the queue is in priority order, the item *is* added in priority order,
-    and then the last item in the queue is dropped to keep the length within bounds.
-    The dropped item may or may not be the one that was just added.
-
-## `BoundedQueue`: Blocking While Exchanging Data
-
-A `BoundedQueue` is a FIFO queue whose `put` operation is potentially blocking.
-A `BoundedQueue` *must* have a non-negative maximum capacity;
-if a user attempts to `put` an item when the queue is full,
-the user blocks until there is space.
-[asimpy][asimpy] provides a separate class for bounded queues
-rather than a blocking `put` operation on regular queues,
-or parametrizing regular queues with a `blocking` constructor argument,
-in order to keep the semantics clear.
 
 ## `Resource`: Capacity-Limited Sharing
 

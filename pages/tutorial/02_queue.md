@@ -7,11 +7,12 @@ a first-in/first-out (FIFO) queue that processes can `await` using `get()` and `
 
 ## Design
 
-The queue maintains two internal lists:
+The queue maintains three internal lists:
 
 ```python
 self._items    # items currently in the queue
 self._getters  # Event objects for waiting consumers
+self._putters  # Event objects for waiting producers
 ```
 
 If an item is available,
@@ -23,14 +24,14 @@ on the other hand,
 appends it to the `queue._getters` list,
 and suspends the calling process by `await`ing the event.
 
-When a process calls `queue.put()` to add something to the queue,
+When a process calls `await queue.put()` to add something to the queue,
 the method checks to see if a consumer is already waiting.
 If so,
 the consumer is immediately resumed with the item.
-Otherwise,
-the item is appended to `queue._items`.
+If instead the queue has a maximum capacity and is full,
+`put()` blocks until space is freed by a `get()`;
+otherwise, the item is appended to `queue._items`.
 
-Notice that `queue.get()` and `queue.put()` do not advance simulated time
-(unless `put` blocks on a full queue with `discard=False`).
+Notice that `queue.get()` and `queue.put()` do not advance simulated time.
 If putting something in the queue or getting something from it takes time,
 the simulation needs to use `Timeout` to model that explicitly.

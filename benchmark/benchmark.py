@@ -8,7 +8,6 @@ import time
 from asimpy import (
     AllOf,
     Barrier,
-    BlockingQueue,
     Environment,
     Event,
     FirstOf,
@@ -75,7 +74,7 @@ def bench_queue_put_get(n):
 
         async def run(self):
             for i in range(self.count):
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q, count):
@@ -105,7 +104,7 @@ def bench_queue_blocking_get(n):
         async def run(self):
             for i in range(self.count):
                 await self.timeout(1)
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q, count):
@@ -133,7 +132,7 @@ def bench_priority_queue(n):
 
         async def run(self):
             for i in range(self.count, 0, -1):
-                self.pq.put(i)
+                await self.pq.put(i)
             await self.timeout(1)
             for _ in range(self.count):
                 await self.pq.get()
@@ -144,31 +143,31 @@ def bench_priority_queue(n):
     env.run()
 
 
-def bench_blocking_queue(n):
-    """Producer-consumer through a BlockingQueue with capacity 10."""
+def bench_queue_capacity(n):
+    """Producer-consumer through a Queue with capacity 10."""
 
     class Producer(Process):
-        def init(self, bq, count):
-            self.bq = bq
+        def init(self, q, count):
+            self.q = q
             self.count = count
 
         async def run(self):
             for i in range(self.count):
-                await self.bq.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
-        def init(self, bq, count):
-            self.bq = bq
+        def init(self, q, count):
+            self.q = q
             self.count = count
 
         async def run(self):
             for _ in range(self.count):
-                await self.bq.get()
+                await self.q.get()
 
     env = Environment()
-    bq = BlockingQueue(env, max_capacity=10)
-    Producer(env, bq, n)
-    Consumer(env, bq, n)
+    q = Queue(env, max_capacity=10)
+    Producer(env, q, n)
+    Consumer(env, q, n)
     env.run()
 
 
@@ -290,7 +289,7 @@ def bench_mixed_simulation(n):
         async def run(self):
             for i in range(self.count):
                 await self.timeout(1)
-                self.q.put(i)
+                await self.q.put(i)
 
     class Consumer(Process):
         def init(self, q, res, count):

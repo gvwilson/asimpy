@@ -12,9 +12,17 @@ from .timeout import Timeout
 class Environment:
     """Simulation environment."""
 
+    _instance = None
+
     def __init__(self):
         self._now = 0
         self._pending = []
+        Environment._instance = self
+
+    @classmethod
+    def sim_time(cls):
+        assert cls._instance is not None
+        return cls._instance.now
 
     @property
     def now(self):

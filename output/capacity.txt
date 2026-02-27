@@ -1,8 +1,15 @@
-put item-0 added=True is_full=False
-put item-1 added=True is_full=False
-put item-2 added=True is_full=True
-put item-3 added=False is_full=True
-put item-4 added=False is_full=True
-dequeued item-0
-dequeued item-1
-dequeued item-2
+   0: producer wants to put item-0
+   0: producer put item-0
+   1: producer wants to put item-1
+   1: producer put item-1
+   2: producer wants to put item-2
+   3: producer put item-2
+   3: consumer got item-0
+   4: producer wants to put item-3
+   5: producer put item-3
+   5: consumer got item-1
+   6: producer wants to put item-4
+   7: producer put item-4
+   7: consumer got item-2
+   9: consumer got item-3
+  11: consumer got item-4

@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
     
     
       
@@ -918,14 +918,16 @@ on the other hand,
 <code>Queue.get()</code> create a new <code>Event</code>,
 appends it to the <code>queue._getters</code> list,
 and suspends the calling process by <code>await</code>ing the event.</p>
-<p>When a process calls <code>queue.put()</code> to add something to the queue,
+<p>When a process calls <code>await queue.put()</code> to add something to the queue,
 the method checks to see if a consumer is already waiting.
 If so,
 the consumer is immediately resumed with the item.
 Otherwise,
-the item is appended to <code>queue._items</code>.</p>
+the item is appended to <code>queue._items</code>.
+If the queue has a maximum capacity and is full,
+<code>put()</code> blocks until space is freed by a <code>get()</code>.</p>
 <p>Notice that <code>queue.get()</code> and <code>queue.put()</code> do not advance simulated time
-(unless <code>put</code> blocks on a full queue with <code>discard=False</code>).
+(unless <code>put</code> blocks on a full queue).
 If putting something in the queue or getting something from it takes time,
 the simulation needs to use <code>Timeout</code> to model that explicitly.</p>
 
