@@ -3,6 +3,7 @@
 import bisect
 from typing import TYPE_CHECKING, Any
 from .event import Event
+from .interrupt import Interrupt
 from ._utils import _validate
 
 if TYPE_CHECKING:
@@ -54,11 +55,22 @@ class Queue:
             evt = Event(self._env)
             evt._on_cancel = lambda: self._items.insert(0, item)
             self._env.immediate(lambda: evt.succeed(item))
-            return await evt
+            try:
+                return await evt
+            except Interrupt:
+                # Runner was cancelled before it received the item; restore it.
+                self._items.insert(0, item)
+                raise
         else:
             evt = Event(self._env)
             self._getters.append(evt)
-            return await evt
+            try:
+                return await evt
+            except Interrupt:
+                # Runner was cancelled while waiting; remove orphan getter.
+                if evt in self._getters:
+                    self._getters.remove(evt)
+                raise
 
     def is_empty(self):
         """Is the queue empty?"""

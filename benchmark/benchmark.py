@@ -15,7 +15,6 @@ from asimpy import (
     Process,
     Queue,
     Resource,
-    Timeout,
 )
 
 
@@ -299,7 +298,7 @@ def bench_mixed_simulation(n):
 
         async def run(self):
             for _ in range(self.count):
-                item = await self.q.get()
+                await self.q.get()
                 await self.res.acquire()
                 await self.timeout(2)
                 await self.res.release()
