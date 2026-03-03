@@ -22,6 +22,7 @@ def test_process_basic_execution():
 
 def test_process_with_timeout():
     """Test process with timeout."""
+
     class WaitingProcess(Process):
         async def run(self):
             await self.timeout(5)
@@ -35,6 +36,7 @@ def test_process_with_timeout():
 
 def test_process_init_with_args():
     """Test process initialization with arguments."""
+
     class ProcessWithArgs(Process):
         def init(self, value, name=None):
             self.value = value
@@ -52,6 +54,7 @@ def test_process_init_with_args():
 
 def test_process_now_property():
     """Test process now property."""
+
     class TimeCheckProcess(Process):
         async def run(self):
             self.start_time = self.now
@@ -67,6 +70,7 @@ def test_process_now_property():
 
 def test_process_interrupt():
     """Test process interruption."""
+
     class InterruptibleProcess(Process):
         def init(self):
             self.interrupted = False
@@ -89,6 +93,7 @@ def test_process_interrupt():
 
 def test_process_multiple_interrupts():
     """Test multiple interrupts."""
+
     class MultiInterruptProcess(Process):
         def init(self):
             self.interrupt_count = 0
@@ -113,6 +118,7 @@ def test_process_multiple_interrupts():
 
 def test_process_interrupt_already_done():
     """Test interrupting already completed process."""
+
     class QuickProcess(Process):
         async def run(self):
             self.completed = True
@@ -126,6 +132,7 @@ def test_process_interrupt_already_done():
 
 def test_process_exception_handling():
     """Test process exception handling."""
+
     class FailingProcess(Process):
         async def run(self):
             raise ValueError("test error")
@@ -138,6 +145,7 @@ def test_process_exception_handling():
 
 def test_process_done_flag():
     """Test process done flag."""
+
     class TestProcess(Process):
         async def run(self):
             await self.timeout(5)
@@ -151,6 +159,7 @@ def test_process_done_flag():
 
 def test_process_loop_called_after_done():
     """Test that _loop returns early when process is already done."""
+
     class Worker(Process):
         def init(self, evt):
             self.finished = False

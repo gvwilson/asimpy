@@ -2,10 +2,14 @@
 
 from typing import TYPE_CHECKING
 from .event import Event
-from .environment import _NO_TIME
 
 if TYPE_CHECKING:
     from .environment import Environment
+
+
+# Sentinel returned by Timeout._fire when the timeout was cancelled.
+# Tells run() not to advance the clock for a phantom event.
+_NO_TIME = object()
 
 
 class Timeout(Event):

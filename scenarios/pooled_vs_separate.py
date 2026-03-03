@@ -6,8 +6,8 @@ import statistics
 from asimpy import Environment, Process, Resource
 
 SIM_TIME = 100_000
-ARRIVAL_RATE = 1.8   # total arrivals per time unit across both systems
-SERVICE_RATE = 1.0   # per server
+ARRIVAL_RATE = 1.8  # total arrivals per time unit across both systems
+SERVICE_RATE = 1.0  # per server
 N_SERVERS = 2
 SEED = 42
 
@@ -29,6 +29,7 @@ class Customer(Process):
 
 class PooledArrivals(Process):
     """All customers join one shared queue feeding N_SERVERS servers."""
+
     def init(self, arrival_rate: float, server: Resource, sojourn_times: list):
         self.arrival_rate = arrival_rate
         self.server = server
@@ -42,6 +43,7 @@ class PooledArrivals(Process):
 
 class SeparateArrivals(Process):
     """Each customer randomly picks one of two dedicated servers and cannot switch."""
+
     def init(self, arrival_rate: float, servers: list[Resource], sojourn_times: list):
         self.arrival_rate = arrival_rate
         self.servers = servers
@@ -93,4 +95,4 @@ for rho in [0.5, 0.6, 0.7, 0.8, 0.9]:
     rate = rho * N_SERVERS * SERVICE_RATE
     pw = run_pooled(arrival_rate=rate)
     sw = run_separate(arrival_rate=rate)
-    print(f"{rho:>6.2f}  {pw:>10.3f}  {sw:>12.3f}  {sw/pw:>7.2f}x")
+    print(f"{rho:>6.2f}  {pw:>10.3f}  {sw:>12.3f}  {sw / pw:>7.2f}x")

@@ -12,9 +12,9 @@ import statistics
 from asimpy import Environment, Process, Queue
 
 SIM_TIME = 30_000
-SERVICE_RATE_HI = 2.0   # mean service time = 0.5 for hi-priority
-SERVICE_RATE_LO = 1.0   # mean service time = 1.0 for lo-priority
-ARRIVAL_RATE_LO = 0.2   # rho_lo = 0.2 / 1.0 = 0.20  (fixed)
+SERVICE_RATE_HI = 2.0  # mean service time = 0.5 for hi-priority
+SERVICE_RATE_LO = 1.0  # mean service time = 1.0 for lo-priority
+ARRIVAL_RATE_LO = 0.2  # rho_lo = 0.2 / 1.0 = 0.20  (fixed)
 AGING_THRESHOLD = 15.0  # lo-priority promoted if waiting longer than this
 SEED = 42
 
@@ -26,8 +26,8 @@ class StaticPriorityServer(Process):
     lo_q: holds (arrival_time, service_time) for low-priority jobs.
     Always drains hi_q first.
     """
-    def init(self, hi_q: Queue, lo_q: Queue,
-             sojourn_hi: list, sojourn_lo: list):
+
+    def init(self, hi_q: Queue, lo_q: Queue, sojourn_hi: list, sojourn_lo: list):
         self.hi_q = hi_q
         self.lo_q = lo_q
         self.sojourn_hi = sojourn_hi
@@ -54,8 +54,8 @@ class AgingServer(Process):
     Non-preemptive priority with aging: a lo-priority job that has waited
     longer than AGING_THRESHOLD is promoted ahead of fresh hi-priority jobs.
     """
-    def init(self, hi_q: Queue, lo_q: Queue,
-             sojourn_hi: list, sojourn_lo: list):
+
+    def init(self, hi_q: Queue, lo_q: Queue, sojourn_hi: list, sojourn_lo: list):
         self.hi_q = hi_q
         self.lo_q = lo_q
         self.sojourn_hi = sojourn_hi
@@ -64,8 +64,10 @@ class AgingServer(Process):
     async def run(self):
         while True:
             # Check if oldest lo-priority job has aged past threshold
-            lo_aged = (not self.lo_q.is_empty() and
-                       self.now - self.lo_q._items[0][0] >= AGING_THRESHOLD)
+            lo_aged = (
+                not self.lo_q.is_empty()
+                and self.now - self.lo_q._items[0][0] >= AGING_THRESHOLD
+            )
             if lo_aged:
                 arrival, svc = await self.lo_q.get()
                 await self.timeout(svc)
@@ -105,8 +107,9 @@ class LoSource(Process):
             await self.q.put((self.now, svc))
 
 
-def simulate(arrival_rate_hi: float, use_aging: bool,
-             seed: int = SEED) -> tuple[list, list]:
+def simulate(
+    arrival_rate_hi: float, use_aging: bool, seed: int = SEED
+) -> tuple[list, list]:
     random.seed(seed)
     env = Environment()
     hi_q: Queue = Queue(env)
@@ -128,8 +131,10 @@ def mean_or_na(lst: list) -> str:
 
 
 print("Priority Starvation")
-print(f"  lo-priority: arrival rate {ARRIVAL_RATE_LO}, "
-      f"mean service {1/SERVICE_RATE_LO:.1f}, rho_lo = {ARRIVAL_RATE_LO/SERVICE_RATE_LO:.2f}")
+print(
+    f"  lo-priority: arrival rate {ARRIVAL_RATE_LO}, "
+    f"mean service {1 / SERVICE_RATE_LO:.1f}, rho_lo = {ARRIVAL_RATE_LO / SERVICE_RATE_LO:.2f}"
+)
 print(f"  Aging threshold: {AGING_THRESHOLD} time units")
 print()
 
@@ -141,8 +146,10 @@ for rho_hi in [0.10, 0.20, 0.40, 0.60, 0.70, 0.80]:
     rate_hi = rho_hi * SERVICE_RATE_HI
     hi, lo = simulate(rate_hi, use_aging=False)
     rho_total = rho_hi + ARRIVAL_RATE_LO / SERVICE_RATE_LO
-    print(f"  {rho_hi:>7.2f}  {rho_total:>10.2f}  "
-          f"{mean_or_na(hi):>10}  {mean_or_na(lo):>10}")
+    print(
+        f"  {rho_hi:>7.2f}  {rho_total:>10.2f}  "
+        f"{mean_or_na(hi):>10}  {mean_or_na(lo):>10}"
+    )
 
 print()
 
@@ -151,12 +158,14 @@ FIXED_RHO_HI = 0.70
 rate_hi = FIXED_RHO_HI * SERVICE_RATE_HI
 rho_total = FIXED_RHO_HI + ARRIVAL_RATE_LO / SERVICE_RATE_LO
 
-print(f"Part 2 — Static vs. aging at rho_hi={FIXED_RHO_HI:.2f}, "
-      f"rho_total={rho_total:.2f}")
+print(
+    f"Part 2 — Static vs. aging at rho_hi={FIXED_RHO_HI:.2f}, rho_total={rho_total:.2f}"
+)
 print()
 
 hi_static, lo_static = simulate(rate_hi, use_aging=False)
-hi_aging,  lo_aging  = simulate(rate_hi, use_aging=True)
+hi_aging, lo_aging = simulate(rate_hi, use_aging=True)
+
 
 def pct(lst: list, p: float) -> str:
     if not lst:
@@ -164,18 +173,29 @@ def pct(lst: list, p: float) -> str:
     idx = int(p * len(lst))
     return f"{sorted(lst)[idx]:.2f}"
 
+
 print("  Static priority (hi always beats lo):")
-print(f"    Hi: n={len(hi_static):<5} mean={mean_or_na(hi_static):>6}  "
-      f"p95={pct(hi_static, 0.95):>6}  p99={pct(hi_static, 0.99):>6}")
-print(f"    Lo: n={len(lo_static):<5} mean={mean_or_na(lo_static):>6}  "
-      f"p95={pct(lo_static, 0.95):>6}  p99={pct(lo_static, 0.99):>6}")
+print(
+    f"    Hi: n={len(hi_static):<5} mean={mean_or_na(hi_static):>6}  "
+    f"p95={pct(hi_static, 0.95):>6}  p99={pct(hi_static, 0.99):>6}"
+)
+print(
+    f"    Lo: n={len(lo_static):<5} mean={mean_or_na(lo_static):>6}  "
+    f"p95={pct(lo_static, 0.95):>6}  p99={pct(lo_static, 0.99):>6}"
+)
 print()
 print(f"  Aging (lo promoted after {AGING_THRESHOLD:.0f} units):")
-print(f"    Hi: n={len(hi_aging):<5} mean={mean_or_na(hi_aging):>6}  "
-      f"p95={pct(hi_aging, 0.95):>6}  p99={pct(hi_aging, 0.99):>6}")
-print(f"    Lo: n={len(lo_aging):<5} mean={mean_or_na(lo_aging):>6}  "
-      f"p95={pct(lo_aging, 0.95):>6}  p99={pct(lo_aging, 0.99):>6}")
+print(
+    f"    Hi: n={len(hi_aging):<5} mean={mean_or_na(hi_aging):>6}  "
+    f"p95={pct(hi_aging, 0.95):>6}  p99={pct(hi_aging, 0.99):>6}"
+)
+print(
+    f"    Lo: n={len(lo_aging):<5} mean={mean_or_na(lo_aging):>6}  "
+    f"p95={pct(lo_aging, 0.95):>6}  p99={pct(lo_aging, 0.99):>6}"
+)
 print()
 if lo_static and lo_aging:
-    print(f"  Aging caps max lo-priority wait at ~{AGING_THRESHOLD:.0f} units, "
-          f"reducing p99 from {pct(lo_static, 0.99)} to {pct(lo_aging, 0.99)}.")
+    print(
+        f"  Aging caps max lo-priority wait at ~{AGING_THRESHOLD:.0f} units, "
+        f"reducing p99 from {pct(lo_static, 0.99)} to {pct(lo_aging, 0.99)}."
+    )

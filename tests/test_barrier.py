@@ -150,7 +150,7 @@ def test_firstof_barrier_late_release_does_not_error():
 
         async def run(self):
             await self.timeout(5)
-            self.barrier.release()   # must not raise
+            self.barrier.release()  # must not raise
             self.released = True
 
     env = Environment()
@@ -160,7 +160,7 @@ def test_firstof_barrier_late_release_does_not_error():
     env.run()
 
     assert waiter.result == ("t", None)
-    assert releaser.released is True     # release() completed without error
+    assert releaser.released is True  # release() completed without error
 
 
 def test_firstof_two_barriers_first_released_wins():
@@ -173,9 +173,7 @@ def test_firstof_two_barriers_first_released_wins():
             self.result = None
 
         async def run(self):
-            self.result = await FirstOf(
-                self._env, b1=self.b1.wait(), b2=self.b2.wait()
-            )
+            self.result = await FirstOf(self._env, b1=self.b1.wait(), b2=self.b2.wait())
 
     class Releaser(Process):
         def init(self, b1, b2):
@@ -184,9 +182,9 @@ def test_firstof_two_barriers_first_released_wins():
 
         async def run(self):
             await self.timeout(3)
-            self.b1.release()    # b1 fires first
+            self.b1.release()  # b1 fires first
             await self.timeout(2)
-            self.b2.release()    # b2 fires second (should be ignored)
+            self.b2.release()  # b2 fires second (should be ignored)
 
     env = Environment()
     b1 = Barrier(env)
@@ -196,7 +194,7 @@ def test_firstof_two_barriers_first_released_wins():
     env.run()
 
     assert racer.result == ("b1", None)
-    assert env.now == 5   # simulation ran to t=5 (second release)
+    assert env.now == 5  # simulation ran to t=5 (second release)
 
 
 def test_firstof_barrier_multiple_processes_some_race():

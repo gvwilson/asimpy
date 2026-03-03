@@ -12,8 +12,12 @@ if TYPE_CHECKING:
 class Queue:
     """FIFO or priority queue."""
 
-    def __init__(self, env: "Environment", max_capacity: int | None = None,
-                 priority: bool = False):
+    def __init__(
+        self,
+        env: "Environment",
+        max_capacity: int | None = None,
+        priority: bool = False,
+    ):
         """
         Construct queue.
 
@@ -26,7 +30,9 @@ class Queue:
             ValueError: for invalid `max_capacity`.
         """
         if max_capacity is not None and max_capacity <= 0:
-            raise ValueError(f"queue max_capacity must be a positive integer, got {max_capacity}")
+            raise ValueError(
+                f"queue max_capacity must be a positive integer, got {max_capacity}"
+            )
         self._env = env
         self._priority = priority
         self._max_capacity = max_capacity

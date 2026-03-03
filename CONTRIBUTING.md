@@ -13,21 +13,25 @@ but must abide by our Code of Conduct.
 
 ## Operations
 
-`task --list` displays a list of actions:
+`make` with no arguments displays a list of actions:
 
-| action   | effect |
-| -------- | |
-| build    | build package |
-| check    | check code issues |
-| clean    | clean up |
-| concat   | concatenate files |
-| docs     | build documentation |
-| fix      | fix code issues |
-| format   | format code |
-| lint     | run all code checks |
-| examples | regenerate example output |
-| publish  | publish using ~/.pypirc credentials |
-| serve    | serve documentation |
-| types    | check types |
+| target    | action |
+| :-------- | :----- |
+| commands  | show available commands (*) |
+| benchmark | run benchmark for N=10000 |
+| build     | build package |
+| check     | check code issues |
+| clean     | clean up |
+| coverage  | run tests with coverage |
+| docs      | build documentation |
+| fix       | fix code issues |
+| format    | format code |
+| lint      | run all code checks |
+| examples  | regenerate example output |
+| publish   | publish using ~/.pypirc credentials |
+| scenarios | regenerate scenario output |
+| serve     | serve documentation |
+| test      | run tests |
+| types     | check types |
 
 [repo]: https://github.com/gvwilson/asimpy

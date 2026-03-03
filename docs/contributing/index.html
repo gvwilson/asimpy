@@ -1266,62 +1266,78 @@ but must abide by our Code of Conduct.</p>
 <li><code>uv sync --extra dev</code></li>
 </ul>
 <h2 id="operations">Operations</h2>
-<p><code>task --list</code> displays a list of actions:</p>
+<p><code>make</code> with no arguments displays a list of actions:</p>
 <table>
 <thead>
 <tr>
-<th>action</th>
-<th>effect</th>
+<th style="text-align: left;">target</th>
+<th style="text-align: left;">action</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>build</td>
-<td>build package</td>
+<td style="text-align: left;">commands</td>
+<td style="text-align: left;">show available commands (*)</td>
 </tr>
 <tr>
-<td>check</td>
-<td>check code issues</td>
+<td style="text-align: left;">benchmark</td>
+<td style="text-align: left;">run benchmark for N=10000</td>
 </tr>
 <tr>
-<td>clean</td>
-<td>clean up</td>
+<td style="text-align: left;">build</td>
+<td style="text-align: left;">build package</td>
 </tr>
 <tr>
-<td>concat</td>
-<td>concatenate files</td>
+<td style="text-align: left;">check</td>
+<td style="text-align: left;">check code issues</td>
 </tr>
 <tr>
-<td>docs</td>
-<td>build documentation</td>
+<td style="text-align: left;">clean</td>
+<td style="text-align: left;">clean up</td>
 </tr>
 <tr>
-<td>fix</td>
-<td>fix code issues</td>
+<td style="text-align: left;">coverage</td>
+<td style="text-align: left;">run tests with coverage</td>
 </tr>
 <tr>
-<td>format</td>
-<td>format code</td>
+<td style="text-align: left;">docs</td>
+<td style="text-align: left;">build documentation</td>
 </tr>
 <tr>
-<td>lint</td>
-<td>run all code checks</td>
+<td style="text-align: left;">fix</td>
+<td style="text-align: left;">fix code issues</td>
 </tr>
 <tr>
-<td>examples</td>
-<td>regenerate example output</td>
+<td style="text-align: left;">format</td>
+<td style="text-align: left;">format code</td>
 </tr>
 <tr>
-<td>publish</td>
-<td>publish using ~/.pypirc credentials</td>
+<td style="text-align: left;">lint</td>
+<td style="text-align: left;">run all code checks</td>
 </tr>
 <tr>
-<td>serve</td>
-<td>serve documentation</td>
+<td style="text-align: left;">examples</td>
+<td style="text-align: left;">regenerate example output</td>
 </tr>
 <tr>
-<td>types</td>
-<td>check types</td>
+<td style="text-align: left;">publish</td>
+<td style="text-align: left;">publish using ~/.pypirc credentials</td>
+</tr>
+<tr>
+<td style="text-align: left;">scenarios</td>
+<td style="text-align: left;">regenerate scenario output</td>
+</tr>
+<tr>
+<td style="text-align: left;">serve</td>
+<td style="text-align: left;">serve documentation</td>
+</tr>
+<tr>
+<td style="text-align: left;">test</td>
+<td style="text-align: left;">run tests</td>
+</tr>
+<tr>
+<td style="text-align: left;">types</td>
+<td style="text-align: left;">check types</td>
 </tr>
 </tbody>
 </table>

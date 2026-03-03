@@ -5,11 +5,7 @@ import heapq
 import itertools
 from typing import Callable
 
-# Sentinel returned by Timeout._fire when the timeout was cancelled.
-# Tells run() not to advance the clock for a phantom event.
-_NO_TIME = object()
-
-from .timeout import Timeout
+from .timeout import _NO_TIME, Timeout
 
 
 class Environment:
@@ -21,18 +17,15 @@ class Environment:
 
     @property
     def now(self):
+        """Get the current simulated time."""
         return self._now
 
     def immediate(self, callback):
+        """Schedule a callback for immediate execution."""
         self.schedule(self._now, callback)
 
-    def schedule(self, time, callback):
-        heapq.heappush(self._pending, _Pending(time, callback))
-
-    def timeout(self, delay):
-        return Timeout(self, delay)
-
     def run(self, until=None):
+        """Run simulation."""
         while self._pending:
             pending = heapq.heappop(self._pending)
             if until is not None and pending.time > until:
@@ -40,6 +33,14 @@ class Environment:
             result = pending.callback()
             if (result is not _NO_TIME) and (pending.time > self._now):
                 self._now = pending.time
+
+    def schedule(self, time, callback):
+        """Schedule a callback to run at a specified future time."""
+        heapq.heappush(self._pending, _Pending(time, callback))
+
+    def timeout(self, delay):
+        """Create delay."""
+        return Timeout(self, delay)
 
     def __str__(self):
         return f"Env(t={self._now})"

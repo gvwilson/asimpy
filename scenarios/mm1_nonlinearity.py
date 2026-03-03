@@ -24,8 +24,13 @@ class Customer(Process):
 
 
 class ArrivalStream(Process):
-    def init(self, arrival_rate: float, service_rate: float,
-             server: Resource, sojourn_times: list):
+    def init(
+        self,
+        arrival_rate: float,
+        service_rate: float,
+        server: Resource,
+        sojourn_times: list,
+    ):
         self.arrival_rate = arrival_rate
         self.service_rate = service_rate
         self.server = server
@@ -37,7 +42,9 @@ class ArrivalStream(Process):
             Customer(self._env, self.server, self.service_rate, self.sojourn_times)
 
 
-def simulate(rho: float, sim_time: float = SIM_TIME, seed: int = SEED) -> tuple[float, float]:
+def simulate(
+    rho: float, sim_time: float = SIM_TIME, seed: int = SEED
+) -> tuple[float, float]:
     """Return (simulated L, theoretical L) for M/M/1 at utilization rho."""
     random.seed(seed)
     arrival_rate = rho * SERVICE_RATE
@@ -47,8 +54,8 @@ def simulate(rho: float, sim_time: float = SIM_TIME, seed: int = SEED) -> tuple[
     ArrivalStream(env, arrival_rate, SERVICE_RATE, server, sojourn_times)
     env.run(until=sim_time)
     mean_W = statistics.mean(sojourn_times) if sojourn_times else 0.0
-    sim_L = arrival_rate * mean_W   # Little's Law: L = lambda * W
-    theory_L = rho / (1.0 - rho)   # M/M/1 exact result
+    sim_L = arrival_rate * mean_W  # Little's Law: L = lambda * W
+    theory_L = rho / (1.0 - rho)  # M/M/1 exact result
     return sim_L, theory_L
 
 

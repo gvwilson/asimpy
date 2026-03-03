@@ -5,14 +5,14 @@ import statistics
 
 from asimpy import Environment, Process, Queue
 
-ARRIVAL_RATE = 0.7   # jobs per unit time; < 1.0 so the system is stable
+ARRIVAL_RATE = 0.7  # jobs per unit time; < 1.0 so the system is stable
 SIM_TIME = 50_000
 SEED = 42
 
 # Service-time distribution: mix of short and long jobs
 SHORT_RATE = 4.0  # mean service = 0.25  (90 % of jobs)
-LONG_RATE  = 0.2  # mean service = 5.0   (10 % of jobs)
-LONG_PROB  = 0.10
+LONG_RATE = 0.2  # mean service = 5.0   (10 % of jobs)
+LONG_PROB = 0.10
 
 
 def service_time() -> float:
@@ -49,8 +49,7 @@ class JobSource(Process):
 
 
 class Server(Process):
-    def init(self, job_queue: Queue, arrivals: dict,
-             sojourn_times: list, sjf: bool):
+    def init(self, job_queue: Queue, arrivals: dict, sojourn_times: list, sjf: bool):
         self.job_queue = job_queue
         self.arrivals = arrivals
         self.sojourn_times = sojourn_times
@@ -78,30 +77,35 @@ def simulate(sjf: bool, seed: int = SEED) -> dict:
     Server(env, q, arrivals, sojourn_times, sjf)
     env.run(until=SIM_TIME)
     return {
-        "mean":   statistics.mean(sojourn_times),
+        "mean": statistics.mean(sojourn_times),
         "median": statistics.median(sojourn_times),
-        "p95":    sorted(sojourn_times)[int(0.95 * len(sojourn_times))],
-        "p99":    sorted(sojourn_times)[int(0.99 * len(sojourn_times))],
-        "n":      len(sojourn_times),
+        "p95": sorted(sojourn_times)[int(0.95 * len(sojourn_times))],
+        "p99": sorted(sojourn_times)[int(0.99 * len(sojourn_times))],
+        "n": len(sojourn_times),
     }
 
 
 fifo = simulate(sjf=False)
-sjf  = simulate(sjf=True)
+sjf = simulate(sjf=True)
 
 print("Convoy Effect: FIFO vs. Shortest Job First (SJF)")
 print()
-print(f"  Arrival rate: {ARRIVAL_RATE}, estimated mean service: "
-      f"{(1-LONG_PROB)/SHORT_RATE + LONG_PROB/LONG_RATE:.3f}")
-print(f"  Short jobs: {100*(1-LONG_PROB):.0f}% (mean {1/SHORT_RATE:.2f}), "
-      f"Long jobs: {100*LONG_PROB:.0f}% (mean {1/LONG_RATE:.1f})")
+print(
+    f"  Arrival rate: {ARRIVAL_RATE}, estimated mean service: "
+    f"{(1 - LONG_PROB) / SHORT_RATE + LONG_PROB / LONG_RATE:.3f}"
+)
+print(
+    f"  Short jobs: {100 * (1 - LONG_PROB):.0f}% (mean {1 / SHORT_RATE:.2f}), "
+    f"Long jobs: {100 * LONG_PROB:.0f}% (mean {1 / LONG_RATE:.1f})"
+)
 print()
 print(f"  {'Metric':<12}  {'FIFO':>10}  {'SJF':>10}  {'Improvement':>12}")
 print("  " + "-" * 50)
 for metric in ("mean", "median", "p95", "p99"):
     ratio = fifo[metric] / sjf[metric]
-    print(f"  {metric:<12}  {fifo[metric]:>10.3f}  {sjf[metric]:>10.3f}  "
-          f"{ratio:>11.2f}x")
+    print(
+        f"  {metric:<12}  {fifo[metric]:>10.3f}  {sjf[metric]:>10.3f}  {ratio:>11.2f}x"
+    )
 print()
 print("  Note: SJF is optimal for mean sojourn time but requires")
 print("  knowing job sizes in advance (not always possible in practice).")

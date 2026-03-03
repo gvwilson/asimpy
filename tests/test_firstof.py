@@ -108,9 +108,9 @@ def test_firstof_queue_loser_item_preserved_empty_queues():
 
         async def run(self):
             await self.timeout(1)
-            await self.q1.put("from_q1")   # q1 wins
+            await self.q1.put("from_q1")  # q1 wins
             await self.timeout(1)
-            await self.q2.put("from_q2")   # must remain in q2
+            await self.q2.put("from_q2")  # must remain in q2
 
     env = Environment()
     q1 = Queue(env)
@@ -136,7 +136,7 @@ def test_firstof_queue_loser_item_preserved_nonempty_queues():
         def init(self, q1, q2):
             self.q1 = q1
             self.q2 = q2
-            self.got = None
+            self.got: tuple[str, object] = ("", None)
 
         async def run(self):
             # Both queues already have items at this point.
@@ -249,9 +249,7 @@ def test_firstof_queue_multiple_rounds():
 
         async def run(self):
             for _ in range(3):
-                name, value = await FirstOf(
-                    self._env, a=self.q1.get(), b=self.q2.get()
-                )
+                name, value = await FirstOf(self._env, a=self.q1.get(), b=self.q2.get())
                 self.results.append((name, value))
 
     class Feeder(Process):

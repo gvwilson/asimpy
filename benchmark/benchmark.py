@@ -174,16 +174,18 @@ def bench_resource(n):
     """n processes each acquire and release a shared resource."""
 
     class Worker(Process):
+        def init(self, resource):
+            self.resource = resource
+
         async def run(self):
             await self.resource.acquire()
             await self.timeout(1)
-            await self.resource.release()
+            self.resource.release()
 
     env = Environment()
     res = Resource(env, capacity=5)
     for _ in range(n):
-        w = Worker(env)
-        w.resource = res
+        Worker(env, res)
     env.run()
 
 

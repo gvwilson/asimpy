@@ -6,13 +6,14 @@ import statistics
 from asimpy import Environment, Process
 
 SIM_TIME = 100_000
-MEAN_HEADWAY = 10.0   # average time between buses
-N_PASSENGERS = 20_000 # random-time passengers used for wait estimation
+MEAN_HEADWAY = 10.0  # average time between buses
+N_PASSENGERS = 20_000  # random-time passengers used for wait estimation
 SEED = 42
 
 
 class BusService(Process):
     """Generates buses and records their arrival times."""
+
     def init(self, mode: str, bus_arrivals: list):
         self.mode = mode
         self.bus_arrivals = bus_arrivals
@@ -43,8 +44,9 @@ def collect_buses(mode: str, seed: int = SEED) -> list[float]:
     return bus_arrivals
 
 
-def expected_wait(bus_arrivals: list[float], n: int = N_PASSENGERS,
-                  seed: int = SEED) -> float:
+def expected_wait(
+    bus_arrivals: list[float], n: int = N_PASSENGERS, seed: int = SEED
+) -> float:
     """Estimate mean passenger wait by sampling random arrival times."""
     rng = random.Random(seed + 1)
     max_t = bus_arrivals[-1]
@@ -65,9 +67,13 @@ def headway_variance(bus_arrivals: list[float]) -> float:
 
 
 print("Inspector's Paradox")
-print(f"  Mean headway: {MEAN_HEADWAY}  =>  naive expected wait = {MEAN_HEADWAY/2:.1f}")
+print(
+    f"  Mean headway: {MEAN_HEADWAY}  =>  naive expected wait = {MEAN_HEADWAY / 2:.1f}"
+)
 print()
-print(f"  {'Mode':<14}  {'Var(headway)':>14}  {'Mean wait':>10}  {'Ratio to naive':>16}")
+print(
+    f"  {'Mode':<14}  {'Var(headway)':>14}  {'Mean wait':>10}  {'Ratio to naive':>16}"
+)
 print("  " + "-" * 60)
 
 for mode in ["regular", "exponential", "clustered"]:
@@ -88,9 +94,13 @@ print()
 # E[wait] = mu/2 + mu^2/(2*mu) = mu/2 + mu/2 = mu
 mu = MEAN_HEADWAY
 print(f"  Exponential (Var = E^2 = {mu**2:.1f}):")
-print(f"    Predicted wait = {mu/2:.1f} + {mu**2/(2*mu):.1f} = {mu:.1f}  (= full mean headway!)")
+print(
+    f"    Predicted wait = {mu / 2:.1f} + {mu**2 / (2 * mu):.1f} = {mu:.1f}  (= full mean headway!)"
+)
 
 # Clustered: E=10, Var = E[(H - 10)^2] = 0.5*(2-10)^2 + 0.5*(18-10)^2 = 64
-var_clustered = 0.5 * (2 - mu)**2 + 0.5 * (18 - mu)**2
+var_clustered = 0.5 * (2 - mu) ** 2 + 0.5 * (18 - mu) ** 2
 print(f"  Clustered (Var = {var_clustered:.1f}):")
-print(f"    Predicted wait = {mu/2:.1f} + {var_clustered/(2*mu):.1f} = {mu/2 + var_clustered/(2*mu):.1f}")
+print(
+    f"    Predicted wait = {mu / 2:.1f} + {var_clustered / (2 * mu):.1f} = {mu / 2 + var_clustered / (2 * mu):.1f}"
+)
