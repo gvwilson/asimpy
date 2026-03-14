@@ -359,7 +359,12 @@ def test_queue_get_unblocks_putter():
 
 
 def test_queue_cancel_blocked_put():
-    """Test that cancelling a blocked putter's event removes it from putters."""
+    """Test that cancelling a blocked putter's event marks it cancelled.
+
+    Lazy deletion leaves the entry in _putters but marks the event cancelled
+    so that the next get() skips it rather than silently losing the item.
+    """
+    from asimpy.event import _CANCELLED
 
     class BlockedProducer(Process):
         def init(self, q):
@@ -383,7 +388,42 @@ def test_queue_cancel_blocked_put():
     BlockedProducer(env, q)
     Canceller(env, q)
     env.run()
-    assert q._putters == []
+    # With lazy deletion, cancelled putters remain but are marked cancelled.
+    assert all(evt._value is _CANCELLED for evt, _ in q._putters)
+
+
+def test_queue_get_skips_cancelled_putter():
+    """get() skips cancelled putters (lazy deletion) and promotes the next valid one."""
+    from asimpy import PriorityQueue
+    from asimpy.event import Event
+
+    env = Environment()
+    q = Queue(env, max_capacity=1)
+    q._add("item")  # fill the queue
+
+    # Inject a cancelled putter followed by a valid one.
+    cancelled_evt = Event(env)
+    valid_evt = Event(env)
+    q._putters.append((cancelled_evt, "cancelled_item"))
+    q._putters.append((valid_evt, "valid_item"))
+    cancelled_evt.cancel()
+
+    class Getter(Process):
+        def init(self, q, results):
+            self.q = q
+            self.results = results
+
+        async def run(self):
+            self.results.append(await self.q.get())
+
+    results = []
+    Getter(env, q, results)
+    env.run()
+
+    assert results == ["item"]
+    # The valid putter was promoted into the queue.
+    assert list(q._items) == ["valid_item"]
+    assert valid_evt._triggered
 
 
 def test_queue_blocked_putters_fifo():

@@ -1,6 +1,8 @@
 """Barrier that holds multiple processes until released."""
 
+from collections import deque
 from typing import TYPE_CHECKING
+
 from .event import Event
 
 if TYPE_CHECKING:
@@ -18,7 +20,7 @@ class Barrier:
             env: simulation environment.
         """
         self._env = env
-        self._waiters = []
+        self._waiters: deque = deque()
 
     async def wait(self):
         """Wait until barrier released."""

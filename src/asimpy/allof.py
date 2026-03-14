@@ -9,6 +9,8 @@ from ._utils import _ensure_event
 class AllOf(Event):
     """Wait for all of a set of events."""
 
+    __slots__ = ("_events", "_results")
+
     def __init__(self, env: Environment, **events: Any):
         """
         Construct new collective wait.

@@ -1,6 +1,6 @@
 """Test asimpy priority queue."""
 
-from asimpy import Environment, Queue, Process
+from asimpy import Environment, PriorityQueue, Process
 
 
 def test_priority_queue_ordering():
@@ -20,7 +20,7 @@ def test_priority_queue_ordering():
             self.results.append(await self.pq.get())
 
     env = Environment()
-    pq = Queue(env, priority=True)
+    pq = PriorityQueue(env)
     proc = PQUser(env, pq)
     env.run()
     assert proc.results == [1, 2, 3]
@@ -42,7 +42,7 @@ def test_priority_queue_with_tuples():
             self.results.append(await self.pq.get())
 
     env = Environment()
-    pq = Queue(env, priority=True)
+    pq = PriorityQueue(env)
     proc = TupleUser(env, pq)
     env.run()
     assert proc.results[0] == (1, "first")
@@ -66,7 +66,25 @@ def test_priority_queue_max_capacity():
                 self.results.append(await self.pq.get())
 
     env = Environment()
-    pq = Queue(env, max_capacity=3, priority=True)
+    pq = PriorityQueue(env, max_capacity=3)
     proc = PQUser(env, pq)
     env.run()
     assert proc.results == [2, 5, 8]
+
+
+def test_priority_queue_is_empty():
+    """PriorityQueue.is_empty() returns True when empty, False otherwise."""
+    env = Environment()
+    pq = PriorityQueue(env)
+    assert pq.is_empty()
+    pq._items.append(42)
+    assert not pq.is_empty()
+
+
+def test_priority_queue_put_back():
+    """PriorityQueue._put_back() re-inserts an item in sorted order."""
+    env = Environment()
+    pq = PriorityQueue(env)
+    pq._items = [1, 3, 5]
+    pq._put_back(2)
+    assert pq._items == [1, 2, 3, 5]

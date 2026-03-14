@@ -15,11 +15,12 @@ def test_ensure_event_rejects_invalid_type():
 
 def test_event_initialization():
     """Test event initialization."""
+    from asimpy.event import _PENDING
     env = Environment()
     evt = Event(env)
     assert not evt._triggered
     assert not evt._cancelled
-    assert evt._value is None
+    assert evt._value is _PENDING
 
 
 def test_event_succeed():

@@ -62,7 +62,7 @@ def _(mo):
     mo.md(r"""
     ## Why Queues Form at All
 
-    With deterministic arrivals and service (every customer arrives exactly $1/\lambda$ apart and takes exactly $1/\mu$), a server with $\rho < 1$ would never form a queue: each customer would depart before the next arrived. Randomness changes this. Sometimes three customers arrive close together before the server finishes even one, so the server falls briefly behind. Whle t recovers, customers wait.  These temporary pileups are unavoidable whenever inter-arrival or service times have any variance.
+    With deterministic arrivals and service (every customer arrives exactly $1/\lambda$ apart and takes exactly $1/\mu$), a server with $\rho < 1$ would never form a queue: each customer would depart before the next arrived. Randomness changes this. Sometimes three customers arrive close together before the server finishes even one, so the server falls briefly behind. While it recovers, customers wait.  These temporary pileups are unavoidable whenever inter-arrival or service times have any variance.
 
     The probability that exactly $n$ customers are in an M/M/1 system at steady state is:
 

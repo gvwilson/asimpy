@@ -120,7 +120,7 @@ def test_firstof_queue_loser_item_preserved_empty_queues():
     env.run(until=10)
 
     assert consumer.got == ("a", "from_q1")
-    assert q2._items == ["from_q2"], (
+    assert list(q2._items) == ["from_q2"], (
         "item_from_q2 was silently consumed by the orphaned _Runner getter"
     )
 
@@ -157,14 +157,16 @@ def test_firstof_queue_loser_item_preserved_nonempty_queues():
     winner_name, winner_value = racer.got
     assert winner_name == "a"
     assert winner_value == "alpha"
-    assert q2._items == ["beta"], "loser queue item was silently lost"
+    assert list(q2._items) == ["beta"], "loser queue item was silently lost"
 
 
 def test_firstof_queue_loser_getter_removed():
-    """After FirstOf resolves, the losing queue must have no orphan getters.
+    """After FirstOf resolves, the losing queue's orphan getter must be cancelled.
 
-    An orphan getter in _getters would steal the next put() silently.
+    Lazy deletion leaves cancelled entries in _getters, but put() must skip them
+    so that a subsequent put() delivers its item to a real waiter, not a ghost.
     """
+    from asimpy.event import _CANCELLED
 
     class Consumer(Process):
         def init(self, q1, q2):
@@ -189,7 +191,11 @@ def test_firstof_queue_loser_getter_removed():
     Trigger(env, q1)
     env.run(until=5)
 
-    assert q2._getters == [], "orphan getter remained in q2._getters after FirstOf"
+    # With lazy deletion, cancelled getters remain in the deque but are marked
+    # cancelled so that put() skips them rather than silently losing the item.
+    assert all(
+        evt._value is _CANCELLED for evt in q2._getters
+    ), "non-cancelled getter remained in q2._getters after FirstOf"
 
 
 def test_firstof_queue_loser_can_still_be_gotten():
@@ -269,9 +275,11 @@ def test_firstof_queue_multiple_rounds():
     Feeder(env, q1, q2)
     env.run(until=20)
 
+    from asimpy.event import _CANCELLED
     assert rr.results == [("a", "x"), ("b", "y"), ("a", "z")]
-    assert q1._getters == []
-    assert q2._getters == []
+    # Lazy deletion: any residual entries must be cancelled (harmless).
+    assert all(evt._value is _CANCELLED for evt in q1._getters)
+    assert all(evt._value is _CANCELLED for evt in q2._getters)
 
 
 def test_firstof_requires_at_least_one_event():

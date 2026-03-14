@@ -1815,7 +1815,8 @@ the <code>Interrupt</code>, tracking remaining work, and re-acquiring.</p>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PreemptiveResource</span><span class="p">:</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PreemptiveResource</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shared resource where higher-priority processes can preempt lower-priority users.</span>
 
 <span class="sd">    Priority is an integer; lower values are served first (0 is highest priority).</span>
@@ -1894,7 +1895,8 @@ the <code>Interrupt</code>, tracking remaining work, and re-acquiring.</p>
             <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
             <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
             <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span><span class="o">=</span><span class="n">user_rec</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">)</span>
+            <span class="c1"># Pre-trigger so the tight loop resumes without a heap round-trip.</span>
+            <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
             <span class="k">await</span> <span class="n">evt</span>
             <span class="k">return</span>
 
@@ -1908,7 +1910,8 @@ the <code>Interrupt</code>, tracking remaining work, and re-acquiring.</p>
                 <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
                 <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
                 <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span><span class="o">=</span><span class="n">user_rec</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">)</span>
+                <span class="c1"># Pre-trigger before interrupting the preempted process.</span>
+                <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">preempted_proc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">preempted_proc</span><span class="o">.</span><span class="n">interrupt</span><span class="p">(</span>
                         <span class="n">Preempted</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">process</span><span class="p">,</span> <span class="n">usage_since</span><span class="o">=</span><span class="n">preempted_since</span><span class="p">)</span>
@@ -1919,14 +1922,7 @@ the <code>Interrupt</code>, tracking remaining work, and re-acquiring.</p>
         <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
         <span class="n">waiter_rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">priority</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">process</span><span class="p">,</span> <span class="n">evt</span><span class="p">]</span>
         <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">,</span> <span class="n">waiter_rec</span><span class="p">)</span>
-
-        <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="n">rec</span><span class="o">=</span><span class="n">waiter_rec</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">pass</span>
-
-        <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="n">cancel</span>
+        <span class="c1"># No _on_cancel: lazy deletion in release() skips cancelled entries.</span>
         <span class="k">await</span> <span class="n">evt</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1949,12 +1945,18 @@ the <code>Interrupt</code>, tracking remaining work, and re-acquiring.</p>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">process</span><span class="si">}</span><span class="s2"> is not a current user of this resource&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
-            <span class="n">waiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Lazy deletion: skip waiters whose events were cancelled.</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+            <span class="n">waiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">waiter</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">_value</span> <span class="ow">is</span> <span class="n">_CANCELLED</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">w_priority</span><span class="p">,</span> <span class="n">w_seq</span><span class="p">,</span> <span class="n">w_process</span><span class="p">,</span> <span class="n">w_evt</span> <span class="o">=</span> <span class="n">waiter</span>
             <span class="n">user_rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">w_priority</span><span class="p">,</span> <span class="n">w_seq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">w_process</span><span class="p">]</span>
             <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
             <span class="n">w_evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
+            <span class="k">break</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2236,12 +2238,7 @@ than this request.</p>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">preempt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">preempt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Acquire one unit of the resource.</span>
 
 <span class="sd">    The calling process is identified via `env.active_process`, so this</span>
@@ -2262,7 +2259,8 @@ than this request.</p>
         <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
         <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
         <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span><span class="o">=</span><span class="n">user_rec</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">)</span>
+        <span class="c1"># Pre-trigger so the tight loop resumes without a heap round-trip.</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
         <span class="k">await</span> <span class="n">evt</span>
         <span class="k">return</span>
 
@@ -2276,7 +2274,8 @@ than this request.</p>
             <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
             <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
             <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span><span class="o">=</span><span class="n">user_rec</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">immediate</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">)</span>
+            <span class="c1"># Pre-trigger before interrupting the preempted process.</span>
+            <span class="n">evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">preempted_proc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">preempted_proc</span><span class="o">.</span><span class="n">interrupt</span><span class="p">(</span>
                     <span class="n">Preempted</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">process</span><span class="p">,</span> <span class="n">usage_since</span><span class="o">=</span><span class="n">preempted_since</span><span class="p">)</span>
@@ -2287,14 +2286,7 @@ than this request.</p>
     <span class="n">evt</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">)</span>
     <span class="n">waiter_rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">priority</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">process</span><span class="p">,</span> <span class="n">evt</span><span class="p">]</span>
     <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">,</span> <span class="n">waiter_rec</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="n">rec</span><span class="o">=</span><span class="n">waiter_rec</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">pass</span>
-
-    <span class="n">evt</span><span class="o">.</span><span class="n">_on_cancel</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="c1"># No _on_cancel: lazy deletion in release() skips cancelled entries.</span>
     <span class="k">await</span> <span class="n">evt</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2344,7 +2336,12 @@ has already been removed from the user list by the preemptor.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/asimpy/preemptive.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
@@ -2369,7 +2366,8 @@ has already been removed from the user list by the preemptor.</p>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Release one unit of the resource.</span>
 
 <span class="sd">    The calling process is identified via `env.active_process`.</span>
@@ -2389,12 +2387,18 @@ has already been removed from the user list by the preemptor.</p>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">process</span><span class="si">}</span><span class="s2"> is not a current user of this resource&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
-        <span class="n">waiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Lazy deletion: skip waiters whose events were cancelled.</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">:</span>
+        <span class="n">waiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">waiter</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">_value</span> <span class="ow">is</span> <span class="n">_CANCELLED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waiters</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">w_priority</span><span class="p">,</span> <span class="n">w_seq</span><span class="p">,</span> <span class="n">w_process</span><span class="p">,</span> <span class="n">w_evt</span> <span class="o">=</span> <span class="n">waiter</span>
         <span class="n">user_rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">w_priority</span><span class="p">,</span> <span class="n">w_seq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">w_process</span><span class="p">]</span>
         <span class="n">bisect</span><span class="o">.</span><span class="n">insort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">,</span> <span class="n">user_rec</span><span class="p">)</span>
         <span class="n">w_evt</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
+        <span class="k">break</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

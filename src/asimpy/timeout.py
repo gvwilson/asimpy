@@ -1,7 +1,7 @@
 """Wait for a simulated time to pass."""
 
 from typing import TYPE_CHECKING
-from .event import Event
+from .event import Event, _CANCELLED
 
 if TYPE_CHECKING:
     from .environment import Environment
@@ -14,6 +14,8 @@ _NO_TIME = object()
 
 class Timeout(Event):
     """Timeout event for sleeping."""
+
+    __slots__ = ()
 
     def __init__(self, env: "Environment", delay: float | int):
         """
@@ -32,7 +34,7 @@ class Timeout(Event):
         env.schedule(env.now + delay, self._fire)
 
     def _fire(self):
-        """Handle cancellation case."""
-        if self._cancelled:
+        """Trigger the timeout, or signal a phantom if it was cancelled."""
+        if self._value is _CANCELLED:
             return _NO_TIME
         self.succeed()

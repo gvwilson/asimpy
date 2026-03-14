@@ -9,6 +9,9 @@ from ._utils import _ensure_event
 class FirstOf(Event):
     """Wait for the first of a set of events."""
 
+    # _finished avoids shadowing any future Event attribute named _done.
+    __slots__ = ("_finished", "_events")
+
     def __init__(self, env: Environment, **events: Any):
         """
         Construct new collective wait.
@@ -30,7 +33,7 @@ class FirstOf(Event):
             raise ValueError("FirstOf requires at least one event")
         super().__init__(env)
 
-        self._done = False
+        self._finished = False
         self._events = {}
 
         for key, obj in events.items():
@@ -39,10 +42,10 @@ class FirstOf(Event):
             evt._add_waiter(lambda v, k=key, e=evt: self._child_done(k, v, e))
 
     def _child_done(self, key, value, winner):
-        if self._done:
+        if self._finished:
             return
 
-        self._done = True
+        self._finished = True
 
         for evt in self._events.values():
             if evt is not winner:

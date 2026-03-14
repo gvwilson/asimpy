@@ -309,13 +309,12 @@ def _(
     pl,
     simulate,
 ):
+    FIXED_RHO_HI = 0.70
+    rho_total = FIXED_RHO_HI + ARRIVAL_RATE_LO / SERVICE_RATE_LO
     def compare():
-        FIXED_RHO_HI = 0.70
-        _rate_hi = FIXED_RHO_HI * SERVICE_RATE_HI
-        rho_total = FIXED_RHO_HI + ARRIVAL_RATE_LO / SERVICE_RATE_LO
-    
-        hi_static, lo_static = simulate(_rate_hi, use_aging=False)
-        hi_aging, lo_aging = simulate(_rate_hi, use_aging=True)
+        rate_hi = FIXED_RHO_HI * SERVICE_RATE_HI
+        hi_static, lo_static = simulate(rate_hi, use_aging=False)
+        hi_aging, lo_aging = simulate(rate_hi, use_aging=True)
     
         compare_rows = [
             {
@@ -346,7 +345,7 @@ def _(
         return pl.DataFrame(compare_rows)
 
     df_compare = compare()
-    return (df_compare,)
+    return (df_compare, FIXED_RHO_HI, rho_total,)
 
 
 @app.cell(hide_code=True)

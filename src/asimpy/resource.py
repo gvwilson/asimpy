@@ -1,7 +1,9 @@
 """Shared resource with limited capacity."""
 
+from collections import deque
 from typing import TYPE_CHECKING
-from .event import Event
+
+from .event import Event, _CANCELLED
 
 if TYPE_CHECKING:
     from .environment import Environment
@@ -26,7 +28,8 @@ class Resource:
         self._env = env
         self.capacity = capacity
         self._count = 0
-        self._waiters = []
+        # deque gives O(1) popleft instead of O(n) list.pop(0).
+        self._waiters: deque = deque()
 
     async def acquire(self):
         """Acquire one unit of resource."""
@@ -38,29 +41,30 @@ class Resource:
     def release(self):
         """Release one unit of resource."""
         self._count -= 1
-        if self._waiters:
-            evt = self._waiters.pop(0)
+        # Lazy deletion: skip waiters that were cancelled while queued.
+        while self._waiters:
+            evt = self._waiters[0]
+            if evt._value is _CANCELLED:
+                self._waiters.popleft()
+                continue
+            self._waiters.popleft()
             evt.succeed()
+            self._count += 1
+            break
 
     async def _acquire_available(self):
-        def cancel():
-            self._count -= 1
-
         self._count += 1
         evt = Event(self._env)
-        evt._on_cancel = cancel
-        self._env.immediate(evt.succeed)
+        # Pre-trigger so the tight loop in Process._loop resumes without
+        # going through the heap.  The event is already triggered, so
+        # cancellation is a no-op and _on_cancel is not needed.
+        evt.succeed()
         await evt
 
     async def _acquire_unavailable(self):
         evt = Event(self._env)
-
-        def cancel():
-            if evt in self._waiters:
-                self._waiters.remove(evt)
-
+        # No _on_cancel: lazy deletion in release() handles cancelled entries.
         self._waiters.append(evt)
-        evt._on_cancel = cancel
         await evt
         self._count += 1
 

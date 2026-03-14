@@ -5,7 +5,7 @@ import itertools
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .event import Event
+from .event import Event, _CANCELLED
 
 if TYPE_CHECKING:
     from .environment import Environment
@@ -104,7 +104,8 @@ class PreemptiveResource:
             bisect.insort(self._users, user_rec)
             evt = Event(self._env)
             evt._on_cancel = lambda rec=user_rec: self._users.remove(rec)
-            self._env.immediate(evt.succeed)
+            # Pre-trigger so the tight loop resumes without a heap round-trip.
+            evt.succeed()
             await evt
             return
 
@@ -118,7 +119,8 @@ class PreemptiveResource:
                 bisect.insort(self._users, user_rec)
                 evt = Event(self._env)
                 evt._on_cancel = lambda rec=user_rec: self._users.remove(rec)
-                self._env.immediate(evt.succeed)
+                # Pre-trigger before interrupting the preempted process.
+                evt.succeed()
                 if preempted_proc is not None:
                     preempted_proc.interrupt(
                         Preempted(by=process, usage_since=preempted_since)
@@ -129,14 +131,7 @@ class PreemptiveResource:
         evt = Event(self._env)
         waiter_rec = [priority, seq, process, evt]
         bisect.insort(self._waiters, waiter_rec)
-
-        def cancel(rec=waiter_rec):
-            try:
-                self._waiters.remove(rec)
-            except ValueError:
-                pass
-
-        evt._on_cancel = cancel
+        # No _on_cancel: lazy deletion in release() skips cancelled entries.
         await evt
 
     def release(self) -> None:
@@ -159,9 +154,15 @@ class PreemptiveResource:
                 f"{process} is not a current user of this resource"
             )
 
-        if self._waiters:
-            waiter = self._waiters.pop(0)
+        # Lazy deletion: skip waiters whose events were cancelled.
+        while self._waiters:
+            waiter = self._waiters[0]
+            if waiter[3]._value is _CANCELLED:
+                self._waiters.pop(0)
+                continue
+            self._waiters.pop(0)
             w_priority, w_seq, w_process, w_evt = waiter
             user_rec = [w_priority, w_seq, self._env.now, w_process]
             bisect.insort(self._users, user_rec)
             w_evt.succeed()
+            break

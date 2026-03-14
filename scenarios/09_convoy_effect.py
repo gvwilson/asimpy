@@ -23,9 +23,9 @@ def _():
     import altair as alt
     import polars as pl
 
-    from asimpy import Environment, Process, Queue
+    from asimpy import Environment, Process, Queue, PriorityQueue
 
-    return Environment, Process, Queue, alt, mo, pl, random, statistics
+    return Environment, Process, Queue, PriorityQueue, alt, mo, pl, random, statistics
 
 
 @app.cell(hide_code=True)
@@ -74,7 +74,7 @@ def _(mo):
     mo.md(r"""
     ## Implementation
 
-    Jobs are placed in a `Queue(priority=True)` for SJF (tupled as `(service_time, job_id)` so shorter jobs sort earlier) or a plain `Queue()` for FIFO (tupled as `(job_id, service_time)` to preserve arrival order). The same hyperexponential service-time generator (90% short, 10% long) is used in both runs.
+    Jobs are placed in a `PriorityQueue` for SJF (tupled as `(service_time, job_id)` so shorter jobs sort earlier) or a plain `Queue()` for FIFO (tupled as `(job_id, service_time)` to preserve arrival order). The same hyperexponential service-time generator (90% short, 10% long) is used in both runs.
     """)
     return
 
@@ -183,12 +183,12 @@ def _(Process):
 
 
 @app.cell
-def _(Environment, JobSource, Queue, SIM_TIME, Server, statistics):
+def _(Environment, JobSource, Queue, PriorityQueue, SIM_TIME, Server, statistics):
     def simulate(sjf):
         arrivals = {}
         sojourn_times = []
         env = Environment()
-        q = Queue(env, priority=sjf)
+        q = PriorityQueue(env) if sjf else Queue(env)
         JobSource(env, q, arrivals, sjf)
         Server(env, q, arrivals, sojourn_times, sjf)
         env.run(until=SIM_TIME)

@@ -1,8 +1,10 @@
 """FIFO and priority queues."""
 
 import bisect
+from collections import deque
 from typing import TYPE_CHECKING, Any
-from .event import Event
+
+from .event import Event, _CANCELLED
 from .interrupt import Interrupt
 
 if TYPE_CHECKING:
@@ -10,13 +12,12 @@ if TYPE_CHECKING:
 
 
 class Queue:
-    """FIFO or priority queue."""
+    """FIFO queue backed by a deque for O(1) enqueue and dequeue."""
 
     def __init__(
         self,
         env: "Environment",
         max_capacity: int | None = None,
-        priority: bool = False,
     ):
         """
         Construct queue.
@@ -24,7 +25,6 @@ class Queue:
         Args:
             env: simulation environment.
             max_capacity: maximum queue capacity (None for unlimited).
-            priority: if `True`, maintain items in sorted order.
 
         Raises:
             ValueError: for invalid `max_capacity`.
@@ -34,54 +34,75 @@ class Queue:
                 f"queue max_capacity must be a positive integer, got {max_capacity}"
             )
         self._env = env
-        self._priority = priority
         self._max_capacity = max_capacity
-        self._items = []
-        self._getters = []
-        self._putters = []
+        # _items, _getters, and _putters are all deques for O(1) front access.
+        self._items: deque = deque()
+        self._getters: deque = deque()
+        self._putters: deque = deque()
 
-    def _add(self, item):
-        """Add item to internal list (sorted if priority, appended otherwise)."""
-        if self._priority:
-            bisect.insort(self._items, item)
-        else:
-            self._items.append(item)
+    # ------------------------------------------------------------------
+    # Overridable item-storage primitives (used by PriorityQueue)
+    # ------------------------------------------------------------------
+
+    def _add(self, item) -> None:
+        self._items.append(item)
+
+    def _pop(self):
+        return self._items.popleft()
+
+    def _put_back(self, item) -> None:
+        """Return an item to the front of the store (used on interrupt)."""
+        self._items.appendleft(item)
+
+    # ------------------------------------------------------------------
+    # Public interface
+    # ------------------------------------------------------------------
+
+    def is_empty(self) -> bool:
+        """Is the queue empty?"""
+        return not self._items
+
+    def is_full(self) -> bool:
+        """Has the queue reached capacity?"""
+        return self._max_capacity is not None and len(self._items) >= self._max_capacity
 
     async def get(self):
         """Get one item from the queue."""
         if self._items:
-            item = self._items.pop(0)
-            if self._putters:
-                putter_evt, putter_item = self._putters.pop(0)
+            item = self._pop()
+
+            # Promote one blocked putter if present, skipping cancelled ones.
+            while self._putters:
+                putter_evt, putter_item = self._putters[0]
+                if putter_evt._value is _CANCELLED:
+                    self._putters.popleft()
+                    continue
+                self._putters.popleft()
                 self._add(putter_item)
-                self._env.immediate(lambda evt=putter_evt: evt.succeed(True))
+                # Pre-trigger so the tight loop resumes the putter immediately.
+                putter_evt.succeed(True)
+                break
+
+            # Pre-trigger the getter event so the tight loop resumes this
+            # coroutine without a heap round-trip.
             evt = Event(self._env)
-            evt._on_cancel = lambda: self._items.insert(0, item)
-            self._env.immediate(lambda: evt.succeed(item))
+            evt.succeed(item)
             try:
                 return await evt
             except Interrupt:
-                # Runner was cancelled before it received the item; restore it.
-                self._items.insert(0, item)
+                # Pre-triggered events cannot really be interrupted here, but
+                # restore the item defensively in case semantics change.
+                self._put_back(item)
                 raise
         else:
             evt = Event(self._env)
+            # No _on_cancel: lazy deletion in put() skips cancelled getters.
             self._getters.append(evt)
             try:
                 return await evt
             except Interrupt:
-                # Runner was cancelled while waiting; remove orphan getter.
-                if evt in self._getters:
-                    self._getters.remove(evt)
+                # Don't remove from _getters; lazy deletion handles it.
                 raise
-
-    def is_empty(self):
-        """Is the queue empty?"""
-        return len(self._items) == 0
-
-    def is_full(self):
-        """Has the queue reached capacity?"""
-        return self._max_capacity is not None and len(self._items) >= self._max_capacity
 
     async def put(self, item: Any) -> bool:
         """
@@ -98,8 +119,13 @@ class Queue:
         Returns:
             `True` when the item has been added.
         """
-        if self._getters:
-            evt = self._getters.pop(0)
+        # Deliver directly to a waiting getter, skipping cancelled ones.
+        while self._getters:
+            evt = self._getters[0]
+            if evt._value is _CANCELLED:
+                self._getters.popleft()
+                continue
+            self._getters.popleft()
             evt.succeed(item)
             return True
 
@@ -110,10 +136,43 @@ class Queue:
         evt = Event(self._env)
         entry = (evt, item)
         self._putters.append(entry)
-
-        def cancel():
-            if entry in self._putters:
-                self._putters.remove(entry)
-
-        evt._on_cancel = cancel
+        # No _on_cancel: lazy deletion in get() skips cancelled putters.
         return await evt
+
+
+class PriorityQueue(Queue):
+    """Priority queue: items are dequeued in sorted (ascending) order."""
+
+    def __init__(
+        self,
+        env: "Environment",
+        max_capacity: int | None = None,
+    ):
+        """
+        Construct priority queue.
+
+        Args:
+            env: simulation environment.
+            max_capacity: maximum queue capacity (None for unlimited).
+
+        Raises:
+            ValueError: for invalid `max_capacity`.
+        """
+        super().__init__(env, max_capacity)
+        # Override the deque with a sorted list.
+        self._items: list = []  # type: ignore[assignment]
+
+    def _add(self, item) -> None:
+        bisect.insort(self._items, item)
+
+    def _pop(self):
+        return self._items.pop(0)
+
+    def _put_back(self, item) -> None:
+        bisect.insort(self._items, item)
+
+    def is_empty(self) -> bool:
+        return not self._items
+
+    def is_full(self) -> bool:
+        return self._max_capacity is not None and len(self._items) >= self._max_capacity
