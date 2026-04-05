@@ -1,0 +1,3 @@
+# All Of
+
+::: asimpy.allof

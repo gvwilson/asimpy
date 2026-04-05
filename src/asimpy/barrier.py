@@ -1,35 +1,27 @@
 """Barrier that holds multiple processes until released."""
 
-from collections import deque
-from typing import TYPE_CHECKING
-
-from .event import Event
-
-if TYPE_CHECKING:
-    from .environment import Environment
+from .core import Event
 
 
 class Barrier:
-    """Barrier to hold multiple processes."""
+    """A barrier that blocks any number of processes until release() is called.
 
-    def __init__(self, env: "Environment"):
-        """
-        Construct barrier.
+    Processes call await barrier.wait() to park.  When release() is called,
+    all currently waiting processes are unblocked simultaneously.
+    """
 
-        Args:
-            env: simulation environment.
-        """
+    def __init__(self, env):
         self._env = env
-        self._waiters: deque = deque()
+        self._waiters: list = []
 
-    async def wait(self):
-        """Wait until barrier released."""
+    def wait(self) -> Event:
+        """Return an Event that resolves when release() is called."""
         evt = Event(self._env)
         self._waiters.append(evt)
-        await evt
+        return evt
 
-    def release(self):
-        """Release processes waiting at barrier."""
+    def release(self) -> None:
+        """Trigger all currently waiting events."""
         for evt in self._waiters:
             evt.succeed()
         self._waiters.clear()

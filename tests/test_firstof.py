@@ -2,6 +2,7 @@
 
 import pytest
 from asimpy import Environment, Event, FirstOf, Process, Queue, Timeout
+from asimpy.core import _CANCELLED
 
 
 def test_firstof_single_event():
@@ -54,7 +55,7 @@ def test_firstof_cancels_others():
     env = Environment()
     proc = CancelTest(env)
     env.run()
-    assert proc.timeout2._cancelled is True
+    assert proc.timeout2.cancelled is True
 
 
 def test_firstof_already_triggered_events():
@@ -79,18 +80,8 @@ def test_firstof_already_triggered_events():
     assert proc.result == ("a", "first")
 
 
-# ---------------------------------------------------------------------------
-# Bug-fix tests: FirstOf with Queue.get() coroutines must not lose items
-# ---------------------------------------------------------------------------
-
-
 def test_firstof_queue_loser_item_preserved_empty_queues():
-    """Item put into the losing queue after FirstOf resolves must not be lost.
-
-    This is the exact scenario from the bug report: both queues are empty when
-    FirstOf is set up, q1 wins, then something is put into q2.  Before the fix,
-    q2's item was silently consumed by the orphaned _Runner getter.
-    """
+    """Item put into the losing queue after FirstOf resolves must not be lost."""
 
     class Consumer(Process):
         def init(self, q1, q2):
@@ -121,39 +112,32 @@ def test_firstof_queue_loser_item_preserved_empty_queues():
 
     assert consumer.got == ("a", "from_q1")
     assert list(q2._items) == ["from_q2"], (
-        "item_from_q2 was silently consumed by the orphaned _Runner getter"
+        "item_from_q2 was silently consumed by the orphaned getter"
     )
 
 
 def test_firstof_queue_loser_item_preserved_nonempty_queues():
-    """Winner's item is returned; loser's pre-loaded item must not be lost.
-
-    Both queues already contain an item when FirstOf is set up.  The winner
-    (a) is the queue whose _Runner fires first.  The loser's item must survive.
-    """
+    """Winner's item is returned; loser's pre-loaded item must not be lost."""
 
     class Racer(Process):
         def init(self, q1, q2):
             self.q1 = q1
             self.q2 = q2
-            self.got: tuple[str, object] = ("", None)
+            self.got: tuple = ("", None)
 
         async def run(self):
-            # Both queues already have items at this point.
             self.got = await FirstOf(self._env, a=self.q1.get(), b=self.q2.get())
 
     env = Environment()
     q1 = Queue(env)
     q2 = Queue(env)
 
-    # Pre-load both queues before the Racer starts.
     env.immediate(lambda: q1._items.append("alpha"))
     env.immediate(lambda: q2._items.append("beta"))
 
     racer = Racer(env, q1, q2)
     env.run()
 
-    # Queue a's _Runner is created first, so it always wins.
     winner_name, winner_value = racer.got
     assert winner_name == "a"
     assert winner_value == "alpha"
@@ -161,12 +145,7 @@ def test_firstof_queue_loser_item_preserved_nonempty_queues():
 
 
 def test_firstof_queue_loser_getter_removed():
-    """After FirstOf resolves, the losing queue's orphan getter must be cancelled.
-
-    Lazy deletion leaves cancelled entries in _getters, but put() must skip them
-    so that a subsequent put() delivers its item to a real waiter, not a ghost.
-    """
-    from asimpy.event import _CANCELLED
+    """After FirstOf resolves, the losing queue's orphan getter must be cancelled."""
 
     class Consumer(Process):
         def init(self, q1, q2):
@@ -191,11 +170,9 @@ def test_firstof_queue_loser_getter_removed():
     Trigger(env, q1)
     env.run(until=5)
 
-    # With lazy deletion, cancelled getters remain in the deque but are marked
-    # cancelled so that put() skips them rather than silently losing the item.
-    assert all(
-        evt._value is _CANCELLED for evt in q2._getters
-    ), "non-cancelled getter remained in q2._getters after FirstOf"
+    assert all(evt._value is _CANCELLED for evt in q2._getters), (
+        "non-cancelled getter remained in q2._getters after FirstOf"
+    )
 
 
 def test_firstof_queue_loser_can_still_be_gotten():
@@ -275,9 +252,7 @@ def test_firstof_queue_multiple_rounds():
     Feeder(env, q1, q2)
     env.run(until=20)
 
-    from asimpy.event import _CANCELLED
     assert rr.results == [("a", "x"), ("b", "y"), ("a", "z")]
-    # Lazy deletion: any residual entries must be cancelled (harmless).
     assert all(evt._value is _CANCELLED for evt in q1._getters)
     assert all(evt._value is _CANCELLED for evt in q2._getters)
 
@@ -287,3 +262,33 @@ def test_firstof_requires_at_least_one_event():
     env = Environment()
     with pytest.raises(ValueError, match="at least one event"):
         FirstOf(env)
+
+
+def test_firstof_rejects_non_event_argument():
+    """FirstOf raises TypeError when an argument is not an Event."""
+    env = Environment()
+    with pytest.raises(TypeError, match="must be an Event"):
+        FirstOf(env, a="not an event")
+
+
+def test_firstof_same_event_twice_second_child_done_returns_early():
+    """Passing the same Event as two keys: the second _child_done call is a no-op.
+
+    When evt fires, both 'a' and 'b' waiters are invoked.  _child_done for 'a'
+    sets _finished=True; _child_done for 'b' hits the early-return on line 51.
+    """
+
+    class Waiter(Process):
+        def init(self):
+            self.result = None
+
+        async def run(self):
+            evt = Event(self._env)
+            evt.succeed("shared")
+            self.result = await FirstOf(self._env, a=evt, b=evt)
+
+    env = Environment()
+    proc = Waiter(env)
+    env.run()
+    # 'a' is registered first, so it wins.
+    assert proc.result == ("a", "shared")

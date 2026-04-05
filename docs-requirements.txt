@@ -1,6 +1,0 @@
-mkdocs
-mkdocs-material
-mkdocs-awesome-pages-plugin
-mkdocstrings[python]
-markdown-include
-pymdown-extensions

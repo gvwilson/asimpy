@@ -1,7 +1,8 @@
 """Test asimpy queue."""
 
 import pytest
-from asimpy import Environment, Queue, Process
+from asimpy import Environment, Queue, Process, QueueEmpty, QueueFull
+from asimpy.core import _CANCELLED
 
 
 def test_queue_put_and_get():
@@ -153,7 +154,7 @@ def test_queue_default_unlimited_capacity():
 
 
 def test_queue_max_capacity_with_waiting_getters():
-    """Test that max_capacity doesn't affect direct delivery to waiting getters."""
+    """Test that capacity doesn't affect direct delivery to waiting getters."""
 
     class Consumer(Process):
         def init(self, q, consumer_id, results_dict):
@@ -175,7 +176,7 @@ def test_queue_max_capacity_with_waiting_getters():
                 await self.q.put(i)
 
     env = Environment()
-    q = Queue(env, max_capacity=2)
+    q = Queue(env, capacity=2)
     results = {}
 
     for i in range(5):
@@ -188,15 +189,15 @@ def test_queue_max_capacity_with_waiting_getters():
     assert sorted(results.values()) == [0, 1, 2, 3, 4]
 
 
-@pytest.mark.parametrize("max_capacity", [0, -1])
-def test_queue_max_capacity_zero_invalid(max_capacity):
-    """Test that invalid max_capacity raises error."""
+@pytest.mark.parametrize("cap", [0, -1])
+def test_queue_capacity_zero_invalid(cap):
+    """Test that invalid capacity raises error."""
     env = Environment()
     with pytest.raises(ValueError):
-        Queue(env, max_capacity=max_capacity)
+        Queue(env, capacity=cap)
 
 
-def test_queue_max_capacity_refill_after_consumption():
+def test_queue_capacity_refill_after_consumption():
     """Test that queue can be refilled after items are consumed."""
 
     class ProducerConsumer(Process):
@@ -216,7 +217,7 @@ def test_queue_max_capacity_refill_after_consumption():
                 self.results.append(await self.q.get())
 
     env = Environment()
-    q = Queue(env, max_capacity=3)
+    q = Queue(env, capacity=3)
     proc = ProducerConsumer(env, q)
     env.run()
     assert proc.results == [0, 1, 2, 10]
@@ -261,7 +262,7 @@ def test_queue_is_full():
             self.full_states.append(self.q.is_full())
 
     env = Environment()
-    q = Queue(env, max_capacity=2)
+    q = Queue(env, capacity=2)
     proc = Filler(env, q)
     env.run()
     assert proc.full_states == [False, False, True]
@@ -314,12 +315,11 @@ def test_queue_put_blocks_when_full():
             self.results.append(await self.q.get())
 
     env = Environment()
-    q = Queue(env, max_capacity=2)
+    q = Queue(env, capacity=2)
     prod = Producer(env, q)
     cons = Consumer(env, q)
     env.run()
     assert cons.results == ["a", "b", "c"]
-    # First two puts succeed immediately, third blocks until consumer gets
     assert prod.put_times[0] == 0
     assert prod.put_times[1] == 0
     assert prod.put_times[2] == 10
@@ -351,7 +351,7 @@ def test_queue_get_unblocks_putter():
             self.results.append(await self.q.get())
 
     env = Environment()
-    q = Queue(env, max_capacity=2)
+    q = Queue(env, capacity=2)
     Producer(env, q)
     cons = Consumer(env, q)
     env.run()
@@ -364,7 +364,6 @@ def test_queue_cancel_blocked_put():
     Lazy deletion leaves the entry in _putters but marks the event cancelled
     so that the next get() skips it rather than silently losing the item.
     """
-    from asimpy.event import _CANCELLED
 
     class BlockedProducer(Process):
         def init(self, q):
@@ -384,21 +383,19 @@ def test_queue_cancel_blocked_put():
             evt.cancel()
 
     env = Environment()
-    q = Queue(env, max_capacity=1)
+    q = Queue(env, capacity=1)
     BlockedProducer(env, q)
     Canceller(env, q)
     env.run()
-    # With lazy deletion, cancelled putters remain but are marked cancelled.
     assert all(evt._value is _CANCELLED for evt, _ in q._putters)
 
 
 def test_queue_get_skips_cancelled_putter():
     """get() skips cancelled putters (lazy deletion) and promotes the next valid one."""
-    from asimpy import PriorityQueue
-    from asimpy.event import Event
+    from asimpy.core import Event
 
     env = Environment()
-    q = Queue(env, max_capacity=1)
+    q = Queue(env, capacity=1)
     q._add("item")  # fill the queue
 
     # Inject a cancelled putter followed by a valid one.
@@ -423,7 +420,7 @@ def test_queue_get_skips_cancelled_putter():
     assert results == ["item"]
     # The valid putter was promoted into the queue.
     assert list(q._items) == ["valid_item"]
-    assert valid_evt._triggered
+    assert valid_evt.triggered
 
 
 def test_queue_blocked_putters_fifo():
@@ -450,20 +447,60 @@ def test_queue_blocked_putters_fifo():
                 self.results.append(await self.q.get())
 
     env = Environment()
-    q = Queue(env, max_capacity=1)
+    q = Queue(env, capacity=1)
 
-    # First producer fills the queue
     p1 = Producer(env, q, "first")
-    # These two will block
     p2 = Producer(env, q, "second")
     p3 = Producer(env, q, "third")
 
     cons = Consumer(env, q)
     env.run()
 
-    # Items should come out in FIFO order: first (was in queue),
-    # then second (first blocked putter), then third (second blocked putter)
     assert cons.results[:3] == ["first", "second", "third"]
     assert p1.put_time == 0
     assert p2.put_time == 10
     assert p3.put_time == 10
+
+
+def test_queue_size():
+    """size() returns the current number of items."""
+    env = Environment()
+    q = Queue(env)
+    assert q.size() == 0
+    q._add("a")
+    q._add("b")
+    assert q.size() == 2
+
+
+def test_queue_try_get_success():
+    """try_get() removes and returns the next item."""
+    env = Environment()
+    q = Queue(env)
+    q._add("x")
+    assert q.try_get() == "x"
+    assert q.is_empty()
+
+
+def test_queue_try_get_empty():
+    """try_get() raises QueueEmpty when the queue is empty."""
+    env = Environment()
+    q = Queue(env)
+    with pytest.raises(QueueEmpty):
+        q.try_get()
+
+
+def test_queue_try_put_success():
+    """try_put() adds an item when below capacity."""
+    env = Environment()
+    q = Queue(env, capacity=2)
+    q.try_put("a")
+    assert q.size() == 1
+
+
+def test_queue_try_put_full():
+    """try_put() raises QueueFull when at capacity."""
+    env = Environment()
+    q = Queue(env, capacity=1)
+    q._add("existing")
+    with pytest.raises(QueueFull):
+        q.try_put("overflow")

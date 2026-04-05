@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/gvwilson/asimpy/examples/preemptive_resource.py", line 3, in <module>
-    from asimpy import Environment, Interrupt, Process
-ModuleNotFoundError: No module named 'asimpy'

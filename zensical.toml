@@ -1,0 +1,35 @@
+[project]
+site_name = "asimpy"
+docs_dir = "pages"
+site_dir = "docs"
+
+nav = [
+  { "Home" = "index.md" },
+  { "API" = [
+    { "Core" = "api/core.md" },
+    { "Queue" = "api/queue.md" },
+    { "Resource" = "api/resource.md" },
+    { "Store" = "api/store.md" },
+    { "Container" = "api/container.md" },
+    { "Barrier" = "api/barrier.md" },
+    { "All Of" = "api/allof.md" },
+    { "First Of" = "api/firstof.md" },
+    { "Preemptive" = "api/preemptive.md" },
+  ]},
+  { "Project" = [
+    { "License" = "license.md" },
+    { "Code of Conduct" = "conduct.md" },
+  ]},
+]
+
+[project.markdown_extensions.pymdownx.snippets]
+base_path = ["."]
+
+[project.plugins.mkdocstrings.handlers.python]
+inventories = ["https://docs.python.org/3/objects.inv"]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+inherited_members = true
+show_source = false

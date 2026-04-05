@@ -1,6 +1,6 @@
 """Test asimpy Environment."""
 
-from asimpy import Environment
+from asimpy import Environment, Timeout
 
 
 def test_environment_initialization():
@@ -55,8 +55,6 @@ def test_environment_run_until():
 
 def test_environment_timeout_creation():
     """Test creating timeout from environment."""
-    from asimpy import Environment, Timeout
-
     env = Environment()
     timeout = env.timeout(5)
     assert isinstance(timeout, Timeout)
@@ -75,9 +73,9 @@ def test_environment_immediate_scheduling():
 def test_environment_string_representation():
     """Test environment string representation."""
     env = Environment()
-    assert str(env) == "Env(t=0)"
+    assert str(env) == "Environment(now=0)"
     env._now = 42
-    assert str(env) == "Env(t=42)"
+    assert str(env) == "Environment(now=42)"
 
 
 def test_environment_empty_run():

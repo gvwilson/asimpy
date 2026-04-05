@@ -67,11 +67,6 @@ def test_barrier_multiple_waiters():
     assert results[3] == 10
 
 
-# ---------------------------------------------------------------------------
-# FirstOf + Barrier interaction tests
-# ---------------------------------------------------------------------------
-
-
 def test_firstof_barrier_wins_over_timeout():
     """FirstOf resolves on barrier.wait() when barrier is released before timeout."""
 

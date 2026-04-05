@@ -1,0 +1,3 @@
+# First Of
+
+::: asimpy.firstof

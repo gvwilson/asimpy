@@ -41,31 +41,15 @@ def test_allof_multiple_events():
     assert env.now == 7
 
 
-def test_allof_with_coroutines():
-    """Test AllOf with coroutine objects."""
-
-    async def coro1():
-        return "value1"
-
-    async def coro2():
-        return "value2"
-
-    class CoroAllOf(Process):
-        def init(self):
-            self.result = {}
-
-        async def run(self):
-            self.result = await AllOf(self._env, x=coro1(), y=coro2())
-
-    env = Environment()
-    proc = CoroAllOf(env)
-    env.run()
-    assert proc.result["x"] == "value1"
-    assert proc.result["y"] == "value2"
-
-
 def test_allof_requires_at_least_one_event():
     """Test that AllOf raises ValueError when given no events."""
     env = Environment()
     with pytest.raises(ValueError, match="at least one event"):
         AllOf(env)
+
+
+def test_allof_rejects_non_event_argument():
+    """AllOf raises TypeError when an argument is not an Event."""
+    env = Environment()
+    with pytest.raises(TypeError, match="must be an Event"):
+        AllOf(env, a=42)

@@ -189,3 +189,32 @@ def test_process_loop_called_after_done():
     Driver(env, worker, evt)
     env.run()
     assert worker.finished
+
+
+def test_process_tight_loop_interrupt_delivered():
+    """Interrupt set while the tight loop holds a pre-triggered event is delivered.
+
+    The process interrupts itself, then awaits a pre-triggered event.  _loop
+    sees _interrupt is set after picking up the pre-triggered value, loops back,
+    and delivers the interrupt — exercising the 'continue' branch in _loop.
+    """
+
+    class SelfInterruptor(Process):
+        def init(self):
+            self.result = None
+
+        async def run(self):
+            # Create a pre-triggered event.
+            pre = Event(self._env)
+            pre.succeed("ready")
+            # Interrupt ourselves before yielding the pre-triggered event.
+            self._env.active_process.interrupt("self-interrupt")
+            try:
+                await pre
+            except Interrupt as e:
+                self.result = e.cause
+
+    env = Environment()
+    proc = SelfInterruptor(env)
+    env.run()
+    assert proc.result == "self-interrupt"

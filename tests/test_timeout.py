@@ -10,7 +10,7 @@ def test_timeout_zero_delay():
     env = Environment()
     timeout = Timeout(env, 0)
     env.run()
-    assert timeout._triggered is True
+    assert timeout.triggered is True
 
 
 def test_timeout_positive_delay():
@@ -18,9 +18,9 @@ def test_timeout_positive_delay():
 
     env = Environment()
     timeout = Timeout(env, 10)
-    assert timeout._triggered is False
+    assert timeout.triggered is False
     env.run()
-    assert timeout._triggered is True
+    assert timeout.triggered is True
     assert env.now == 10
 
 
@@ -43,9 +43,9 @@ def test_timeout_multiple_timeouts():
     t3 = Timeout(env, 3)
 
     env.run()
-    assert t3._triggered is True
-    assert t1._triggered is True
-    assert t2._triggered is True
+    assert t3.triggered is True
+    assert t1.triggered is True
+    assert t2.triggered is True
 
 
 def test_timeout_rejects_negative_delay():

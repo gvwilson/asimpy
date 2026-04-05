@@ -37,7 +37,6 @@ def test_producer_consumer_pattern():
 
 def test_resource_sharing():
     """Test multiple processes sharing resource."""
-    from asimpy import Environment, Process
 
     class Worker(Process):
         def init(self, resource, work_id, log):

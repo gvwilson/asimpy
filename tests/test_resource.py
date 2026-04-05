@@ -2,6 +2,7 @@
 
 import pytest
 from asimpy import Environment, Resource, Process
+from asimpy.core import _CANCELLED, Event
 
 
 def test_resource_default_capacity():
@@ -110,32 +111,31 @@ def test_resource_context_manager():
     assert res._count == 0
 
 
-def test_resource_cancel_available_acquire():
-    """Pre-triggered acquire events cannot be cancelled (already done)."""
-    from asimpy.event import _PENDING
+def test_resource_cancel_pretriggered_acquire_restores_slot():
+    """Cancelling a pre-triggered acquire event restores the resource slot.
+
+    This matters when FirstOf discards a non-winning acquire: the slot must
+    be returned so other processes can use it.
+    """
     env = Environment()
     res = Resource(env, capacity=1)
 
-    # Manually step _acquire_available to get the internal event.
-    coro = res._acquire_available()
-    evt = coro.send(None)
-
-    # The event is pre-triggered; cancellation is a no-op.
+    evt = res.acquire()
+    assert evt.triggered
     assert res._count == 1
-    assert evt._value is not _PENDING  # already triggered
-    evt.cancel()                       # no-op: event already resolved
-    assert res._count == 1             # count unchanged — cancel had no effect
+
+    # Cancelling the pre-triggered event must restore the slot.
+    evt.cancel()
+    assert res._count == 0
 
 
 def test_resource_release_skips_cancelled_waiter():
     """release() skips cancelled waiters (lazy deletion) and serves the next valid one."""
-    from asimpy.event import Event
 
     env = Environment()
     res = Resource(env, capacity=1)
     res._count = 1  # pretend one unit is already held
 
-    # Place two waiter events: first cancelled, second valid.
     cancelled_evt = Event(env)
     valid_evt = Event(env)
     res._waiters.append(cancelled_evt)
@@ -144,15 +144,12 @@ def test_resource_release_skips_cancelled_waiter():
 
     res.release()
 
-    # release() must have skipped the cancelled entry and triggered the valid one.
-    assert valid_evt._triggered
-    # count: decremented then re-incremented for the valid waiter
+    assert valid_evt.triggered
     assert res._count == 1
 
 
 def test_resource_cancel_waiting_acquire():
     """Cancelling a waiting acquire marks it cancelled (lazy deletion)."""
-    from asimpy.event import _CANCELLED
 
     class Holder(Process):
         def init(self, res):
@@ -177,7 +174,6 @@ def test_resource_cancel_waiting_acquire():
     env.run(until=5)
     assert len(res._waiters) == 1
     res._waiters[0].cancel()
-    # Lazy deletion: entry remains but is marked cancelled so release() skips it.
     assert all(evt._value is _CANCELLED for evt in res._waiters)
 
 
@@ -188,3 +184,31 @@ def test_resource_rejects_non_positive_capacity():
         Resource(env, capacity=0)
     with pytest.raises(ValueError, match="capacity must be positive"):
         Resource(env, capacity=-1)
+
+
+def test_resource_count_property():
+    """count property reflects the number of held slots."""
+    env = Environment()
+    res = Resource(env, capacity=3)
+    assert res.count == 0
+    res.acquire()
+    assert res.count == 1
+    res.acquire()
+    assert res.count == 2
+
+
+def test_resource_try_acquire_success():
+    """try_acquire() returns True and increments count when a slot is free."""
+    env = Environment()
+    res = Resource(env, capacity=2)
+    assert res.try_acquire() is True
+    assert res._count == 1
+
+
+def test_resource_try_acquire_full():
+    """try_acquire() returns False when all slots are taken."""
+    env = Environment()
+    res = Resource(env, capacity=1)
+    res._count = 1  # pretend slot is taken
+    assert res.try_acquire() is False
+    assert res._count == 1  # unchanged

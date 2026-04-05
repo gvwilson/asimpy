@@ -1,2 +1,0 @@
-   0: starts
-  10: finishes

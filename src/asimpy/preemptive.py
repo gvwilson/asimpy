@@ -5,11 +5,10 @@ import itertools
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .event import Event, _CANCELLED
+from .core import _CANCELLED, Event
 
 if TYPE_CHECKING:
-    from .environment import Environment
-    from .process import Process
+    from .core import Environment, Process
 
 
 @dataclass
@@ -31,52 +30,23 @@ class PreemptiveResource:
     Priority is an integer; lower values are served first (0 is highest priority).
     When a new acquire request has better priority than the worst current user
     and `preempt=True`, that user is interrupted with a `Preempted` cause and
-    removed from the resource. The preempted process is responsible for catching
+    removed from the resource.  The preempted process is responsible for catching
     the `Interrupt`, tracking remaining work, and re-acquiring.
 
-    **Important**: do not call `release()` when handling a `Preempted` interrupt
-    — the preempted process has already been removed from the user list.
-
-    Example usage:
-
-    ```python
-    async def run(self):
-        remaining = service_time
-        while remaining > 0:
-            await resource.acquire(priority=self.priority)
-            started = self.now
-            try:
-                await self.timeout(remaining)
-                remaining = 0
-                resource.release()
-            except Interrupt as intr:
-                if isinstance(intr.cause, Preempted):
-                    remaining -= self.now - intr.cause.usage_since
-                    # do NOT call release() here
-                else:
-                    resource.release()
-                    raise
-    ```
+    Do *not* call `release()` when handling a `Preempted` interrupt:
+    the preempted process has already been removed from the user list by the preemptor.
     """
 
+    # Class-level counter ensures stable FIFO ordering among equal-priority requests.
     _seq = itertools.count()
 
     def __init__(self, env: "Environment", capacity: int = 1):
-        """Construct a preemptive resource.
-
-        Args:
-            env: simulation environment.
-            capacity: maximum number of concurrent users.
-
-        Raises:
-            ValueError: for non-positive capacity.
-        """
         if capacity <= 0:
-            raise ValueError(f"resource capacity must be positive, got {capacity}")
+            raise ValueError(f"capacity must be positive, got {capacity}")
         self._env = env
         self.capacity = capacity
-        self._users: list = []    # [priority, seq, usage_since, process]
-        self._waiters: list = []  # [priority, seq, process, event]
+        self._users: list = []  # sorted list of [priority, seq, usage_since, process]
+        self._waiters: list = []  # sorted list of [priority, seq, process, event]
 
     @property
     def count(self) -> int:
@@ -86,8 +56,8 @@ class PreemptiveResource:
     async def acquire(self, priority: int = 0, preempt: bool = True) -> None:
         """Acquire one unit of the resource.
 
-        The calling process is identified via `env.active_process`, so this
-        must be called from within a `Process.run()` coroutine.
+        Must be called from within a Process.run() coroutine; the calling
+        process is identified via env.active_process.
 
         Args:
             priority: lower value = higher priority (0 is best).
@@ -103,14 +73,14 @@ class PreemptiveResource:
             user_rec = [priority, seq, self._env.now, process]
             bisect.insort(self._users, user_rec)
             evt = Event(self._env)
-            evt._on_cancel = lambda rec=user_rec: self._users.remove(rec)
-            # Pre-trigger so the tight loop resumes without a heap round-trip.
+            # _on_cancel removes the user record if FirstOf later discards this event.
+            evt._on_cancel = lambda v, rec=user_rec: self._users.remove(rec)
             evt.succeed()
             await evt
             return
 
         if preempt and self._users:
-            worst = self._users[-1]  # highest priority number = worst
+            worst = self._users[-1]  # highest priority number = worst priority
             if worst[0] > priority:
                 self._users.remove(worst)
                 preempted_proc = worst[3]
@@ -118,8 +88,7 @@ class PreemptiveResource:
                 user_rec = [priority, seq, self._env.now, process]
                 bisect.insort(self._users, user_rec)
                 evt = Event(self._env)
-                evt._on_cancel = lambda rec=user_rec: self._users.remove(rec)
-                # Pre-trigger before interrupting the preempted process.
+                evt._on_cancel = lambda v, rec=user_rec: self._users.remove(rec)
                 evt.succeed()
                 if preempted_proc is not None:
                     preempted_proc.interrupt(
@@ -131,15 +100,15 @@ class PreemptiveResource:
         evt = Event(self._env)
         waiter_rec = [priority, seq, process, evt]
         bisect.insort(self._waiters, waiter_rec)
-        # No _on_cancel: lazy deletion in release() skips cancelled entries.
+        # Lazy deletion in release() skips cancelled entries; no _on_cancel needed.
         await evt
 
     def release(self) -> None:
         """Release one unit of the resource.
 
-        The calling process is identified via `env.active_process`.
-        Do not call this when handling a `Preempted` interrupt — the process
-        has already been removed from the user list by the preemptor.
+        The calling process is identified via env.active_process.
+        Do not call this when handling a Preempted interrupt: the preempted
+        process has already been removed from the user list by the preemptor.
 
         Raises:
             RuntimeError: if the calling process is not a current user.
@@ -150,9 +119,7 @@ class PreemptiveResource:
                 del self._users[i]
                 break
         else:
-            raise RuntimeError(
-                f"{process} is not a current user of this resource"
-            )
+            raise RuntimeError(f"{process} is not a current user of this resource")
 
         # Lazy deletion: skip waiters whose events were cancelled.
         while self._waiters:

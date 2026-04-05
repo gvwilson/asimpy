@@ -1,0 +1,3 @@
+# Barrier
+
+::: asimpy.barrier

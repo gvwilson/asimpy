@@ -1,0 +1,3 @@
+# Queue
+
+::: asimpy.queue

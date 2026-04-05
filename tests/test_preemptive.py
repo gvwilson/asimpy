@@ -5,11 +5,6 @@ from asimpy import Environment, Interrupt, Process
 from asimpy import Preempted, PreemptiveResource
 
 
-# ---------------------------------------------------------------------------
-# active_process tests
-# ---------------------------------------------------------------------------
-
-
 def test_active_process_is_none_initially():
     env = Environment()
     assert env.active_process is None
@@ -64,11 +59,6 @@ def test_active_process_identifies_correct_process():
     assert records == [p1, p2]
 
 
-# ---------------------------------------------------------------------------
-# PreemptiveResource construction
-# ---------------------------------------------------------------------------
-
-
 def test_invalid_capacity_zero():
     env = Environment()
     with pytest.raises(ValueError, match="capacity must be positive"):
@@ -85,11 +75,6 @@ def test_default_capacity_is_one():
     env = Environment()
     res = PreemptiveResource(env)
     assert res.capacity == 1
-
-
-# ---------------------------------------------------------------------------
-# Basic acquire / release (no preemption)
-# ---------------------------------------------------------------------------
 
 
 def test_basic_acquire_and_release():
@@ -179,13 +164,8 @@ def test_release_raises_if_not_user():
     assert r.error is not None
 
 
-# ---------------------------------------------------------------------------
-# Preemption
-# ---------------------------------------------------------------------------
-
-
 def _make_preemptable_worker(priority, service_time):
-    """Helper: returns a Process class that handles Preempted and re-acquires."""
+    """Returns a Process class that handles Preempted and re-acquires."""
 
     class Worker(Process):
         def init(self, res):
@@ -206,6 +186,7 @@ def _make_preemptable_worker(priority, service_time):
                     if isinstance(intr.cause, Preempted):
                         remaining -= self.now - intr.cause.usage_since
                         self.preempted = True
+                        # do NOT call release() — preemptor already removed us
                     else:
                         self.res.release()
                         raise
@@ -243,7 +224,6 @@ def test_preemption_occurs():
 
 def test_preemption_completes_at_correct_time():
     """Timeline: low starts at 0, preempted at 3, high finishes at 7, low finishes at 14."""
-    _make_preemptable_worker(priority=2, service_time=10)
 
     class HighWorker(Process):
         def init(self, res):
@@ -294,7 +274,6 @@ def test_preempted_cause_fields():
             self.cause = None
 
         async def run(self):
-            # This test always preempts LowWorker, so only the except path runs.
             await self.res.acquire(priority=2)
             try:
                 await self.timeout(10)
@@ -359,10 +338,8 @@ def test_no_preemption_when_equal_priority():
     class Holder(Process):
         def init(self, res):
             self.res = res
-            self.preempted = False
 
         async def run(self):
-            # This test never preempts Holder, so only the try-path runs.
             await self.res.acquire(priority=1)
             await self.timeout(10)
             self.res.release()
@@ -380,11 +357,9 @@ def test_no_preemption_when_equal_priority():
 
     env = Environment()
     res = PreemptiveResource(env)
-    holder = Holder(env, res)
+    Holder(env, res)
     req = Requester(env, res)
     env.run()
-
-    assert not holder.preempted
     assert req.acquire_time == 10
 
 
@@ -443,48 +418,18 @@ def test_preemption_with_capacity_two():
 
     env = Environment()
     res = PreemptiveResource(env, capacity=2)
-    # Both low-priority workers fill the two slots at t=0
     w3 = LowWorker3(env, res)
     w2 = LowWorker2(env, res)
     ha = HighArrival(env, res)
     env.run()
 
-    assert w3.preempted   # priority=3 is the worst, gets evicted
+    assert w3.preempted  # priority=3 is the worst, gets evicted
     assert not w2.preempted  # priority=2 survives
     assert ha.done
 
-# ---------------------------------------------------------------------------
-# Tests that cover previously-unreachable branches
-# ---------------------------------------------------------------------------
 
-
-def test_preemptive_release_skips_cancelled_waiter():
-    """release() skips cancelled waiters (lazy deletion) and serves the next one."""
-    from asimpy.event import Event
-
-    env = Environment()
-    res = PreemptiveResource(env, capacity=1)
-
-    # Simulate one unit held; inject a cancelled waiter then a valid one directly.
-    res._users = [[0, 0, 0.0, None]]  # placeholder user record
-
-    cancelled_evt = Event(env)
-    valid_evt = Event(env)
-    res._waiters.append([1, 1, None, cancelled_evt])
-    res._waiters.append([2, 2, None, valid_evt])
-    cancelled_evt.cancel()
-
-    # Inject active_process so release() can find the user record.
-    env.active_process = None  # user[3] is None; identity check will match
-    res.release()
-
-    assert valid_evt._triggered
-    # The valid waiter is now in _users.
-    assert len(res._users) == 1
-
-
-def test_make_preemptable_worker_non_preempted_interrupt():
-    """_make_preemptable_worker's else branch fires on a non-Preempted interrupt."""
+def test_non_preempted_interrupt_reraises():
+    """_make_preemptable_worker re-raises non-Preempted interrupts after releasing."""
     Worker = _make_preemptable_worker(priority=0, service_time=20)
 
     class Interruptor(Process):
@@ -493,7 +438,7 @@ def test_make_preemptable_worker_non_preempted_interrupt():
 
         async def run(self):
             await self.timeout(3)
-            self.target.interrupt("oops")  # non-Preempted cause
+            self.target.interrupt("oops")
 
     env = Environment()
     res = PreemptiveResource(env)
@@ -503,67 +448,43 @@ def test_make_preemptable_worker_non_preempted_interrupt():
     with pytest.raises(Interrupt):
         env.run()
 
-    # Worker released the resource before re-raising.
     assert res.count == 0
 
 
-def test_preempted_cause_fields_no_preemption():
-    """LowWorker in test_preempted_cause_fields completes normally when not preempted."""
-
-    class LowWorker(Process):
-        def init(self, res):
-            self.res = res
-            self.cause = None
-            self.released = False
-
-        async def run(self):
-            # No preemptor in this test, so only the normal completion path runs.
-            await self.res.acquire(priority=2)
-            await self.timeout(10)
-            self.res.release()
-            self.released = True
-
-    env = Environment()
-    res = PreemptiveResource(env)
-    low = LowWorker(env, res)
-    env.run()
-
-    assert low.released
-    assert low.cause is None
-    assert res.count == 0
-
-
-def test_no_preemption_equal_priority_holder_preempted_elsewhere():
-    """The Holder pattern from test_no_preemption_when_equal_priority covers
-    its except-Interrupt branch when a higher-priority process DOES preempt."""
+def test_release_skips_cancelled_waiter():
+    """release() skips cancelled waiters and serves the next valid one."""
 
     class Holder(Process):
         def init(self, res):
             self.res = res
-            self.preempted = False
 
         async def run(self):
-            # HighPriority always preempts at t=3, so only the except path runs.
-            await self.res.acquire(priority=1)
-            try:
-                await self.timeout(10)
-            except Interrupt as intr:
-                if isinstance(intr.cause, Preempted):
-                    self.preempted = True
+            await self.res.acquire()
+            await self.timeout(10)
+            self.res.release()
 
-    class HighPriority(Process):
+    class Waiter(Process):
         def init(self, res):
             self.res = res
+            self.acquired = False
 
         async def run(self):
-            await self.timeout(3)
-            await self.res.acquire(priority=0)  # better priority → preempts
+            await self.timeout(1)
+            await self.res.acquire(preempt=False)
+            self.acquired = True
             self.res.release()
 
     env = Environment()
     res = PreemptiveResource(env)
-    holder = Holder(env, res)
-    HighPriority(env, res)
-    env.run()
+    Holder(env, res)
+    # Two waiters; cancel the first one's event directly after they park.
+    w1 = Waiter(env, res)
+    w2 = Waiter(env, res)
+    env.run(until=2)
 
-    assert holder.preempted
+    # Both waiters are now parked; cancel the first one's event.
+    res._waiters[0][3].cancel()
+
+    env.run()  # continue to completion
+    assert not w1.acquired  # cancelled waiter never got the resource
+    assert w2.acquired

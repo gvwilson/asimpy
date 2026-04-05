@@ -1,0 +1,3 @@
+# Core
+
+::: asimpy.core

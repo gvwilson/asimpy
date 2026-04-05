@@ -1,0 +1,3 @@
+# Preemptive
+
+::: asimpy.preemptive

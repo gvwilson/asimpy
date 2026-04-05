@@ -49,8 +49,8 @@ def test_priority_queue_with_tuples():
     assert proc.results[1] == (2, "second")
 
 
-def test_priority_queue_max_capacity():
-    """Test priority queue with max_capacity blocks when full."""
+def test_priority_queue_capacity():
+    """Test priority queue with capacity blocks when full."""
 
     class PQUser(Process):
         def init(self, pq):
@@ -66,7 +66,7 @@ def test_priority_queue_max_capacity():
                 self.results.append(await self.pq.get())
 
     env = Environment()
-    pq = PriorityQueue(env, max_capacity=3)
+    pq = PriorityQueue(env, capacity=3)
     proc = PQUser(env, pq)
     env.run()
     assert proc.results == [2, 5, 8]

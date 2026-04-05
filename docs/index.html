@@ -10,22 +10,25 @@
       
       
       
-        <link rel="next" href="license/">
+        <link rel="next" href="./api/core/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <link rel="icon" href="./assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.31">
     
     
       
-        <title>asimpy</title>
+        <title>asimpy - asimpy</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+      
+      <link rel="stylesheet" href="./assets/stylesheets/modern/main.53a7feaf.min.css">
       
       
 
@@ -39,14 +42,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
-    
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -60,7 +61,7 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
@@ -80,15 +81,15 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="asimpy" class="md-header__button md-logo" aria-label="asimpy" data-md-component="logo">
+    <a href="" title="asimpy" class="md-header__button md-logo" aria-label="asimpy" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -112,7 +113,22 @@
     
     
     
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
     
+    <div class="md-header__source">
+      
+    </div>
   </nav>
   
 </header>
@@ -138,10 +154,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="asimpy" class="md-nav__button md-logo" aria-label="asimpy" data-md-component="logo">
+    <a href="" title="asimpy" class="md-nav__button md-logo" aria-label="asimpy" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
 
     </a>
     asimpy
@@ -159,38 +175,20 @@
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
       
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    asimpy
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+      <a href="" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    asimpy
+    Home
   
 
     
@@ -199,548 +197,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#core-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Concepts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#asyncawait" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Async/Await
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#environment-process-and-event-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Environment: Process and Event Management
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#event-the-synchronization-primitive" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event: the Synchronization Primitive
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#process-active-entities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Process: Active Entities
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Process: Active Entities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-scheduling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Scheduling
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-interrupts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Interrupts
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#timeout-waiting-until" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Timeout: Waiting Until
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#queue-exchanging-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Queue: Exchanging Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resource-capacity-limited-sharing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource: Capacity-Limited Sharing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#barrier-synchronizing-multiple-processes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Barrier: Synchronizing Multiple Processes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allof-waiting-for-multiple-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AllOf: Waiting for Multiple Events
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="AllOf: Waiting for Multiple Events">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Interface
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#firstof-racing-multiple-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        FirstOf: Racing Multiple Events
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-flow-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Flow Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-note-on-coroutine-adaptation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Coroutine Adaptation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#things-i-learned-the-hard-way" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Things I Learned the Hard Way
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Things I Learned the Hard Way">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements-for-correctness" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requirements for Correctness
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-not-just-use-coroutines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why Not Just Use Coroutines?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#event__await__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event.__await__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-return-value" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why Return Value
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="license/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    MIT License
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="conduct/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Code of Conduct
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Contributing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="examples/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Examples
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tutorial
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Tutorial
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tutorial/01_minimal/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    A Minimal Framework
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tutorial/02_queue/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Adding Queues
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tutorial/03_interrupt/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Adding Interrupts
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tutorial/04_combine/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Combining Events
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -761,17 +217,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Reference
+    API
   
 
     
@@ -782,12 +238,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Reference
+    API
   
 
           </label>
@@ -800,14 +256,14 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/allof/" class="md-nav__link">
+      <a href="./api/core/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Allof
+    Core
   
 
     
@@ -828,14 +284,14 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/barrier/" class="md-nav__link">
+      <a href="./api/queue/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Barrier
+    Queue
   
 
     
@@ -856,175 +312,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/environment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Environment
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/event/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Event
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/firstof/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Firstof
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/interrupt/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Interrupt
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/preemptive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Preemptive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/process/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Process
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/resource/" class="md-nav__link">
+      <a href="./api/resource/" class="md-nav__link">
         
   
   
@@ -1052,14 +340,14 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/simqueue/" class="md-nav__link">
+      <a href="./api/store/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Simqueue
+    Store
   
 
     
@@ -1080,14 +368,126 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/timeout/" class="md-nav__link">
+      <a href="./api/container/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Timeout
+    Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./api/barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./api/allof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All Of
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./api/firstof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First Of
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./api/preemptive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preemptive
   
 
     
@@ -1123,17 +523,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Scenarios
+    Project
   
 
     
@@ -1144,12 +544,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Scenarios
+    Project
   
 
           </label>
@@ -1162,14 +562,14 @@
   
   
     <li class="md-nav__item">
-      <a href="scenarios/01_basic_ideas/" class="md-nav__link">
+      <a href="./license/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Basic Ideas
+    License
   
 
     
@@ -1190,322 +590,14 @@
   
   
     <li class="md-nav__item">
-      <a href="scenarios/02_queue_formation/" class="md-nav__link">
+      <a href="./conduct/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Queue Formation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/03_littles_law/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Little's Law
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/04_sojourn_time/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Sojourn Time
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/05_mm1_nonlinearity/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    M/M/1 Queue Nonlinearity
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/06_pooled_vs_separate/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pooled vs. Separate Queues
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/07_late_merge/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Late Merge
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/08_inspectors_paradox/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    The Inspector's Paradox
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/09_convoy_effect/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    The Convoy Effect
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/10_priority_starvation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Priority Starvation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/11_tandem_queue/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tandem Queue Blocking
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/12_rush_hour/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Rush Hour Displacement
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="scenarios/13_braess_paradox/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Braess's Paradox
+    Code of Conduct
   
 
     
@@ -1536,272 +628,24 @@
               
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                  
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
     
   
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#core-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Concepts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#asyncawait" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Async/Await
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#environment-process-and-event-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Environment: Process and Event Management
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#event-the-synchronization-primitive" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event: the Synchronization Primitive
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#process-active-entities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Process: Active Entities
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Process: Active Entities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-scheduling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Scheduling
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-interrupts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Interrupts
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#timeout-waiting-until" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Timeout: Waiting Until
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#queue-exchanging-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Queue: Exchanging Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resource-capacity-limited-sharing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource: Capacity-Limited Sharing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#barrier-synchronizing-multiple-processes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Barrier: Synchronizing Multiple Processes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allof-waiting-for-multiple-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AllOf: Waiting for Multiple Events
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="AllOf: Waiting for Multiple Events">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-note-on-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Interface
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#firstof-racing-multiple-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        FirstOf: Racing Multiple Events
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-flow-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Flow Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-note-on-coroutine-adaptation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A Note on Coroutine Adaptation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#things-i-learned-the-hard-way" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Things I Learned the Hard Way
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Things I Learned the Hard Way">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements-for-correctness" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requirements for Correctness
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-not-just-use-coroutines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why Not Just Use Coroutines?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#event__await__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event.__await__
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-return-value" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why Return Value
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1816,397 +660,9 @@
                 
                   
 
-
-
 <h1 id="asimpy">asimpy</h1>
-<p>A simple discrete event simulation framework in Python using <code>async</code>/<code>await</code>.</p>
-<ul>
-<li><a href="https://asimpy.readthedocs.io/">Documentation</a></li>
-<li><a href="https://pypi.org/project/asimpy/">Package</a></li>
-<li><a href="https://github.com/gvwilson/asimpy">Repository</a></li>
-</ul>
-<p><em>Thanks to the creators of <a href="https://simpy.readthedocs.io/">SimPy</a> for inspiration.</em></p>
-<h2 id="core-concepts">Core Concepts</h2>
-<p>Discrete event simulation (DES) simulates systems in which events occur at discrete points in time.
-The simulation maintains a virtual clock and executes events in chronological order.
-Unlike real-time systems,
-the simulation jumps directly from one event time to the next,
-skipping empty intervals.
-(Time steps are often referred to as "ticks".)</p>
-<h2 id="asyncawait">Async/Await</h2>
-<p>Python's <code>async</code>/<code>await</code> syntax enables cooperative multitasking without threads.
-Functions defined as <code>async def</code> return coroutine objects when called.
-These coroutines can be paused at <code>await</code> points and later resumed.
-More specifically,
-when a coroutine executes <code>value = await expr</code>, it:</p>
-<ol>
-<li>yields the awaited object <code>expr</code> to its caller;</li>
-<li>suspends execution at that point;</li>
-<li>resumes later when <code>send(value)</code> is called on it; an thend</li>
-<li>returns the value passed to <code>send()</code> as the result of the <code>await</code> expression
-    inside the resumed coroutine.</li>
-</ol>
-<p><a href="https://asimpy.readthedocs.io/">asimpy</a> uses this mechanism to pause and resume coroutines to simulate simultaneously execution.
-This is similar to the <code>yield</code>-based mechanism used in <a href="https://simpy.readthedocs.io/">SimPy</a>.</p>
-<h2 id="environment-process-and-event-management"><code>Environment</code>: Process and Event Management</h2>
-<p>The <code>Environment</code> class maintains the simulation state:</p>
-<ul>
-<li><code>_now</code> is the current simulated time.</li>
-<li><code>_pending</code> is a priority queue of callbacks waiting to be run in order of increasing time
-    (so that the next one to run is at the front of the queue).</li>
-</ul>
-<p><code>Environment.schedule(time, callback)</code> adds a callback to the queue.
-The <code>_Pending</code> dataclass used to store it includes a serial number
-to ensure deterministic ordering when multiple events occur at the same time.</p>
-<p><code>Environment.run()</code> implements the main simulation loop:</p>
-<ol>
-<li>Extract the next pending event from the priority queue.</li>
-<li>If an <code>until</code> parameter is specified and the event time exceeds it, stop.</li>
-<li>Execute the callback.</li>
-<li>If the callback doesn't return <code>NO_TIME</code> and the event time is greater than the current simulated time,
-    advance the clock.</li>
-</ol>
-<p>The <code>NO_TIME</code> sentinel prevents time from advancing mistakenly when events are canceled.
-This is explained in detail later.</p>
-<h2 id="event-the-synchronization-primitive"><code>Event</code>: the Synchronization Primitive</h2>
-<p>The <code>Event</code> class represents an action that will complete in the future.
-It has four members:</p>
-<ul>
-<li><code>_triggered</code> indicates whether the event has completed.</li>
-<li><code>_cancelled</code> indicaets whether the event was cancelled.</li>
-<li><code>_value</code> is the event's result value.</li>
-<li><code>_waiters</code> is a list of processes waiting for this event to occur.</li>
-</ul>
-<p>When <code>Event.succeed(value)</code> is called, it:</p>
-<ol>
-<li>sets <code>_triggered</code> to <code>True</code> to show that the event has completed;</li>
-<li>stores the value for later retrieval;</li>
-<li>calls <code>resume(value)</code> on all waiting processes; and</li>
-<li>clears the list of waiting processes.</li>
-</ol>
-<p>The internal <code>Event._add_waiter(proc)</code> method handles three cases:</p>
-<ol>
-<li>If the event has already completed (i.e., if <code>_triggered</code> is <code>True</code>),
-    it immediately calls <code>proc.resume(value)</code>.</li>
-<li>If the event has been canceled,
-    it does nothing.</li>
-<li>Otherwise, it adds <code>proc</code> to the list of waiting processes.</li>
-</ol>
-<p>Finally,
-<code>Event</code> implements <code>__await__()</code>,
-which Python calls automatically when it executes <code>await evt</code>.
-<code>Event.__await__</code> yields <code>self</code> so that the awaiting process gets the event back.</p>
-<h2 id="process-active-entities"><code>Process</code>: Active Entities</h2>
-<p><code>Process</code> is the base class for simulation processes.
-(Unlike <a href="https://simpy.readthedocs.io/">SimPy</a>, <a href="https://asimpy.readthedocs.io/">asimpy</a> uses a class rather than bare coroutines.)
-When a <code>Process</code> is constructed, it:</p>
-<ol>
-<li>store a reference to the simulation environment;</li>
-<li>calls <code>init()</code> for subclass-specific setup
-    (the default implementation of this method does nothing);</li>
-<li>create a coroutine by calling <code>run()</code>; and</li>
-<li>schedules immediate execution of <code>Process._loop()</code>.</li>
-</ol>
-<p>The <code>_loop()</code> method drives coroutine execution:</p>
-<ol>
-<li>If an interrupt is pending, throw it into the coroutine via <code>throw()</code>.</li>
-<li>Otherwise, send the value into the coroutine via <code>send()</code>.</li>
-<li>Receive the yielded event.</li>
-<li>Register this process as a waiter on that event</li>
-</ol>
-<p>When <code>StopIteration</code> is raised by the coroutine,
-the process is marked as done.
-If any other exception occurs,
-the process is marked as done and the exception is re-raised.</p>
-<p><strong>Note:</strong> The word "process" can be confusing.
-These are <em>not</em> operating system processes with their own memory and permissions.</p>
-<h3 id="a-note-on-scheduling">A Note on Scheduling</h3>
-<p>When an event completes it calls <code>proc.resume(value)</code> to schedules another iteration of <code>_loop()</code>
-with the provided value.
-This continues the coroutine past its <code>await</code> point.</p>
-<h3 id="a-note-on-interrupts">A Note on Interrupts</h3>
-<p>The interrupt mechanism sets <code>_interrupt</code> and schedules immediate execution of the process.
-The next <code>_loop()</code> iteration throws the interrupt into the coroutine,
-where it can be caught with <code>try</code>/<code>except</code>.
-This is a bit clumsy,
-but is the only way to inject exceptions into running coroutines.</p>
-<p><strong>Note:</strong>
-A process can <em>only</em> be interrupted at an <code>await</code> point.
-Exceptions <em>cannot</em> be raised from the outside at arbitrary points.</p>
-<h2 id="timeout-waiting-until"><code>Timeout</code>: Waiting Until</h2>
-<p>A <code>Timeout</code> object schedules a callback at a future time.
-<code>Timeout._fire()</code> method returns <code>NO_TIME</code> if the timeout has ben canceled,
-which prevents canceled timeouts from accidentally advancing the simulation time.
-Otherwise,
-<code>Timeout._fire()</code> calls <code>succeed()</code> to trigger the event.</p>
-<h2 id="queue-exchanging-data"><code>Queue</code>: Exchanging Data</h2>
-<p><code>Queue</code> enables processes to exchange data.
-It has three members:</p>
-<ul>
-<li><code>_items</code> is a list of items being passed between processes.</li>
-<li><code>_getters</code> is a list of processes waiting for items.</li>
-<li><code>_putters</code> is a list of processes waiting for space in a capacity-limited queue.</li>
-</ul>
-<p>The invariant for <code>Queue</code> is that <code>_items</code> and <code>_getters</code> cannot both be non-empty,
-i.e.,
-if there are processes waiting then there aren't any items to take,
-while if there are items waiting to be taken there aren't any waiting processes.</p>
-<p><code>Queue.put(item)</code> is an <code>async</code> operation.
-It immediately calls <code>evt.succeed(item)</code> if a process is waiting
-to pass that item to the waiting process.
-Otherwise,
-if the queue is not full,
-the item is appended to <code>queue._items</code>.
-If the queue has a maximum capacity and is full,
-<code>put()</code> blocks until space is freed by a <code>get()</code>.
-Multiple blocked putters are served in FIFO order.</p>
-<p><code>Queue.get()</code> is a bit more complicated.
-If the queue has items,
-<code>queue.get()</code> creates an event that immediately succeeds with the first item.
-If putters are waiting, the first putter's item is added to the queue
-and the putter is unblocked.
-If the queue is empty,
-the call creates an event and adds the caller to the list of processes waiting to get items.</p>
-<p>The complication is that if there <em>is</em> an item to get,
-<code>queue.get()</code> sets the <code>_on_cancel</code> callback of the event to handles cancellation
-by returning the item taken to the front of the queue.</p>
-<p>If the <code>priority</code> constructor parameter is <code>True</code>,
-the queue uses <code>insort</code> operations to maintain ordering,
-which means items must be comparable (i.e., must implement <code>__lt__</code>).
-<code>get()</code> returns the minimum element;
-<code>put()</code> adds an element and potentially satisfies a waiting getter.</p>
-<h2 id="resource-capacity-limited-sharing"><code>Resource</code>: Capacity-Limited Sharing</h2>
-<p>The <code>Resource</code> class simulates a shared resource with limited capacity.
-It has three members:</p>
-<ul>
-<li><code>capacity</code> is the maximum number of concurrent users.</li>
-<li><code>_count</code> is the current number of users.</li>
-<li><code>_waiters</code> is a list of processes waiting for the resource to be available.</li>
-</ul>
-<p>If the resource is below capacity when <code>res.acquire()</code> is called,
-it calls increments the internal count and immediately succeeds.
-Otherwise,
-it adds the caller to the list of waiting processes.
-Similarly,
-<code>res.release()</code> decrements the count and then checks the list of waiting processes.
-If there are any,
-it calls <code>evt.succeed()</code> for the event representing the first waiting process.</p>
-<p><code>Resource.acquire</code> depends on internal methods
-<code>Resource._acquire_available</code> and <code>Resource._acquire_unavailable</code>,
-both of which set the <code>_on_cancel</code> callback of the event they create
-to restore the counter to its original state
-or remove the event marking a waiting process.</p>
-<p>Finally,
-the context manager protocol methods <code>__aenter__</code> and <code>__aexit__</code>
-allows processes to use <code>async with res</code>
-to acquire and release a resource in a block.</p>
-<h2 id="barrier-synchronizing-multiple-processes"><code>Barrier</code>: Synchronizing Multiple Processes</h2>
-<p>A <code>Barrier</code> holds multiple processes until they are explicitly released,
-i.e.,
-it allows the simulation to synchronize multiple processes.</p>
-<ul>
-<li><code>wait()</code> creates an event and adds it to the list of waiters.</li>
-<li><code>release()</code> calls <code>succeed()</code> on all waiting events and clears the list.</li>
-</ul>
-<h2 id="allof-waiting-for-multiple-events">AllOf: Waiting for Multiple Events</h2>
-<p><code>AllOf</code> and <code>FirstOf</code> are the most complicated parts of <a href="https://asimpy.readthedocs.io/">asimpy</a>,
-and the reason that parts such as cancellation management exist.
-<code>AllOf</code> succeeds when all provided events complete.
-It:</p>
-<ol>
-<li>converts each input to an event (discussed later);</li>
-<li>registers an <code>_AllOfWatcher</code> on each of those events;</li>
-<li>accumulates results in <code>_results</code> dictionary; and</li>
-<li>succeeds when all results collected.</li>
-</ol>
-<p>Each watcher calls <code>_child_done(key, value)</code> when its event completes.
-This stores the result and checks if all events are done.</p>
-<h3 id="a-note-on-interface">A Note on Interface</h3>
-<p>A process calls <code>AllOf</code> like this:</p>
-<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">AllOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_env</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-</code></pre></div>
-<p>The eventual result is a dictionary in which
-the name of the events are keys and the results of the events are values;
-in this case,
-the keys will be <code>"a"</code> and <code>"b"</code>.
-This gives callers an easy way to keep track of events,
-though it <em>doesn't</em> support waiting on all events in a list.</p>
-<p><code>AllOf</code>'s interface would be tidier
-if it didn't require the simulation environment as its first argument.
-However,
-removing it made the implementation significantly more complicated.</p>
-<h2 id="firstof-racing-multiple-events">FirstOf: Racing Multiple Events</h2>
-<p><code>FirstOf</code> succeeds as soon as <em>any</em> of the provided events succeeds,
-and then cancels all of the other events.
-To do this, it:</p>
-<ol>
-<li>converts each input to an event;</li>
-<li>registers a <code>_FirstOfWatcher</code> on each;</li>
-<li>on first completion, cancels all other events; and</li>
-<li>succeeds with a <code>(key, value)</code> to identify the winning event.</li>
-</ol>
-<p><code>FirstOf</code>'s <code>_done</code> flag prevents multiple completions.
-When <code>_child_done()</code> is called,
-it checks this flag,
-cancels other waiters,
-and succeeds.</p>
-<h2 id="control-flow-example">Control Flow Example</h2>
-<p>Consider a process that waits 5 ticks:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Waiter</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>When it executes:</p>
-<ol>
-<li>Construction calls <code>__init__()</code>,
-    which creates a coroutine by calling <code>run()</code>
-    and immediately schedules <code>_loop()</code>.</li>
-<li>The first <code>_loop()</code> calls <code>send(None)</code> to the coroutine,
-    which executes to the <code>await</code>
-    and yields a <code>Timeout</code> event.</li>
-<li><code>_loop()</code> registers this process as a waiter on the timeout event.</li>
-<li>The timeout schedules a callback to run at time 5.</li>
-<li>The environment takes the event from its <code>_pending</code> queue and updates the simulated time to 5.</li>
-<li>The environment runs the callback, which calls <code>succeed()</code> on the timeout.</li>
-<li>The timeout calls <code>resume()</code> on the process.</li>
-<li><code>resume()</code> schedules an immediate call to <code>_loop()</code> with the value <code>None</code>.</li>
-<li><code>_loop()</code> calls <code>send(None)</code> on the coroutine,
-    causing it to advance past the <code>await</code>.</li>
-<li>The process prints <code>"done"</code> and raises a <code>StopIteration</code> exception.</li>
-<li>The process is marked as done.</li>
-<li>Since there are no other events in the pending queue, the environment ends the simulation.</li>
-</ol>
-<h2 id="a-note-on-coroutine-adaptation">A Note on Coroutine Adaptation</h2>
-<p>The <code>ensure_event()</code> function handles both <code>Event</code> objects and bare coroutines.
-For coroutines, it creates a <code>_Runner</code> process that <code>await</code>s the coroutine
-and then calls <code>succeed()</code> on an event with the result.
-This allows <code>AllOf</code> and <code>FirstOf</code> to accept both events and coroutines.</p>
-<p><code>AllOf</code> and <code>FirstOf</code> must accept coroutines in addition to events
-because of the way Python's <code>async</code>/<code>await</code> syntax works
-and what users naturally write.
-In the statement:</p>
-<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">AllOf</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">b</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">acquire</span><span class="p">())</span>
-</code></pre></div>
-<p>the expressions <code>queue.get()</code> and <code>resource.acquire()</code> are calls to <code>async def</code> functions.
-In Python,
-calling an async function *does not execute it.
-Instead, it returns a coroutine object.
-If <code>AllOf</code> couldn't accept coroutines directly,
-this code would fail because it expects <code>Event</code>s.</p>
-<p>If <code>AllOf</code> only accepted events, users would need to write:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Manually create events</span>
-<span class="n">evt_a</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">evt_b</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
-<span class="c1"># Manually create runners</span>
-<span class="n">_Runner</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">evt_a</span><span class="p">,</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
-<span class="n">_Runner</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">evt_b</span><span class="p">,</span> <span class="n">resource</span><span class="o">.</span><span class="n">acquire</span><span class="p">())</span>
 
-<span class="c1"># Now use the events</span>
-<span class="k">await</span> <span class="n">AllOf</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">evt_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">evt_b</span><span class="p">)</span>
-</code></pre></div>
-<p>This is verbose and exposes internal implementation details.</p>
-<h2 id="things-i-learned-the-hard-way">Things I Learned the Hard Way</h2>
-<h3 id="requirements-for-correctness">Requirements for Correctness</h3>
-<p><code>Event</code> waiter notification must occur before clearing the list.
-:   If the list were cleared first, waiters couldn't be resumed.</p>
-<p>The <code>_Pending</code> serial number is necessary.
-:   Heap operations require total ordering.
-    Without this value,
-    events occurring at the same time wouldn't be deterministically ordered,
-    which would make simulations irreproducible.</p>
-<p>Cancelled events must not advance time.
-:   The <code>NO_TIME</code> sentinel prevents this.
-    Without it,
-    cancelled timeouts create gaps in the simulation timeline.</p>
-<p>Process interrupt checking must occur before coroutine sends.
-:   This ensures interrupts are handled immediately
-    rather than being delayed until the next event.</p>
-<p>Queue cancellation handlers must remove items or waiters.
-:   Without this,
-    cancelled <code>get</code>s leave processes in the waiters list indefinitely,
-    and cancelled items disappear from the queue.</p>
-<p>Resource cancellation handlers must adjust state.
-:   Without them,
-    cancelled <code>acquire</code>s permanently reduce available capacity or leave ghost waiters.</p>
-<p><code>AllOf</code> must track completion.
-:   Without checking if all events are done, it succeeds prematurely.</p>
-<p><code>FirstOf</code> must cancel losing events.
-:   Otherwise,
-    those events remain active and can run later.</p>
-<h3 id="why-not-just-use-coroutines">Why Not Just Use Coroutines?</h3>
-<p><a href="https://simpy.readthedocs.io/">SimPy</a> uses bare coroutines.
-<a href="https://asimpy.readthedocs.io/">asimpy</a> uses <code>Event</code> as the internal primitive for several reasons.</p>
-<p>Events can be triggered externally.
-:   A <code>Timeout</code> schedules a callback that later calls <code>succeed()</code>.
-    A coroutine cannot be "succeeded" from outside: it must run to completion.</p>
-<p>Events support multiple waiters.
-:   Multiple processes can <code>await</code> the same event.
-    A coroutine can only be awaited once.</p>
-<p>Events decouple triggering from waiting.
-:   The thing that creates an event (like <code>Timeout.__init__()</code>)
-    is separate from the thing that waits for it.
-    With coroutines, creation and execution are more tightly coupled.</p>
-<h3 id="event__await__"><code>Event.__await__</code></h3>
-<p><code>Event.__await__</code> is defined as:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="k">yield</span> <span class="bp">self</span>
-    <span class="k">return</span> <span class="n">value</span>
-</code></pre></div>
-<p>This appears redundant but each part serves a specific purpose in the coroutine protocol.</p>
-<p>When a coroutine executes <code>await event</code>,
-Python calls <code>event.__await__()</code>,
-which must return an iterator.
-The <code>yield self</code> statement:</p>
-<ol>
-<li>makes <code>__await__()</code> a generator function,
-    so it returns a generator (which is a kind of iterator).</li>
-<li>Yields the <code>Event</code> object itself up to the <code>Process</code>'s <code>_loop()</code> method.</li>
-</ol>
-<p>The <code>Process</code> needs the <code>Event</code> object so it can call <code>_add_waiter()</code> on it:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="c1"># ...</span>
-    <span class="n">yielded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># This receives the Event</span>
-    <span class="n">yielded</span><span class="o">.</span><span class="n">_add_waiter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>         <span class="c1"># Register as waiter</span>
-</code></pre></div>
-<p>Without <code>yield self</code>, the <code>Process</code> wouldn't know which event to register on.</p>
-<p>The <code>value = yield self</code> statement captures what gets sent back into the generator.
-When the event completes:</p>
-<ol>
-<li><code>Event</code> calls <code>proc.resume(value)</code> .</li>
-<li><code>Process</code> calls <code>self._loop(value)</code>.</li>
-<li><code>_loop</code> calls <code>self._coro.send(value)</code>.</li>
-<li>This resumes the generator, making <code>yield self</code> return <code>value</code>.</li>
-</ol>
-<p>The assignment therefore captures the event's result value.</p>
-<h3 id="why-return-value">Why Return Value</h3>
-<p>The <code>return value</code> statement makes that result available to the code that wrote <code>await event</code>.
-When a generator returns (via <code>return</code> or falling off the end)
-Python raises <code>StopIteration</code> with the return value as an attribute.
-The <code>async</code>/<code>await</code> machinery extracts this and provides it as the result of the <code>await</code> expression,
-So when a user writes:</p>
-<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre></div>
-<p>the flow is:</p>
-<ol>
-<li><code>queue.get()</code> creates and returns an <code>Event</code>.</li>
-<li><code>await</code> calls <code>Event.__await__()</code> which yields the <code>Event</code> object.</li>
-<li><code>Process._loop()</code> receives the <code>Event</code> and registers itself as a waiter.</li>
-<li>Later, the queue calls <code>event.succeed(item)</code>.</li>
-<li><code>Event</code> calls <code>process.resume(item)</code>.</li>
-<li><code>Process</code> calls <code>coro.send(item)</code>.</li>
-<li>The generator resumes, and <code>yield self</code> evaluates to <code>item</code>.</li>
-<li>The generator executes <code>return item</code>.</li>
-<li><code>StopIteration(item)</code> is raised.</li>
-<li>The <code>async</code> machinery catches this and makes <code>await</code> evaluate to <code>item</code>.</li>
-</ol>
-<p>None of the simpler alternatives would work:</p>
-<ul>
-<li><code>yield self</code> alone (no return): the await expression would evaluate to <code>None</code>.</li>
-<li><code>return self</code> (no yield): not a generator, so it violates the iterator protocol.</li>
-<li><code>yield value</code> then <code>return value</code>: the first yield wouldn't provide the <code>Event</code> object to the <code>Process</code>.</li>
-</ul>
 
 
 
@@ -2237,8 +693,8 @@ So when a user writes:</p>
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
@@ -2256,14 +712,10 @@ So when a user writes:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": [], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":".","features":[],"search":"./assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
-      
-        <script src="js/mathjax.js"></script>
-      
-        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="./assets/javascripts/bundle.91a19a9e.min.js"></script>
       
     
   </body>
