@@ -1,4 +1,4 @@
-"""Example: sleeps once for five ticks."""
+"""Example: sleep once for five ticks."""
 
 from asimpy import Environment, Process
 from _util import example

@@ -1,0 +1,13 @@
+t=00: consumer: wait for item
+t=05: producer: create item 0
+t=05: consumer: start processing item 0
+t=08: consumer: finish processing item 0
+t=08: consumer: wait for item
+t=10: producer: create item 1
+t=10: consumer: start processing item 1
+t=13: consumer: finish processing item 1
+t=13: consumer: wait for item
+t=15: producer: create item 2
+t=15: consumer: start processing item 2
+t=18: consumer: finish processing item 2
+t=18: consumer: wait for item

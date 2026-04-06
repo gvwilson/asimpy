@@ -12,6 +12,8 @@
         <link rel="prev" href="../../api/preemptive/">
       
       
+        <link rel="next" href="../02_producer_consumer/">
+      
       
         
       
@@ -753,10 +755,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#source" class="md-nav__link">
+  <a href="#source-and-output" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Source
+        Source and Output
       
     </span>
   </a>
@@ -767,7 +769,7 @@
   <a href="#execution-trace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Execution trace
+        Execution Trace
       
     </span>
   </a>
@@ -778,7 +780,18 @@
   <a href="#key-points" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key points
+        Key Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-for-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check for Understanding
       
     </span>
   </a>
@@ -789,6 +802,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_producer_consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producer-Consumer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -842,10 +883,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#source" class="md-nav__link">
+  <a href="#source-and-output" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Source
+        Source and Output
       
     </span>
   </a>
@@ -856,7 +897,7 @@
   <a href="#execution-trace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Execution trace
+        Execution Trace
       
     </span>
   </a>
@@ -867,7 +908,18 @@
   <a href="#key-points" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key points
+        Key Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-for-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check for Understanding
       
     </span>
   </a>
@@ -893,13 +945,8 @@
 <p>A step-by-step trace of what happens when the example runs, for newcomers who
 want to understand asimpy's internals.  Each column is a key actor; rows flow
 from top to bottom in execution order.</p>
-<p>Key data structures:</p>
-<ul>
-<li><code>env._ready</code> — a <code>deque</code> of callbacks to run right now (clock doesn't advance)</li>
-<li><code>env._heap</code> — a min-heap of <code>(time, serial number, callback)</code> tuples for future events</li>
-</ul>
-<h2 id="source">Source</h2>
-<pre><code class="language-python">&quot;&quot;&quot;Example: sleeps once for five ticks.&quot;&quot;&quot;
+<h2 id="source-and-output">Source and Output</h2>
+<pre><code class="language-python">&quot;&quot;&quot;Example: sleep once for five ticks.&quot;&quot;&quot;
 
 from asimpy import Environment, Process
 from _util import example
@@ -924,7 +971,11 @@ if __name__ == &quot;__main__&quot;:
     example(main)
 
 </code></pre>
-<h2 id="execution-trace">Execution trace</h2>
+<pre><code class="language-text">t=00: start
+t=05: end
+
+</code></pre>
+<h2 id="execution-trace">Execution Trace</h2>
 <table>
 <thead>
 <tr>
@@ -1216,7 +1267,7 @@ if __name__ == &quot;__main__&quot;:
 </tr>
 </tbody>
 </table>
-<h2 id="key-points">Key points</h2>
+<h2 id="key-points">Key Points</h2>
 <ol>
 <li>
 <p><code>env.immediate</code> vs <code>env.schedule</code>: <code>immediate</code> pushes onto
@@ -1240,11 +1291,9 @@ if __name__ == &quot;__main__&quot;:
     through the heap.  This is the fast path for pre-satisfied events.</p>
 </li>
 </ol>
-<blockquote>
-<p>Quick check: In step 4, <code>self.timeout(5)</code> returns a <code>Timeout</code>
-object.  What two things does the <code>Timeout</code> constructor do, and why
-are they separate concerns?</p>
-</blockquote>
+<h2 id="check-for-understanding">Check for Understanding</h2>
+<p>In step 4, <code>self.timeout(5)</code> returns a <code>Timeout</code> object.
+What two things does the <code>Timeout</code> constructor do, and why are they separate concerns?</p>
 
 
 

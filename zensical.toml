@@ -23,6 +23,7 @@ nav = [
   ]},
   { "Tutorial" = [
     { "Sleep Once" = "tutorial/01_sleep_once.md" },
+    { "Producer-Consumer" = "tutorial/02_producer_consumer.md" },
   ]},
 ]
 

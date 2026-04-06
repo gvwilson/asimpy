@@ -4,18 +4,17 @@ A step-by-step trace of what happens when the example runs, for newcomers who
 want to understand asimpy's internals.  Each column is a key actor; rows flow
 from top to bottom in execution order.
 
-Key data structures:
-
-- `env._ready` — a `deque` of callbacks to run right now (clock doesn't advance)
-- `env._heap` — a min-heap of `(time, serial number, callback)` tuples for future events
-
-## Source
+## Source and Output
 
 ```python
 --8<-- "examples/01_sleep_once.py"
 ```
 
-## Execution trace
+```text
+--8<-- "output/01_sleep_once.txt"
+```
+
+## Execution Trace
 
 | Step | Entity | Action |
 | ---: | :----- | :----- |
@@ -76,7 +75,7 @@ Key data structures:
 |   | `Timeout` event | — |
 |   | `Sleeper.run()` coroutine | Finished |
 
-## Key points
+## Key Points
 
 1.  `env.immediate` vs `env.schedule`: `immediate` pushes onto
     `_ready` (no clock advance); `schedule` pushes onto `_heap`
@@ -95,6 +94,7 @@ Key data structures:
     checks it, `_loop` immediately calls `send()` again without going
     through the heap.  This is the fast path for pre-satisfied events.
 
-> Quick check: In step 4, `self.timeout(5)` returns a `Timeout`
-> object.  What two things does the `Timeout` constructor do, and why
-> are they separate concerns?
+## Check for Understanding
+
+In step 4, `self.timeout(5)` returns a `Timeout` object.
+What two things does the `Timeout` constructor do, and why are they separate concerns?

@@ -1,6 +1,9 @@
 .PHONY: docs
 all: commands
 
+EXAMPLE_SRC:=$(filter-out examples/__init__.py examples/_util.py,$(wildcard examples/*.py))
+EXAMPLE_OUT:=$(patsubst examples/%.py,output/%.txt,${EXAMPLE_SRC})
+
 ## commands: show available commands (*)
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} \
@@ -29,9 +32,17 @@ coverage:
 
 .PHONY: docs
 ## docs: make documentation
-docs:
+docs: ${EXAMPLE_OUT}
+	@find . -path './.venv' -prune -o -type f -name '*~' -exec rm {} +
 	@zensical build --clean
 	@touch docs/.nojekyll
+
+## examples: re-run all examples
+examples: ${EXAMPLE_OUT}
+
+output/%.txt: examples/%.py
+	@mkdir -p output
+	python $< > $@
 
 ## fix: fix code issues
 fix:
