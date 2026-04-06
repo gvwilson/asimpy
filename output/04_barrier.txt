@@ -1,0 +1,9 @@
+| time | name     | event     |
+|----: | :--------| :---------|
+|    0 | waiter 0 | waiting   |
+|    1 | waiter 1 | waiting   |
+|    2 | waiter 2 | waiting   |
+|    3 | releaser | releasing |
+|    3 | waiter 0 | released  |
+|    3 | waiter 1 | released  |
+|    3 | waiter 2 | released  |
