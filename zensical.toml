@@ -24,6 +24,16 @@ nav = [
   { "Tutorial" = [
     { "Sleep Once" = "tutorial/01_sleep_once.md" },
     { "Producer-Consumer" = "tutorial/02_producer_consumer.md" },
+    { "Bounded Queue" = "tutorial/03_bounded_queue.md" },
+    { "Barrier" = "tutorial/04_barrier.md" },
+    { "Resource" = "tutorial/05_resource.md" },
+    { "Container" = "tutorial/06_container.md" },
+    { "Priority Queue" = "tutorial/07_priority_queue.md" },
+    { "Store" = "tutorial/08_store.md" },
+    { "AllOf" = "tutorial/09_all_of.md" },
+    { "FirstOf" = "tutorial/10_first_of.md" },
+    { "Interrupt" = "tutorial/11_interrupt.md" },
+    { "Preemptive Resource" = "tutorial/12_preemptive.md" },
   ]},
 ]
 
