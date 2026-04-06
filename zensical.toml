@@ -19,6 +19,7 @@ nav = [
   { "Project" = [
     { "License" = "license.md" },
     { "Code of Conduct" = "conduct.md" },
+    { "Design" = "design.md" },
   ]},
 ]
 
