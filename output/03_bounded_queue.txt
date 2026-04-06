@@ -1,0 +1,18 @@
+| time | name     | event             |
+|----: | :--------| :-----------------|
+|    0 | consumer | wait for item     |
+|    1 | producer | create item 0     |
+|    1 | producer | ...created item 0 |
+|    1 | consumer | start item 0      |
+|    2 | producer | create item 1     |
+|    2 | producer | ...created item 1 |
+|    3 | producer | create item 2     |
+|    4 | consumer | finish item 0     |
+|    4 | consumer | wait for item     |
+|    4 | consumer | start item 1      |
+|    4 | producer | ...created item 2 |
+|    7 | consumer | finish item 1     |
+|    7 | consumer | wait for item     |
+|    7 | consumer | start item 2      |
+|   10 | consumer | finish item 2     |
+|   10 | consumer | wait for item     |
