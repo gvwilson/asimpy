@@ -181,6 +181,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="" class="md-nav__link md-nav__link--active">
         
   
@@ -197,6 +215,48 @@
   
 
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asyncawait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async/Await
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -611,6 +671,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -635,6 +723,11 @@
                       
                     
                     
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
                   
                   <div class="md-sidebar__inner">
                     
@@ -646,6 +739,36 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asyncawait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async/Await
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -661,6 +784,35 @@
                   
 
 <h1 id="asimpy">asimpy</h1>
+<p>A simple discrete event simulation framework in Python using <code>async</code>/<code>await</code>.</p>
+<ul>
+<li><a href="https://asimpy.readthedocs.io/">Documentation</a></li>
+<li><a href="https://pypi.org/project/asimpy/">Package</a></li>
+<li><a href="https://github.com/gvwilson/asimpy">Repository</a></li>
+</ul>
+<p><em>Thanks to the creators of <a href="https://simpy.readthedocs.io/">SimPy</a> for inspiration.</em></p>
+<h2 id="core-concepts">Core Concepts</h2>
+<p>Discrete event simulation (DES) simulates systems in which events occur at discrete points in time.
+The simulation maintains a virtual clock and executes events in chronological order.
+Unlike real-time systems,
+the simulation jumps directly from one event time to the next,
+skipping empty intervals.
+(Time steps are often referred to as "ticks".)</p>
+<h2 id="asyncawait">Async/Await</h2>
+<p>Python's <code>async</code>/<code>await</code> syntax enables cooperative multitasking without threads.
+Functions defined as <code>async def</code> return coroutine objects when called.
+These coroutines can be paused at <code>await</code> points and later resumed.
+More specifically,
+when a coroutine executes <code>value = await expr</code>, it:</p>
+<ol>
+<li>yields the awaited object <code>expr</code> to its caller;</li>
+<li>suspends execution at that point;</li>
+<li>resumes later when <code>send(value)</code> is called on it; an thend</li>
+<li>returns the value passed to <code>send()</code> as the result of the <code>await</code> expression
+    inside the resumed coroutine.</li>
+</ol>
+<p><a href="https://asimpy.readthedocs.io/">asimpy</a> uses this mechanism to pause and resume coroutines to simulate simultaneously execution.
+This is similar to the <code>yield</code>-based mechanism used in <a href="https://simpy.readthedocs.io/">SimPy</a>.</p>
 
 
 

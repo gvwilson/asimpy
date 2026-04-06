@@ -23,6 +23,8 @@ nav = [
   ]},
 ]
 
+[project.markdown_extensions.fenced_code]                                                                        
+
 [project.markdown_extensions.pymdownx.snippets]
 base_path = ["."]
 

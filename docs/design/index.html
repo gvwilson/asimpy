@@ -1,0 +1,2064 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../conduct/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.31">
+    
+    
+      
+        <title>Updating asimpy - asimpy</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.53a7feaf.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#updating-asimpy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="asimpy" class="md-header__button md-logo" aria-label="asimpy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            asimpy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Updating asimpy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="asimpy" class="md-nav__button md-logo" aria-label="asimpy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    asimpy
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/resource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Store
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/container/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/barrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Barrier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/allof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All Of
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/firstof/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First Of
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/preemptive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preemptive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conduct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code of Conduct
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned-from-simpy-and-asimpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lessons Learned from simpy and asimpy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lessons Learned from simpy and asimpy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simpy-yield-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simpy (yield-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asimpy-asyncawait-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        asimpy (async/await-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-primitives-return-event-not-coroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All primitives return Event, not coroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-keeps-two-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment keeps two queues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-state-via-sentinels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event state via sentinels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-deletion-in-waiter-lists-plus-_on_cancel-for-consumed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy deletion in waiter lists, plus _on_cancel for consumed resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-uses-_loop-resume-from-asimpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process uses _loop / resume from asimpy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicit-event-for-sleepwake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit Event for sleep/wake
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-by-class-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class-by-Class Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class-by-Class Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrupt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Store
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#barrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Barrier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AllOf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Mechanics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Internal Mechanics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_loop-and-resume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _loop and resume
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_loop and resume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-tight-loop-optimisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tight-loop optimisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrupts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrupts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstof-and-resource-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf and resource loss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned-from-simpy-and-asimpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lessons Learned from simpy and asimpy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lessons Learned from simpy and asimpy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simpy-yield-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simpy (yield-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asimpy-asyncawait-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        asimpy (async/await-based)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-primitives-return-event-not-coroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All primitives return Event, not coroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-keeps-two-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment keeps two queues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-state-via-sentinels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event state via sentinels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-deletion-in-waiter-lists-plus-_on_cancel-for-consumed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy deletion in waiter lists, plus _on_cancel for consumed resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-uses-_loop-resume-from-asimpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process uses _loop / resume from asimpy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicit-event-for-sleepwake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit Event for sleep/wake
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-by-class-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class-by-Class Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class-by-Class Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrupt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Store
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#barrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Barrier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AllOf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Mechanics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Internal Mechanics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_loop-and-resume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _loop and resume
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_loop and resume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-tight-loop-optimisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The tight-loop optimisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interrupts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrupts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstof-and-resource-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirstOf and resource loss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+<h1 id="updating-asimpy">Updating asimpy</h1>
+<p><a href="https://github.com/gvwilson/asimpy/">asimpy</a> is a discrete event simulation library using
+async/await instead of [simpy][]'s <code>yield</code>. The core insight
+driving the redesign described below is that all primitives return
+<code>Event</code> objects rather than coroutines. This decision eliminates the
+<code>_Runner</code> / <code>_ensure_event</code> complexity in asimpy and allows <code>AllOf</code> /
+<code>FirstOf</code> to work with any primitive without wrapping.</p>
+<h2 id="lessons-learned-from-simpy-and-asimpy">Lessons Learned from simpy and asimpy</h2>
+<h3 id="simpy-yield-based">simpy (yield-based)</h3>
+<ul>
+<li>
+<p>Clean priority-heap scheduler: <code>(time, priority, serial, event)</code>.</p>
+</li>
+<li>
+<p><code>Event</code> holds a <code>callbacks</code> list; triggered events schedule
+    themselves and call all callbacks.</p>
+</li>
+<li>
+<p><code>Process</code> wraps a generator; <code>_resume</code> is the callback registered on
+    each event the generator yields.</p>
+</li>
+<li>
+<p><code>Condition</code> / <code>AllOf</code> / <code>AnyOf</code> count callbacks to a shared counter,
+    then trigger when the condition is met. It's a clean design, but
+    tied to the generator API.</p>
+</li>
+<li>
+<p><code>BaseResource</code> + <code>_do_put</code> / <code>_do_get</code> template pattern is reusable
+    but forces all resources into a single put/get mental model.</p>
+</li>
+<li>
+<p><code>BoundClass</code> trick binds resource event constructors to the
+    environment at startup for performance; this adds conceptual
+    overhead for little gain in a modern Python library.</p>
+</li>
+</ul>
+<h3 id="asimpy-asyncawait-based">asimpy (async/await-based)</h3>
+<ul>
+<li>
+<p>Separate <code>_ready</code> deque (current-time callbacks) and <code>_heap</code> (future
+    events) keeps the clock from advancing for zero-delay work.</p>
+</li>
+<li>
+<p><code>_PENDING</code> / <code>_CANCELLED</code> sentinel values in <code>Event._value</code> are
+    cheaper than Boolean flags.</p>
+</li>
+<li>
+<p>Tight-loop optimisation in <code>Process._loop</code>: if the yielded event is
+    already triggered, resume immediately without a heap round-trip in
+    order to improve performance.</p>
+</li>
+<li>
+<p>Lazy deletion of cancelled waiters in queues and resources avoids
+    O(n) scans.</p>
+</li>
+<li>
+<p><code>Interrupt</code> thrown into the coroutine; clean exception-based API.</p>
+</li>
+<li>
+<p><code>Barrier</code> is minimal and correct.</p>
+</li>
+<li>
+<p><code>Queue.get()</code> and <code>Queue.put()</code> are <code>async def</code> coroutines, not
+    plain methods that return <code>Event</code> objects. This means <code>AllOf</code> /
+    <code>FirstOf</code> must wrap arbitrary coroutines in <code>_Runner</code> subprocesses
+    via <code>_ensure_event</code>. If all primitives return <code>Event</code> objects
+    instead, <code>AllOf</code> / <code>FirstOf</code> never need to spawn processes.</p>
+</li>
+<li>
+<p><code>_on_cancel</code> callbacks on individual events add per-event overhead
+    and require careful lifecycle management. Lazy deletion in the
+    waiter lists achieves the same result more simply.</p>
+</li>
+</ul>
+<h2 id="design-decisions">Design Decisions</h2>
+<h3 id="all-primitives-return-event-not-coroutines">All primitives return <code>Event</code>, not coroutines</h3>
+<p><code>queue.get()</code>, <code>queue.put(item)</code>, <code>resource.acquire()</code>, and other
+methods are all plain (non-async) methods that return an
+<code>Event</code>. The caller does <code>item = await queue.get()</code>. This means:</p>
+<ul>
+<li>
+<p>No <code>_Runner</code> / <code>_ensure_event</code> needed anywhere.</p>
+</li>
+<li>
+<p><code>AllOf(env, a=queue.get(), b=store.get())</code> just works.</p>
+</li>
+<li>
+<p>Pre-triggered events are returned for immediately-satisfied
+    requests; the tight loop in <code>Process._loop</code> resumes without a heap
+    round-trip.</p>
+</li>
+</ul>
+<h3 id="environment-keeps-two-queues">Environment keeps two queues</h3>
+<p>As in asimpy, use a deque for current-time callbacks and a heap for
+future events. The clock only advances when popping from the heap of
+future events.</p>
+<h3 id="event-state-via-sentinels">Event state via sentinels</h3>
+<p>Use objects for <code>_PENDING</code> and <code>_CANCELLED</code>, and any other value
+triggered with that value. <code>Event.succeed(value)</code> sets <code>_value</code> and
+drains <code>_waiters</code>.  <code>Event.fail(exc)</code> sets <code>_value</code> to the exception;
+the process's <code>_loop</code> re-raises it. <code>Event.cancel()</code> sets <code>_value =
+_CANCELLED</code> and discards waiters.</p>
+<h3 id="lazy-deletion-in-waiter-lists-plus-_on_cancel-for-consumed-resources">Lazy deletion in waiter lists, plus <code>_on_cancel</code> for consumed resources</h3>
+<p>When a pending event is cancelled, its sentinel value tells any queue,
+resource, or barrier that inspects it to skip and discard it. No
+additional hooks are needed for this case.</p>
+<p>However, when a pre-triggered get event (item already removed from a
+resource) is cancelled by <code>FirstOf</code>, lazy deletion alone is
+insufficient: the item has already been consumed. <code>Event.cancel()</code>
+therefore calls <code>_on_cancel(old_value)</code> even for triggered events.
+Resource get methods set <code>_on_cancel</code> before calling <code>succeed()</code> so
+the callback is always available.</p>
+<h3 id="process-uses-_loop-resume-from-asimpy">Process uses _loop / resume from asimpy</h3>
+<p>The <code>_loop</code> method is the only complex piece. The new design keeps it
+verbatim except for the <code>_on_cancel</code> handling.</p>
+<h3 id="explicit-event-for-sleepwake">Explicit Event for sleep/wake</h3>
+<p>Instead of <code>timeout(inf) + interrupt</code>, a process creates a plain
+<code>Event</code> and awaits it. It can put the event (or itself paired with the
+event) in a <code>Store</code>. Another process gets the event and calls
+<code>.succeed(value)</code>. This is the natural async/await idiom and requires
+no new primitives.</p>
+<h2 id="class-by-class-specification">Class-by-Class Specification</h2>
+<h3 id="environment"><code>Environment</code></h3>
+<pre><code>Attributes:
+    now: float          current simulation time (read-only)
+    active_process      the Process currently executing, or None
+
+Methods:
+    run(until=None)     run until no events remain, or until time/event
+    immediate(cb)       schedule cb at current time (internal)
+    schedule(time, cb)  schedule cb at future time (internal)
+    timeout(delay)      convenience: return Timeout(self, delay)
+</code></pre>
+<ul>
+<li><code>run</code> loop:</li>
+<li>Drain <code>_ready</code> completely (zero-delay work at current time).</li>
+<li>If <code>_heap</code> is empty, stop.</li>
+<li>Peek at earliest future time; if <code>until</code> exceeded, stop.</li>
+<li>Pop and call the callback; advance clock only if the time is new.</li>
+</ul>
+<h3 id="event"><code>Event</code></h3>
+<pre><code>__slots__ = (&quot;_env&quot;, &quot;_value&quot;, &quot;_waiters&quot;)
+
+State sentinels:
+    _PENDING    = object()   # not yet triggered
+    _CANCELLED  = object()   # cancelled; waiters discarded
+
+Properties (derived from _value):
+    triggered: bool     _value is not _PENDING and not _CANCELLED
+    cancelled: bool     _value is _CANCELLED
+
+Methods:
+    succeed(value=None)     trigger with value; call all _waiters
+    fail(exc: Exception)    trigger with exception (stored as value)
+    cancel()                cancel; discard waiters
+    _add_waiter(cb)         if triggered: call cb immediately;
+                            if pending: append; if cancelled: ignore
+    __await__()             yield self; return received value;
+                            if value is Exception, raise it
+</code></pre>
+<p>The <code>__await__</code> protocol: <code>value = yield self</code>. In <code>Process._loop</code>, if the
+value is an <code>Exception</code> instance, it is raised (implements <code>fail</code>).</p>
+<h3 id="interrupt"><code>Interrupt</code></h3>
+<pre><code class="language-python">class Interrupt(Exception):
+    def __init__(self, cause):
+        self.cause = cause
+</code></pre>
+<p>Thrown into the process coroutine by <code>Process.interrupt(cause)</code>. The
+process can catch it with <code>except Interrupt as e</code> then looks at
+<code>e.cause</code>.</p>
+<h3 id="timeout"><code>Timeout</code></h3>
+<p>Subclass of <code>Event</code>. <code>__init__(env, delay)</code> validates <code>delay &gt;= 0</code>,
+then calls <code>env.schedule(env.now + delay, self._fire)</code>. <code>_fire</code> calls
+<code>self.succeed()</code> unless already cancelled (returns a <code>_NO_TIME</code>
+sentinel to tell <code>run</code> not to advance the clock for phantom events,
+matching asimpy).</p>
+<h3 id="process"><code>Process</code></h3>
+<p>Abstract base class for all active processes in simulations.</p>
+<pre><code>Constructor: __init__(env, *args, **kwargs)
+    - stores env
+    - calls self.init(*args, **kwargs)      # subclass setup hook
+    - creates coroutine: self._coro = self.run()
+    - schedules self._loop via env.immediate
+
+Properties:
+    now     shortcut to env.now
+    done    True after run() returns or raises
+
+Abstract method:
+    async def run(self)     subclass implements behaviour
+
+Optional override:
+    def init(self, *args, **kwargs)    called before coroutine creation
+
+Instance methods:
+    interrupt(cause)        if not done: set self._interrupt = Interrupt(cause);
+                            schedule self._loop via env.immediate
+    timeout(delay)          return env.timeout(delay)   # convenience
+    _loop(value=None)       internal: drives the coroutine (see below)
+    resume(value=None)      schedules partial(self._loop, value) via immediate
+</code></pre>
+<p><code>_loop</code> (unchanged from asimpy):</p>
+<ol>
+<li>
+<p>Set <code>env.active_process = self</code>.</p>
+</li>
+<li>
+<p>If <code>_interrupt</code> is pending and coroutine started: cancel <code>_current_event</code>,
+    clear <code>_interrupt</code>, call <code>coro.throw(interrupt)</code>.</p>
+</li>
+<li>
+<p>Else: call <code>coro.send(value)</code>.</p>
+</li>
+<li>
+<p>Tight loop: if the yielded event is already triggered, loop again with
+    its value without going through the heap.</p>
+</li>
+<li>
+<p>Otherwise register <code>self.resume</code> as a waiter on the event; break.</p>
+</li>
+<li>
+<p>On <code>StopIteration</code>: mark done.</p>
+</li>
+<li>
+<p>On <code>Exception</code>: mark done, re-raise.</p>
+</li>
+<li>
+<p>Finally: <code>env.active_process = None</code>.</p>
+</li>
+</ol>
+<h3 id="queue"><code>Queue</code></h3>
+<pre><code>class QueueEmpty(Exception): pass
+class QueueFull(Exception): pass
+
+class Queue:
+    __init__(env, capacity=None)    capacity=None means unlimited
+
+    # Blocking (return Event)
+    get() -&gt; Event          value = item when dequeued
+    put(item) -&gt; Event      value = True when enqueued
+
+    # Non-blocking (raise on failure)
+    try_get() -&gt; item       raises QueueEmpty if empty
+    try_put(item)           raises QueueFull if full
+
+    # Introspection
+    is_empty() -&gt; bool
+    is_full() -&gt; bool
+    size() -&gt; int
+</code></pre>
+<p><code>get()</code> logic:</p>
+<ul>
+<li>
+<p>If <code>_items</code> non-empty: pop item, promote one non-cancelled putter (add its
+    item to <code>_items</code>, call <code>putter_evt.succeed(True)</code>), create a pre-triggered
+    <code>Event(value=item)</code>, return it.</p>
+</li>
+<li>
+<p>Else: create <code>Event</code>, append to <code>_getters</code>, return it.</p>
+</li>
+</ul>
+<p><code>put(item)</code> logic:</p>
+<ul>
+<li>
+<p>While <code>_getters</code> has non-cancelled entries: deliver item directly via
+    <code>getter_evt.succeed(item)</code>, return a pre-triggered <code>Event(value=True)</code>.</p>
+</li>
+<li>
+<p>If not full: add to <code>_items</code>, return a pre-triggered <code>Event(value=True)</code>.</p>
+</li>
+<li>
+<p>Else: create <code>Event</code>, append <code>(evt, item)</code> to <code>_putters</code>, return <code>evt</code>.</p>
+</li>
+</ul>
+<p><code>try_get()</code>: if <code>_items</code> non-empty, pop and return; else raise
+<code>QueueEmpty</code>.  <code>try_put(item)</code>: if not full, add and return; else
+raise <code>QueueFull</code>.</p>
+<p>Note that <code>try_get</code> and <code>try_put</code> do not trigger blocked waiters. If
+<code>try_put</code> succeeds and there are blocked getters, they will be served
+on the next <code>get()</code> call. This keeps the non-blocking path simple and
+avoids the need to call environment callbacks from a synchronous
+context.</p>
+<h3 id="container"><code>Container</code></h3>
+<p>Models a homogeneous resource (continuous or discrete amounts).</p>
+<pre><code>class ContainerEmpty(Exception): pass
+class ContainerFull(Exception): pass
+
+class Container:
+    __init__(env, capacity=inf, init=0.0)
+    level: float    current amount
+
+    # Blocking
+    get(amount) -&gt; Event    value = amount when fulfilled
+    put(amount) -&gt; Event    value = amount when fulfilled
+
+    # Non-blocking
+    try_get(amount) -&gt; float    raises ContainerEmpty if level &lt; amount
+    try_put(amount) -&gt; float    raises ContainerFull if no space
+</code></pre>
+<p><code>get(amount)</code> logic:</p>
+<ul>
+<li>
+<p>If <code>_level &gt;= amount</code>: subtract, try to promote putters, return
+    pre-triggered event.</p>
+</li>
+<li>
+<p>Else: create event, append <code>(amount, evt)</code> to <code>_getters</code>, return event.</p>
+</li>
+</ul>
+<p><code>put(amount)</code> logic:</p>
+<ul>
+<li>
+<p>If <code>_level + amount &lt;= capacity</code>: add, try to satisfy getters, return
+    pre-triggered event.</p>
+</li>
+<li>
+<p>Else: create event, append <code>(amount, evt)</code> to <code>_putters</code>, return event.</p>
+</li>
+</ul>
+<p>After any state change, iterate the opposite waiter list (skipping
+ones that have been cancelled) to promote as many as possible. Use
+lazy deletion.</p>
+<h3 id="store"><code>Store</code></h3>
+<p>Models a collection of heterogeneous objects.</p>
+<pre><code>class StoreEmpty(Exception): pass
+class StoreFull(Exception): pass
+
+class Store:
+    __init__(env, capacity=inf)
+
+    # Blocking
+    get(filter=None) -&gt; Event    value = item; filter is callable or None
+    put(item) -&gt; Event           value = True
+
+    # Non-blocking
+    try_get(filter=None) -&gt; item    raises StoreEmpty
+    try_put(item)                   raises StoreFull
+</code></pre>
+<p><code>get(filter)</code> logic:</p>
+<ul>
+<li>
+<p>Scan <code>_items</code> for first item where <code>filter(item)</code> is True (or filter is
+    None). If found: remove item, promote one non-cancelled putter, return
+    pre-triggered event with item.</p>
+</li>
+<li>
+<p>Else: create event, append <code>(filter, evt)</code> to <code>_getters</code>, return event.</p>
+</li>
+</ul>
+<p><code>put(item)</code> logic:</p>
+<ul>
+<li>
+<p>If any non-cancelled getter whose filter matches item: deliver directly,
+    return pre-triggered event.</p>
+</li>
+<li>
+<p>If not full: append item. Check if any pending getter now matches (scan
+    <code>_getters</code>). Return pre-triggered event.</p>
+</li>
+<li>
+<p>Else: create event, append <code>(item, evt)</code> to <code>_putters</code>, return event.</p>
+</li>
+</ul>
+<p>Note on <code>Store</code> as sleep/wake primitive: a process creates an <code>Event</code>,
+puts it in a <code>Store</code>, then awaits it. Another process gets the event
+from the <code>Store</code> and calls <code>.succeed(value)</code>. This replaces the
+<code>timeout(inf) + interrupt</code> pattern.</p>
+<h3 id="resource"><code>Resource</code></h3>
+<p>Models discrete shared capacity (slots).</p>
+<pre><code>class Resource:
+    __init__(env, capacity=1)
+    count: int      current number of users
+    capacity: int
+
+    acquire() -&gt; Event    value = None; blocks if full
+    try_acquire() -&gt; bool returns True if acquired, False if not (no blocking)
+    release()             synchronous; promotes one blocked waiter
+</code></pre>
+<p><code>acquire()</code> logic:</p>
+<ul>
+<li>If <code>_count &lt; capacity</code>: increment <code>_count</code>, return pre-triggered event.</li>
+<li>Else: create event, append to <code>_waiters</code>, return event.</li>
+</ul>
+<p><code>release()</code>:</p>
+<ul>
+<li>
+<p>Decrement <code>_count</code>.</p>
+</li>
+<li>
+<p>Drain <code>_waiters</code> (lazy deletion) until one non-cancelled waiter found:
+    increment <code>_count</code>, call <code>evt.succeed()</code>.</p>
+</li>
+</ul>
+<p><code>try_acquire()</code>: if <code>_count &lt; capacity</code>, increment and return True;
+else return False (no exception, unlike Queue/Container/Store which
+raise).</p>
+<p>Context manager protocol (<code>async with resource</code>): <code>__aenter__</code> awaits
+<code>acquire()</code>; <code>__aexit__</code> calls <code>release()</code>.</p>
+<h3 id="barrier"><code>Barrier</code></h3>
+<pre><code>class Barrier:
+    __init__(env)
+
+    wait() -&gt; Event    value = None; blocks until release()
+    release()          triggers all currently-waiting events
+</code></pre>
+<ul>
+<li>
+<p><code>wait()</code>: create event, append to <code>_waiters</code>, return event.</p>
+</li>
+<li>
+<p><code>release()</code>: call <code>.succeed()</code> on all events in <code>_waiters</code>, then clear.</p>
+</li>
+</ul>
+<h3 id="allof"><code>AllOf</code></h3>
+<p>Wait for all events to trigger.</p>
+<pre><code>class AllOf(Event):
+    __init__(env, **events)    keyword args; each value must be an Event
+</code></pre>
+<ul>
+<li>
+<p>Registers <code>_child_done(key, value)</code> as a waiter on each child event.
+    When all children have triggered, calls <code>self.succeed(results_dict)</code>.</p>
+</li>
+<li>
+<p>No asimpy-style <code>_Runner</code> needed because all children are already
+    <code>Event</code> instances.</p>
+</li>
+<li>
+<p><code>AllOf</code> is itself an <code>Event</code>, so it can be nested:
+    <code>await AllOf(env, a=allof1, b=evt2)</code>.</p>
+</li>
+</ul>
+<h3 id="firstof"><code>FirstOf</code></h3>
+<p>Wait for the first event to trigger. This was the most difficult part of
+the library to get right, and caused a couple of redesigns along the way.</p>
+<pre><code>class FirstOf(Event):
+    __init__(env, **events)    keyword args; each value must be an Event
+</code></pre>
+<p>Registers <code>_child_done(key, value, winner_event)</code> on each child.
+On first trigger: cancel all other events, call <code>self.succeed((key, value))</code>.
+Subsequent calls to <code>_child_done</code> are ignored (<code>_finished</code> flag).</p>
+<p>Cancellation propagates correctly via lazy deletion in waiter lists;
+no <code>_on_cancel</code> callbacks needed.</p>
+<h2 id="internal-mechanics">Internal Mechanics</h2>
+<h3 id="_loop-and-resume"><code>_loop</code> and <code>resume</code></h3>
+<p>Python's <code>asyncio</code> has its own event loop, incompatible with asimpy's
+scheduler: asimpy drives its coroutines manually via <code>coro.send()</code> and
+<code>coro.throw()</code>.  When a process does <code>await some_event</code>, Python's
+<code>Event.__await__</code> executes <code>value = yield self</code>, which suspends the
+coroutine and returns <code>some_event</code> to whoever last called
+<code>coro.send(value)</code>. That caller is <code>_loop</code>.</p>
+<pre><code>Process.__init__:
+    self._coro = self.run()       # coroutine object, not yet started
+    env.immediate(self._loop)     # schedule first _loop call at time 0
+</code></pre>
+<p>First call to <code>_loop(value=None)</code>:</p>
+<ol>
+<li>
+<p><code>env.active_process = self</code></p>
+</li>
+<li>
+<p><code>yielded = self._coro.send(None)</code> — starts the coroutine; runs until the
+    first <code>await event</code>, which yields <code>event</code> back. <code>yielded</code> is that Event.</p>
+</li>
+<li>
+<p>Check <code>yielded._value</code>:</p>
+<ul>
+<li>Already triggered (not <code>_PENDING</code>, not <code>_CANCELLED</code>):
+    set <code>value = yielded._value</code> and loop back to step 2. The coroutine
+    resumes immediately — no heap round-trip.</li>
+<li>Still pending: call <code>yielded._add_waiter(self.resume)</code> and <code>break</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>env.active_process = None</code></p>
+</li>
+</ol>
+<p>When the event fires (<code>event.succeed(item)</code>):</p>
+<ul>
+<li><code>self.resume(item)</code> is called (it was a waiter).</li>
+<li><code>resume</code> calls <code>env.immediate(partial(self._loop, item))</code>.</li>
+<li>Next tick: <code>_loop(value=item)</code> → <code>coro.send(item)</code> → coroutine resumes;
+    <code>item</code> is the result of the <code>await</code>.</li>
+</ul>
+<h4 id="the-tight-loop-optimisation">The tight-loop optimisation</h4>
+<p>Without it, every <code>await</code>, even on an already-satisfied event, pays a
+<code>heappush</code> + <code>heappop</code>. With it, a chain of pre-triggered events (e.g.
+<code>a = await queue.get(); b = await queue.get()</code> when the queue has
+multiple items) runs entirely inside <code>_loop</code>'s <code>while True</code>, at zero
+heap cost.</p>
+<h4 id="interrupts">Interrupts</h4>
+<p><code>process.interrupt(cause)</code>:</p>
+<ol>
+<li>Sets <code>self._interrupt = Interrupt(cause)</code>.</li>
+<li>Calls <code>env.immediate(self._loop)</code>.</li>
+</ol>
+<p>Next time <code>_loop</code> runs:</p>
+<ol>
+<li>
+<p>Sees <code>_interrupt is not None</code> and <code>_started is True</code> (throws into an
+    unstarted coroutine bypass its <code>try/except</code> blocks — <code>_started</code> prevents
+    this).</p>
+</li>
+<li>
+<p>Cancels <code>_current_event</code> (the parked event) so it cannot call <code>resume</code>
+    later with a stale value.</p>
+</li>
+<li>
+<p>Calls <code>self._coro.throw(self._interrupt)</code>, raising <code>Interrupt(cause)</code>
+    inside the coroutine at its current <code>await</code>.</p>
+</li>
+<li>
+<p>The coroutine catches it with <code>except Interrupt as e: ...</code>.</p>
+</li>
+</ol>
+<h3 id="firstof-and-resource-loss">FirstOf and resource loss</h3>
+<p>In the normal case, one event is still pending.
+When <code>FirstOf</code> chooses winner <code>a</code>, <code>_child_done</code> does this:</p>
+<pre><code class="language-python">self._finished = True
+for evt in self._events.values():
+    if evt is not winner:
+        evt.cancel()
+self.succeed((key, value))
+</code></pre>
+<p>For a pending <code>evt_b</code> from <code>queue_b.get()</code>:</p>
+<ul>
+<li>
+<p>The item has not been removed yet, i.e., it is still in <code>queue_b._items</code>.</p>
+</li>
+<li>
+<p><code>evt_b.cancel()</code> sets <code>evt_b._value = _CANCELLED</code>.</p>
+</li>
+<li>
+<p>Lazy deletion in <code>queue_b.put()</code> skips <code>evt_b</code> when scanning <code>_getters</code>.
+    The item stays in the queue. Nothing is lost.</p>
+</li>
+</ul>
+<p>As background, <code>Event.cancel()</code> was initially implemented as
+<code>if _value is not _PENDING: return</code>, which is wrong when both events
+are pre-triggered. To see why, assume <code>queue_a</code> and <code>queue_b</code> both have
+items and the user's code does this:</p>
+<pre><code class="language-python">key, val = await FirstOf(env, a=queue_a.get(), b=queue_b.get())
+</code></pre>
+<ul>
+<li>
+<p><code>queue_a.get()</code> pops <code>item_a</code> and returns a pre-triggered <code>evt_a</code>.</p>
+</li>
+<li>
+<p><code>queue_b.get()</code> pops <code>item_b</code> and returns a pre-triggered <code>evt_b</code>.</p>
+</li>
+<li>
+<p><code>FirstOf.__init__</code> calls <code>_add_waiter</code> on <code>evt_a</code> first.</p>
+<ul>
+<li><code>_child_done("a")</code> fires immediately, which sets <code>_finished = True</code> and cancels <code>evt_b</code>.</li>
+<li>But <code>evt_b</code> is already triggered, so the naive <code>cancel()</code> is a no-op.
+    <code>item_b</code> is gone from <code>queue_b</code> and nobody receives it.</li>
+</ul>
+</li>
+</ul>
+<p>The fix is that <code>cancel()</code> fires <code>_on_cancel</code> even for triggered events:</p>
+<pre><code class="language-python">def cancel(self) -&gt; None:
+    if self._value is _CANCELLED:
+        return          # already cancelled; don't fire twice
+    old_value = self._value
+    self._value = _CANCELLED
+    self._waiters = []
+    if self._on_cancel is not None:
+        self._on_cancel(old_value)   # old_value may be _PENDING or a real value
+</code></pre>
+<p>All resource-consuming <code>get()</code> methods set <code>_on_cancel</code> before calling
+<code>succeed()</code>:</p>
+<pre><code class="language-python"># Queue.get() pre-triggered path
+evt._on_cancel = lambda v: self._items.appendleft(v)
+evt.succeed(item)   # _on_cancel set first so cancel() can fire it even now
+</code></pre>
+<p>When <code>FirstOf</code> cancels the losing pre-triggered event, it sets
+<code>old_value = item_b</code>.
+<code>_on_cancel(item_b)</code> then calls <code>queue_b._items.appendleft(item_b)</code>
+and the item is restored.</p>
+<p>The same pattern applies to <code>Container.get()</code> (restores <code>_level</code>) and
+<code>Store.get()</code> (restores the item to <code>_items</code>). Put operations do not set
+<code>_on_cancel</code> because un-delivering an item to a getter is impossible once
+<code>succeed()</code> has been called.</p>
+<p>This replaces the <code>_Runner</code> / <code>_on_cancel</code> machinery in asimpy, which
+achieved the same result by interrupting a wrapper subprocess and catching
+<code>Interrupt</code> inside <code>queue.get()</code>'s <code>except</code> block.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":[],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.91a19a9e.min.js"></script>
+      
+    
+  </body>
+</html>

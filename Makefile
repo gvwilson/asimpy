@@ -30,7 +30,7 @@ coverage:
 .PHONY: docs
 ## docs: make documentation
 docs:
-	@zensical build
+	@zensical build --clean
 	@touch docs/.nojekyll
 
 ## fix: fix code issues

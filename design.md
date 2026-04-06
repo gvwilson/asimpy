@@ -255,9 +255,6 @@ class Queue:
     size() -> int
 ```
 
-Internal state: `_items: deque`, `_getters: deque[Event]`, `_putters:
-deque[tuple[Event, item]]`. Lazy deletion skips cancelled events.
-
 `get()` logic:
 
 -   If `_items` non-empty: pop item, promote one non-cancelled putter (add its
@@ -306,9 +303,6 @@ class Container:
     try_put(amount) -> float    raises ContainerFull if no space
 ```
 
-Internal state: `_level: float`, `_getters: list[tuple[amount, Event]]`,
-`_putters: list[tuple[amount, Event]]`.
-
 `get(amount)` logic:
 
 -   If `_level >= amount`: subtract, try to promote putters, return
@@ -327,7 +321,7 @@ After any state change, iterate the opposite waiter list (skipping
 ones that have been cancelled) to promote as many as possible. Use
 lazy deletion.
 
-### `Store` (`store.py`)
+### `Store`
 
 Models a collection of heterogeneous objects.
 
@@ -346,9 +340,6 @@ class Store:
     try_get(filter=None) -> item    raises StoreEmpty
     try_put(item)                   raises StoreFull
 ```
-
-Internal state: `_items: list`, `_getters: list[tuple[filter, Event]]`,
-`_putters: list[tuple[item, Event]]`.
 
 `get(filter)` logic:
 
@@ -439,7 +430,7 @@ class AllOf(Event):
 -   `AllOf` is itself an `Event`, so it can be nested:
     `await AllOf(env, a=allof1, b=evt2)`.
 
-### `FirstOf` (`firstof.py`)
+### `FirstOf`
 
 Wait for the first event to trigger. This was the most difficult part of
 the library to get right, and caused a couple of redesigns along the way.
