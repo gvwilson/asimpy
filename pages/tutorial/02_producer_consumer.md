@@ -6,9 +6,7 @@
 --8<-- "examples/02_producer_consumer.py"
 ```
 
-```text
 --8<-- "output/02_producer_consumer.txt"
-```
 
 ## Key Points
 

@@ -956,25 +956,43 @@ SLEEP_DURATION = 5  # simulated time units per sleep
 
 class Sleeper(Process):
     async def run(self):
-        print(f&quot;t={self.now:02d}: start&quot;)
+        self._env.log(&quot;sleeper&quot;, &quot;start&quot;)
         await self.timeout(SLEEP_DURATION)
-        print(f&quot;t={self.now:02d}: end&quot;)
+        self._env.log(&quot;sleeper&quot;, &quot;end&quot;)
 
 
 def main():
     env = Environment()
     Sleeper(env)
     env.run()
+    return env
 
 
 if __name__ == &quot;__main__&quot;:
     example(main)
 
 </code></pre>
-<pre><code class="language-text">t=00: start
-t=05: end
-
-</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">time</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">event</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sleeper</td>
+<td style="text-align: left;">start</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">sleeper</td>
+<td style="text-align: left;">end</td>
+</tr>
+</tbody>
+</table>
 <h2 id="execution-trace">Execution Trace</h2>
 <table>
 <thead>

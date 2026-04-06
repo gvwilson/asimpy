@@ -936,7 +936,7 @@ class Producer(Process):
     async def run(self):
         for i in range(NUM_ITEMS):
             await self.timeout(PRODUCE_INTERVAL)
-            print(f&quot;t={self.now:02d}: producer: create item {i}&quot;)
+            self._env.log(&quot;producer&quot;, f&quot;create item {i}&quot;)
             await self._queue.put(i)
 
 
@@ -946,11 +946,11 @@ class Consumer(Process):
 
     async def run(self):
         while True:
-            print(f&quot;t={self.now:02d}: consumer: wait for item&quot;)
+            self._env.log(&quot;consumer&quot;, f&quot;wait for item&quot;)
             item = await self._queue.get()
-            print(f&quot;t={self.now:02d}: consumer: start processing item {item}&quot;)
+            self._env.log(&quot;consumer&quot;, f&quot;start item {item}&quot;)
             await self.timeout(CONSUME_DURATION)
-            print(f&quot;t={self.now:02d}: consumer: finish processing item {item}&quot;)
+            self._env.log(&quot;consumer&quot;, f&quot;finish item {item}&quot;)
 
 
 def main():
@@ -959,27 +959,89 @@ def main():
     Producer(env, queue)
     Consumer(env, queue)
     env.run()
+    return env
 
 
 if __name__ == &quot;__main__&quot;:
     example(main)
 
 </code></pre>
-<pre><code class="language-text">t=00: consumer: wait for item
-t=05: producer: create item 0
-t=05: consumer: start processing item 0
-t=08: consumer: finish processing item 0
-t=08: consumer: wait for item
-t=10: producer: create item 1
-t=10: consumer: start processing item 1
-t=13: consumer: finish processing item 1
-t=13: consumer: wait for item
-t=15: producer: create item 2
-t=15: consumer: start processing item 2
-t=18: consumer: finish processing item 2
-t=18: consumer: wait for item
-
-</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">time</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">event</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">wait for item</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">producer</td>
+<td style="text-align: left;">create item 0</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">start item 0</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">finish item 0</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">wait for item</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">producer</td>
+<td style="text-align: left;">create item 1</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">start item 1</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">finish item 1</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">wait for item</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">producer</td>
+<td style="text-align: left;">create item 2</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">start item 2</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">finish item 2</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">consumer</td>
+<td style="text-align: left;">wait for item</td>
+</tr>
+</tbody>
+</table>
 <h2 id="key-points">Key Points</h2>
 <ol>
 <li>

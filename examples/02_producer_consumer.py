@@ -15,7 +15,7 @@ class Producer(Process):
     async def run(self):
         for i in range(NUM_ITEMS):
             await self.timeout(PRODUCE_INTERVAL)
-            print(f"t={self.now:02d}: producer: create item {i}")
+            self._env.log("producer", f"create item {i}")
             await self._queue.put(i)
 
 
@@ -25,11 +25,11 @@ class Consumer(Process):
 
     async def run(self):
         while True:
-            print(f"t={self.now:02d}: consumer: wait for item")
+            self._env.log("consumer", f"wait for item")
             item = await self._queue.get()
-            print(f"t={self.now:02d}: consumer: start processing item {item}")
+            self._env.log("consumer", f"start item {item}")
             await self.timeout(CONSUME_DURATION)
-            print(f"t={self.now:02d}: consumer: finish processing item {item}")
+            self._env.log("consumer", f"finish item {item}")
 
 
 def main():
@@ -38,6 +38,7 @@ def main():
     Producer(env, queue)
     Consumer(env, queue)
     env.run()
+    return env
 
 
 if __name__ == "__main__":

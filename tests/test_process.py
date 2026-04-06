@@ -208,7 +208,7 @@ def test_process_tight_loop_interrupt_delivered():
             pre = Event(self._env)
             pre.succeed("ready")
             # Interrupt ourselves before yielding the pre-triggered event.
-            self._env.active_process.interrupt("self-interrupt")
+            self._env._active_process.interrupt("self-interrupt")
             try:
                 await pre
             except Interrupt as e:

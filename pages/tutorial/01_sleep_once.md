@@ -10,9 +10,7 @@ from top to bottom in execution order.
 --8<-- "examples/01_sleep_once.py"
 ```
 
-```text
 --8<-- "output/01_sleep_once.txt"
-```
 
 ## Execution Trace
 

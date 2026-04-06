@@ -213,7 +213,7 @@ class Process(ABC):
         if self._done:
             return
         try:
-            self._env.active_process = self
+            self._env._active_process = self
             while True:
                 if self._interrupt is not None and self._started:
                     # Deliver pending interrupt via throw().
@@ -256,7 +256,7 @@ class Process(ABC):
             raise
 
         finally:
-            self._env.active_process = None
+            self._env._active_process = None
 
     def resume(self, value: Any = None) -> None:
         """Called by an Event when it triggers; re-schedules _loop.
@@ -284,12 +284,20 @@ class Environment:
         self._now: float | int = 0
         self._heap: list = []
         self._ready: deque = deque()
-        self.active_process: Process | None = None
+        self._active_process: Process | None = None
+        self._log: list[tuple[float | int, str, str]] = []
 
     @property
     def now(self) -> float | int:
         """Current simulation time."""
         return self._now
+
+    def log(self, name: str, message: str) -> None:
+        """Record a log message."""
+        self._log.append((self._now, name, message))
+
+    def get_log(self) -> list[tuple[float | int, str, str]]:
+        return self._log
 
     def immediate(self, cb) -> None:
         """Schedule `cb` for execution at the current simulated time."""

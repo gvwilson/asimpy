@@ -1,2 +1,4 @@
-t=00: start
-t=05: end
+| time | name    | event |
+|----: | :-------| :-----|
+|    0 | sleeper | start |
+|    5 | sleeper | end   |

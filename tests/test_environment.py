@@ -1,6 +1,6 @@
 """Test asimpy Environment."""
 
-from asimpy import Environment, Timeout
+from asimpy import Environment, Process, Timeout
 
 
 def test_environment_initialization():
@@ -83,3 +83,22 @@ def test_environment_empty_run():
     env = Environment()
     env.run()
     assert env.now == 0
+
+
+def test_environment_log_messages():
+    """Test creating and getting log messages."""
+
+    class Logger(Process):
+        async def run(self):
+            for i in range(3):
+                await self.timeout(1)
+                self._env.log("logger", f"message {i}")
+
+    env = Environment()
+    Logger(env)
+    env.run()
+    assert env.get_log() == [
+        (1, "logger", "message 0"),
+        (2, "logger", "message 1"),
+        (3, "logger", "message 2"),
+    ]

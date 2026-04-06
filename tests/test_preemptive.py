@@ -7,7 +7,7 @@ from asimpy import Preempted, PreemptiveResource
 
 def test_active_process_is_none_initially():
     env = Environment()
-    assert env.active_process is None
+    assert env._active_process is None
 
 
 def test_active_process_set_during_run():
@@ -18,7 +18,7 @@ def test_active_process_set_during_run():
             self.seen = None
 
         async def run(self):
-            self.seen = self._env.active_process
+            self.seen = self._env._active_process
 
     env = Environment()
     proc = Checker(env)
@@ -36,7 +36,7 @@ def test_active_process_cleared_after_run():
     env = Environment()
     Noop(env)
     env.run()
-    assert env.active_process is None
+    assert env._active_process is None
 
 
 def test_active_process_identifies_correct_process():
@@ -49,7 +49,7 @@ def test_active_process_identifies_correct_process():
 
         async def run(self):
             await self.timeout(self.delay)
-            self.records.append(self._env.active_process)
+            self.records.append(self._env._active_process)
 
     env = Environment()
     records = []

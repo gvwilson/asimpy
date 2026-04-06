@@ -57,7 +57,7 @@ class PreemptiveResource:
         """Acquire one unit of the resource.
 
         Must be called from within a Process.run() coroutine; the calling
-        process is identified via env.active_process.
+        process is identified via env._active_process.
 
         Args:
             priority: lower value = higher priority (0 is best).
@@ -65,7 +65,7 @@ class PreemptiveResource:
                 when the resource is full and that user has lower priority
                 than this request.
         """
-        process = self._env.active_process
+        process = self._env._active_process
         assert process is not None
         seq = next(PreemptiveResource._seq)
 
@@ -106,14 +106,14 @@ class PreemptiveResource:
     def release(self) -> None:
         """Release one unit of the resource.
 
-        The calling process is identified via env.active_process.
+        The calling process is identified via env._active_process.
         Do not call this when handling a Preempted interrupt: the preempted
         process has already been removed from the user list by the preemptor.
 
         Raises:
             RuntimeError: if the calling process is not a current user.
         """
-        process = self._env.active_process
+        process = self._env._active_process
         for i, user in enumerate(self._users):
             if user[3] is process:
                 del self._users[i]

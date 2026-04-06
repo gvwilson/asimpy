@@ -1198,7 +1198,7 @@ the preempted process has already been removed from the user list by the preempt
 
         <p>Acquire one unit of the resource.</p>
 <p>Must be called from within a Process.run() coroutine; the calling
-process is identified via env.active_process.</p>
+process is identified via env._active_process.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1266,7 +1266,7 @@ than this request.</p>
     <div class="doc doc-contents ">
 
         <p>Release one unit of the resource.</p>
-<p>The calling process is identified via env.active_process.
+<p>The calling process is identified via env._active_process.
 Do not call this when handling a Preempted interrupt: the preempted
 process has already been removed from the user list by the preemptor.</p>
 

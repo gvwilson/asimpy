@@ -28,6 +28,7 @@ dev = [
     "build>=1.4.0",
     "coverage>=7.13.5",
     "mkdocstrings-python>=2.0.3",
+    "prettytable>=3.17.0",
     "pytest>=9.0.2",
     "ruff>=0.14.10",
     "twine>=6.2.0",
