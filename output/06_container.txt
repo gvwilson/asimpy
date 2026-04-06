@@ -1,0 +1,14 @@
+| time | name  | event               |
+|----: | :-----| :-------------------|
+|    2 | pump  | added 4, level=9    |
+|    3 | motor | request 3, level=9  |
+|    3 | motor | consumed 3, level=6 |
+|    4 | pump  | added 4, level=10   |
+|    6 | motor | request 3, level=10 |
+|    6 | motor | consumed 3, level=7 |
+|    9 | motor | request 3, level=7  |
+|    9 | motor | consumed 3, level=8 |
+|    9 | pump  | added 4, level=8    |
+|   12 | motor | request 3, level=8  |
+|   12 | motor | consumed 3, level=9 |
+|   12 | pump  | added 4, level=9    |

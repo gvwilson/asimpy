@@ -1,0 +1,11 @@
+| time | name | event                                |
+|----: | :----| :------------------------------------|
+|    0 | low  | acquire (remaining=8)                |
+|    0 | low  | working                              |
+|    3 | high | acquire (preempt=True)               |
+|    3 | high | working                              |
+|    3 | low  | preempted after 3 ticks, 5 remaining |
+|    3 | low  | acquire (remaining=5)                |
+|    5 | high | done                                 |
+|    5 | low  | working                              |
+|   10 | low  | done                                 |

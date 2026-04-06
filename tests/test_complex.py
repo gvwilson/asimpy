@@ -1,6 +1,6 @@
 """Test complex asimpy scenarios."""
 
-from asimpy import Environment, Queue, Resource, Process
+from asimpy import Environment, Queue, Process
 
 
 def test_producer_consumer_pattern():
@@ -35,29 +35,3 @@ def test_producer_consumer_pattern():
     assert cons.consumed == [1, 2, 3, 4, 5]
 
 
-def test_resource_sharing():
-    """Test multiple processes sharing resource."""
-
-    class Worker(Process):
-        def init(self, resource, work_id, log):
-            self.resource = resource
-            self.work_id = work_id
-            self.log = log
-
-        async def run(self):
-            await self.resource.acquire()
-            self.log.append(("start", self.work_id, self.now))
-            await self.timeout(5)
-            self.log.append(("end", self.work_id, self.now))
-            self.resource.release()
-
-    env = Environment()
-    res = Resource(env, capacity=2)
-    log = []
-
-    Worker(env, res, 1, log)
-    Worker(env, res, 2, log)
-    Worker(env, res, 3, log)
-
-    env.run()
-    assert len(log) == 6

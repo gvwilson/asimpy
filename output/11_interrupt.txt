@@ -1,0 +1,5 @@
+| time | name    | event                                         |
+|----: | :-------| :---------------------------------------------|
+|    0 | worker  | start job                                     |
+|    4 | manager | sending interrupt                             |
+|    4 | worker  | interrupted: stop and report (worked 4 ticks) |

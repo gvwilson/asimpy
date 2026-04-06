@@ -1,0 +1,4 @@
+| time | name        | event                                       |
+|----: | :-----------| :-------------------------------------------|
+|    0 | coordinator | launch tasks                                |
+|    5 | coordinator | all done at keys=['alpha', 'beta', 'gamma'] |

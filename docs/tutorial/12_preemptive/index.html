@@ -9,8 +9,6 @@
       
       
       
-        <link rel="prev" href="../01_sleep_once/">
-      
       
       
         
@@ -21,7 +19,7 @@
     
     
       
-        <title>Producer-Consumer - asimpy</title>
+        <title>Preemptive Resource - asimpy</title>
       
     
     
@@ -65,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#producer-consumer" class="md-skip">
+        <a href="#preemptive-resource" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Producer-Consumer
+              Preemptive Resource
             
           </span>
         </div>
@@ -640,20 +638,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -674,7 +670,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -717,37 +713,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Producer-Consumer
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="././" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../02_producer_consumer/" class="md-nav__link">
         
   
   
@@ -763,60 +732,6 @@
   
 
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#source-and-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source and Output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Points
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check-for-understanding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Check for Understanding
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -917,47 +832,67 @@
                 
                   
 
-<h1 id="producer-consumer">Producer-Consumer</h1>
+<h1 id="preemptive-resource">Preemptive Resource</h1>
 <h2 id="source-and-output">Source and Output</h2>
-<pre><code class="language-python">&quot;&quot;&quot;Example: producer-consumer.&quot;&quot;&quot;
+<pre><code class="language-python">&quot;&quot;&quot;Example: preemptive resource where a high-priority process evicts a low-priority one.&quot;&quot;&quot;
 
-from asimpy import Environment, Process, Queue
+from asimpy import Environment, Interrupt, Preempted, PreemptiveResource, Process
 from _util import example
 
-PRODUCE_INTERVAL = 5  # ticks between successive items being produced
-CONSUME_DURATION = 3  # ticks to process each item
-NUM_ITEMS = 3  # total items the producer creates before stopping
+RESOURCE_CAPACITY = 1  # single-slot resource
+LOW_PRIORITY = 2  # lower priority (higher number)
+HIGH_PRIORITY = 0  # higher priority (lower number)
+LOW_WORK = 8  # ticks the low-priority worker needs
+HIGH_ARRIVE = 3  # tick at which the high-priority worker arrives
+HIGH_WORK = 2  # ticks the high-priority worker needs
 
 
-class Producer(Process):
-    def init(self, queue):
-        self._queue = queue
-
-    async def run(self):
-        for i in range(NUM_ITEMS):
-            await self.timeout(PRODUCE_INTERVAL)
-            self._env.log(&quot;producer&quot;, f&quot;create item {i}&quot;)
-            await self._queue.put(i)
-
-
-class Consumer(Process):
-    def init(self, queue):
-        self._queue = queue
+class LowPriorityWorker(Process):
+    def init(self, resource):
+        self._resource = resource
+        self._remaining = LOW_WORK
 
     async def run(self):
-        while True:
-            self._env.log(&quot;consumer&quot;, &quot;wait for item&quot;)
-            item = await self._queue.get()
-            self._env.log(&quot;consumer&quot;, f&quot;start item {item}&quot;)
-            await self.timeout(CONSUME_DURATION)
-            self._env.log(&quot;consumer&quot;, f&quot;finish item {item}&quot;)
+        while self._remaining &gt; 0:
+            self._env.log(&quot;low&quot;, f&quot;acquire (remaining={self._remaining})&quot;)
+            try:
+                await self._resource.acquire(priority=LOW_PRIORITY)
+                self._env.log(&quot;low&quot;, &quot;working&quot;)
+                await self.timeout(self._remaining)
+                self._remaining = 0
+                self._resource.release()
+                self._env.log(&quot;low&quot;, &quot;done&quot;)
+            except Interrupt as exc:
+                if isinstance(exc.cause, Preempted):
+                    used = self.now - exc.cause.usage_since
+                    self._remaining -= used
+                    self._env.log(
+                        &quot;low&quot;,
+                        f&quot;preempted after {used} ticks, {self._remaining} remaining&quot;,
+                    )
+                else:
+                    raise
+
+
+class HighPriorityWorker(Process):
+    def init(self, resource):
+        self._resource = resource
+
+    async def run(self):
+        await self.timeout(HIGH_ARRIVE)
+        self._env.log(&quot;high&quot;, &quot;acquire (preempt=True)&quot;)
+        await self._resource.acquire(priority=HIGH_PRIORITY, preempt=True)
+        self._env.log(&quot;high&quot;, &quot;working&quot;)
+        await self.timeout(HIGH_WORK)
+        self._resource.release()
+        self._env.log(&quot;high&quot;, &quot;done&quot;)
 
 
 def main():
     env = Environment()
-    queue = Queue(env)
-    Producer(env, queue)
-    Consumer(env, queue)
+    resource = PreemptiveResource(env, capacity=RESOURCE_CAPACITY)
+    LowPriorityWorker(env, resource)
+    HighPriorityWorker(env, resource)
     env.run()
     return env
 
@@ -977,91 +912,80 @@ if __name__ == &quot;__main__&quot;:
 <tbody>
 <tr>
 <td style="text-align: right;">0</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">acquire (remaining=8)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">working</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: left;">acquire (preempt=True)</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: left;">working</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">preempted after 3 ticks, 5 remaining</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">acquire (remaining=5)</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 0</td>
+<td style="text-align: left;">high</td>
+<td style="text-align: left;">done</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 0</td>
-</tr>
-<tr>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 0</td>
-</tr>
-<tr>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">working</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: left;">done</td>
 </tr>
 </tbody>
 </table>
 <h2 id="key-points">Key Points</h2>
 <ol>
 <li>
-<p>Classes derived from <code>Process</code> do initialization in <code>init()</code>, <em>not</em> <code>__init__()</code>,
-    and define their behavior in <code>run()</code>.</p>
+<p><code>PreemptiveResource</code> uses priority numbers where a lower number means
+    higher priority (0 is best).  When <code>preempt=True</code> and the resource is
+    full, a new request with better priority ejects the worst current user.</p>
 </li>
 <li>
-<p>The <code>Queue</code> has to be created first so that it can be passed as a constructor argument
-    to both <code>Producer</code> and <code>Consumer</code>.</p>
+<p>The evicted process receives an <code>Interrupt</code> whose cause is a <code>Preempted</code>
+    dataclass with two fields: <code>by</code> (the process that caused the eviction) and
+    <code>usage_since</code> (the simulation time when the evicted process acquired the
+    resource).</p>
 </li>
 <li>
-<p>The producer has to <code>await</code> the <code>put()</code> operation because it might block
-    if the queue has limited capacity and is full.
-    This isn't strictly necessary for a queue with infinite capacity,
-    but requiring <code>await</code> for every <code>put()</code> keeps the interface simple.</p>
+<p>Do not call <code>release()</code> when handling a <code>Preempted</code> interrupt.
+    The preemptor has already removed the evicted process from the user list.
+    Calling <code>release()</code> a second time will raise <code>RuntimeError</code>.</p>
+</li>
+<li>
+<p>The low-priority worker tracks remaining work and re-acquires after the
+    high-priority worker finishes.  It resumes at t=5 and completes at t=10
+    (5 remaining ticks from where it was interrupted at t=3).</p>
 </li>
 </ol>
 <h2 id="check-for-understanding">Check for Understanding</h2>
-<p>If the queue's capacity was limited to two objects at a time,
-would the behavior of this program change?</p>
+<p>What would change if <code>HighPriorityWorker</code> called
+<code>acquire(priority=HIGH_PRIORITY, preempt=False)</code>?
+Would the low-priority worker be interrupted, and when would the
+high-priority worker start working?</p>
 
 
 

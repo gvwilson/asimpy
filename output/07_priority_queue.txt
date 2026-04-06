@@ -1,0 +1,14 @@
+| time | name      | event              |
+|----: | :---------| :------------------|
+|    0 | submitter | submit (3, low-A)  |
+|    0 | submitter | submit (1, high-B) |
+|    0 | submitter | submit (2, mid-C)  |
+|    0 | submitter | submit (1, high-D) |
+|    0 | server    | start (1, high-B)  |
+|    2 | server    | finish (1, high-B) |
+|    2 | server    | start (1, high-D)  |
+|    4 | server    | finish (1, high-D) |
+|    4 | server    | start (2, mid-C)   |
+|    6 | server    | finish (2, mid-C)  |
+|    6 | server    | start (3, low-A)   |
+|    8 | server    | finish (3, low-A)  |

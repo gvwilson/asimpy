@@ -1,0 +1,5 @@
+| time | name   | event              |
+|----: | :------| :------------------|
+|    0 | client | waiting            |
+|    3 | client | timed out, leaving |
+|    5 | server | deliver result     |

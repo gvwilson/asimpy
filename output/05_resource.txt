@@ -1,0 +1,14 @@
+| time | name     | event   |
+|----: | :--------| :-------|
+|    0 | worker 0 | request |
+|    0 | worker 0 | start   |
+|    1 | worker 1 | request |
+|    1 | worker 1 | start   |
+|    2 | worker 2 | request |
+|    3 | worker 3 | request |
+|    3 | worker 0 | done    |
+|    3 | worker 2 | start   |
+|    4 | worker 1 | done    |
+|    4 | worker 3 | start   |
+|    6 | worker 2 | done    |
+|    7 | worker 3 | done    |

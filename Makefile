@@ -10,10 +10,6 @@ commands:
 	| sed -e 's/## //g' \
 	| column -t -s ':'
 
-## build: build package
-build:
-	@python -m build
-
 ## check: check code issues
 check:
 	@ruff check .
@@ -51,6 +47,10 @@ fix:
 ## format: format code
 format:
 	@ruff format .
+
+## package: build package
+package:
+	@python -m build
 
 ## publish: publish using ~/.pypirc credentials
 publish:

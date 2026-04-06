@@ -9,8 +9,6 @@
       
       
       
-        <link rel="prev" href="../01_sleep_once/">
-      
       
       
         
@@ -21,7 +19,7 @@
     
     
       
-        <title>Producer-Consumer - asimpy</title>
+        <title>Resource - asimpy</title>
       
     
     
@@ -65,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#producer-consumer" class="md-skip">
+        <a href="#resource" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Producer-Consumer
+              Resource
             
           </span>
         </div>
@@ -640,20 +638,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -674,7 +670,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -717,37 +713,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Producer-Consumer
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="././" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../02_producer_consumer/" class="md-nav__link">
         
   
   
@@ -763,60 +732,6 @@
   
 
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#source-and-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source and Output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Points
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check-for-understanding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Check for Understanding
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -917,47 +832,39 @@
                 
                   
 
-<h1 id="producer-consumer">Producer-Consumer</h1>
+<h1 id="resource">Resource</h1>
 <h2 id="source-and-output">Source and Output</h2>
-<pre><code class="language-python">&quot;&quot;&quot;Example: producer-consumer.&quot;&quot;&quot;
+<pre><code class="language-python">&quot;&quot;&quot;Example: shared resource with limited capacity.&quot;&quot;&quot;
 
-from asimpy import Environment, Process, Queue
+from asimpy import Environment, Process, Resource
 from _util import example
 
-PRODUCE_INTERVAL = 5  # ticks between successive items being produced
-CONSUME_DURATION = 3  # ticks to process each item
-NUM_ITEMS = 3  # total items the producer creates before stopping
+NUM_WORKERS = 4  # total number of workers competing for the resource
+CAPACITY = 2  # number of concurrent slots on the shared resource
+WORK_DURATION = 3  # ticks each worker spends holding the resource
 
 
-class Producer(Process):
-    def init(self, queue):
-        self._queue = queue
-
-    async def run(self):
-        for i in range(NUM_ITEMS):
-            await self.timeout(PRODUCE_INTERVAL)
-            self._env.log(&quot;producer&quot;, f&quot;create item {i}&quot;)
-            await self._queue.put(i)
-
-
-class Consumer(Process):
-    def init(self, queue):
-        self._queue = queue
+class Worker(Process):
+    def init(self, name, resource, delay):
+        self._name = name
+        self._resource = resource
+        self._delay = delay
 
     async def run(self):
-        while True:
-            self._env.log(&quot;consumer&quot;, &quot;wait for item&quot;)
-            item = await self._queue.get()
-            self._env.log(&quot;consumer&quot;, f&quot;start item {item}&quot;)
-            await self.timeout(CONSUME_DURATION)
-            self._env.log(&quot;consumer&quot;, f&quot;finish item {item}&quot;)
+        await self.timeout(self._delay)
+        self._env.log(self._name, &quot;request&quot;)
+        await self._resource.acquire()
+        self._env.log(self._name, &quot;start&quot;)
+        await self.timeout(WORK_DURATION)
+        self._resource.release()
+        self._env.log(self._name, &quot;done&quot;)
 
 
 def main():
     env = Environment()
-    queue = Queue(env)
-    Producer(env, queue)
-    Consumer(env, queue)
+    resource = Resource(env, capacity=CAPACITY)
+    for i in range(NUM_WORKERS):
+        Worker(env, f&quot;worker {i}&quot;, resource, delay=i)
     env.run()
     return env
 
@@ -977,91 +884,91 @@ if __name__ == &quot;__main__&quot;:
 <tbody>
 <tr>
 <td style="text-align: right;">0</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">worker 0</td>
+<td style="text-align: left;">request</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">worker 0</td>
+<td style="text-align: left;">start</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">worker 1</td>
+<td style="text-align: left;">request</td>
 </tr>
 <tr>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">worker 1</td>
+<td style="text-align: left;">start</td>
 </tr>
 <tr>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">worker 2</td>
+<td style="text-align: left;">request</td>
 </tr>
 <tr>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">worker 3</td>
+<td style="text-align: left;">request</td>
 </tr>
 <tr>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">worker 0</td>
+<td style="text-align: left;">done</td>
 </tr>
 <tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">worker 2</td>
+<td style="text-align: left;">start</td>
 </tr>
 <tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">worker 1</td>
+<td style="text-align: left;">done</td>
 </tr>
 <tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">worker 3</td>
+<td style="text-align: left;">start</td>
 </tr>
 <tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">worker 2</td>
+<td style="text-align: left;">done</td>
 </tr>
 <tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">worker 3</td>
+<td style="text-align: left;">done</td>
 </tr>
 </tbody>
 </table>
 <h2 id="key-points">Key Points</h2>
 <ol>
 <li>
-<p>Classes derived from <code>Process</code> do initialization in <code>init()</code>, <em>not</em> <code>__init__()</code>,
-    and define their behavior in <code>run()</code>.</p>
+<p><code>Resource(env, capacity=N)</code> creates a pool of <code>N</code> slots.  The
+    default capacity is 1 (a mutual-exclusion lock).</p>
 </li>
 <li>
-<p>The <code>Queue</code> has to be created first so that it can be passed as a constructor argument
-    to both <code>Producer</code> and <code>Consumer</code>.</p>
+<p><code>acquire()</code> returns an <code>Event</code> that resolves when a slot is
+    available.  If all slots are taken the caller blocks until another
+    process calls <code>release()</code>.</p>
 </li>
 <li>
-<p>The producer has to <code>await</code> the <code>put()</code> operation because it might block
-    if the queue has limited capacity and is full.
-    This isn't strictly necessary for a queue with infinite capacity,
-    but requiring <code>await</code> for every <code>put()</code> keeps the interface simple.</p>
+<p><code>release()</code> is synchronous, not <code>async</code>.
+    It immediately grants the freed slot to the first waiting process, if any.</p>
+</li>
+<li>
+<p>Workers 2 and 3 arrive while both slots are occupied and wait:
+    worker 2 starts at t=3 when worker 0 finishes, and worker 3 starts at t=4
+    when worker 1 finishes.</p>
 </li>
 </ol>
 <h2 id="check-for-understanding">Check for Understanding</h2>
-<p>If the queue's capacity was limited to two objects at a time,
-would the behavior of this program change?</p>
+<p>What would happen if a process called <code>resource.release()</code> before awaiting its
+<code>timeout(WORK_DURATION)</code>?
+Would another process start its work sooner, later, or at the same time?</p>
 
 
 

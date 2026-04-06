@@ -5,7 +5,7 @@ from _util import example
 
 PRODUCE_INTERVAL = 1  # ticks between successive items being produced
 CONSUME_DURATION = 3  # ticks to process each item
-NUM_ITEMS = 3         # total items the producer creates before stopping
+NUM_ITEMS = 3  # total items the producer creates before stopping
 
 
 class Producer(Process):
@@ -26,7 +26,7 @@ class Consumer(Process):
 
     async def run(self):
         while True:
-            self._env.log("consumer", f"wait for item")
+            self._env.log("consumer", "wait for item")
             item = await self._queue.get()
             self._env.log("consumer", f"start item {item}")
             await self.timeout(CONSUME_DURATION)

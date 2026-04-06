@@ -1,0 +1,12 @@
+| time | name        | event    |
+|----: | :-----------| :--------|
+|    1 | stacker     | put red  |
+|    1 | red-picker  | got red  |
+|    2 | stacker     | put blue |
+|    2 | blue-picker | got blue |
+|    3 | stacker     | put red  |
+|    3 | red-picker  | got red  |
+|    4 | stacker     | put blue |
+|    4 | blue-picker | got blue |
+|    5 | stacker     | put red  |
+|    5 | red-picker  | got red  |

@@ -9,8 +9,6 @@
       
       
       
-        <link rel="prev" href="../01_sleep_once/">
-      
       
       
         
@@ -21,7 +19,7 @@
     
     
       
-        <title>Producer-Consumer - asimpy</title>
+        <title>Priority Queue - asimpy</title>
       
     
     
@@ -65,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#producer-consumer" class="md-skip">
+        <a href="#priority-queue" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Producer-Consumer
+              Priority Queue
             
           </span>
         </div>
@@ -640,20 +638,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -674,7 +670,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -717,37 +713,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Producer-Consumer
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="././" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../02_producer_consumer/" class="md-nav__link">
         
   
   
@@ -763,60 +732,6 @@
   
 
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#source-and-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source and Output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Points
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#check-for-understanding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Check for Understanding
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -917,47 +832,54 @@
                 
                   
 
-<h1 id="producer-consumer">Producer-Consumer</h1>
+<h1 id="priority-queue">Priority Queue</h1>
 <h2 id="source-and-output">Source and Output</h2>
-<pre><code class="language-python">&quot;&quot;&quot;Example: producer-consumer.&quot;&quot;&quot;
+<pre><code class="language-python">&quot;&quot;&quot;Example: priority queue serving jobs in priority order.&quot;&quot;&quot;
 
-from asimpy import Environment, Process, Queue
+from asimpy import Environment, PriorityQueue, Process
 from _util import example
 
-PRODUCE_INTERVAL = 5  # ticks between successive items being produced
-CONSUME_DURATION = 3  # ticks to process each item
-NUM_ITEMS = 3  # total items the producer creates before stopping
+SERVICE_DURATION = 2  # ticks to process each job
+# Each entry is (priority, label): lower priority number is served first.
+JOBS = [
+    (3, &quot;low-A&quot;),
+    (1, &quot;high-B&quot;),
+    (2, &quot;mid-C&quot;),
+    (1, &quot;high-D&quot;),
+]
 
 
-class Producer(Process):
+class Submitter(Process):
+    &quot;&quot;&quot;Submits all jobs at t=0 then stops.&quot;&quot;&quot;
+
     def init(self, queue):
         self._queue = queue
 
     async def run(self):
-        for i in range(NUM_ITEMS):
-            await self.timeout(PRODUCE_INTERVAL)
-            self._env.log(&quot;producer&quot;, f&quot;create item {i}&quot;)
-            await self._queue.put(i)
+        for priority, label in JOBS:
+            self._env.log(&quot;submitter&quot;, f&quot;submit ({priority}, {label})&quot;)
+            await self._queue.put((priority, label))
 
 
-class Consumer(Process):
+class Server(Process):
+    &quot;&quot;&quot;Processes jobs one at a time in priority order.&quot;&quot;&quot;
+
     def init(self, queue):
         self._queue = queue
 
     async def run(self):
         while True:
-            self._env.log(&quot;consumer&quot;, &quot;wait for item&quot;)
-            item = await self._queue.get()
-            self._env.log(&quot;consumer&quot;, f&quot;start item {item}&quot;)
-            await self.timeout(CONSUME_DURATION)
-            self._env.log(&quot;consumer&quot;, f&quot;finish item {item}&quot;)
+            priority, label = await self._queue.get()
+            self._env.log(&quot;server&quot;, f&quot;start ({priority}, {label})&quot;)
+            await self.timeout(SERVICE_DURATION)
+            self._env.log(&quot;server&quot;, f&quot;finish ({priority}, {label})&quot;)
 
 
 def main():
     env = Environment()
-    queue = Queue(env)
-    Producer(env, queue)
-    Consumer(env, queue)
+    queue = PriorityQueue(env)
+    Submitter(env, queue)
+    Server(env, queue)
     env.run()
     return env
 
@@ -977,91 +899,90 @@ if __name__ == &quot;__main__&quot;:
 <tbody>
 <tr>
 <td style="text-align: right;">0</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">submitter</td>
+<td style="text-align: left;">submit (3, low-A)</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">submitter</td>
+<td style="text-align: left;">submit (1, high-B)</td>
 </tr>
 <tr>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">submitter</td>
+<td style="text-align: left;">submit (2, mid-C)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">submitter</td>
+<td style="text-align: left;">submit (1, high-D)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">start (1, high-B)</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">finish (1, high-B)</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">start (1, high-D)</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">finish (1, high-D)</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">start (2, mid-C)</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">finish (2, mid-C)</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">start (3, low-A)</td>
 </tr>
 <tr>
 <td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 0</td>
-</tr>
-<tr>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
-</tr>
-<tr>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 1</td>
-</tr>
-<tr>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">producer</td>
-<td style="text-align: left;">create item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">start item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">finish item 2</td>
-</tr>
-<tr>
-<td style="text-align: right;">18</td>
-<td style="text-align: left;">consumer</td>
-<td style="text-align: left;">wait for item</td>
+<td style="text-align: left;">server</td>
+<td style="text-align: left;">finish (3, low-A)</td>
 </tr>
 </tbody>
 </table>
 <h2 id="key-points">Key Points</h2>
 <ol>
 <li>
-<p>Classes derived from <code>Process</code> do initialization in <code>init()</code>, <em>not</em> <code>__init__()</code>,
-    and define their behavior in <code>run()</code>.</p>
+<p><code>PriorityQueue</code> is a drop-in replacement for <code>Queue</code> that serves items in
+    ascending sorted order rather than arrival order.  Items must be comparable.</p>
 </li>
 <li>
-<p>The <code>Queue</code> has to be created first so that it can be passed as a constructor argument
-    to both <code>Producer</code> and <code>Consumer</code>.</p>
+<p>Tuples compare lexicographically in Python, so <code>(priority, label)</code> pairs
+    are ordered first by priority number and then by label string.
+    Wrapping jobs in a tuple is a simple way to attach a priority.</p>
 </li>
 <li>
-<p>The producer has to <code>await</code> the <code>put()</code> operation because it might block
-    if the queue has limited capacity and is full.
-    This isn't strictly necessary for a queue with infinite capacity,
-    but requiring <code>await</code> for every <code>put()</code> keeps the interface simple.</p>
+<p>All four jobs are submitted at t=0.  The server picks the smallest tuple
+    each time: <code>(1, "high-B")</code> before <code>(1, "high-D")</code> (same priority, earlier
+    alphabetically) before <code>(2, "mid-C")</code> before <code>(3, "low-A")</code>.</p>
+</li>
+<li>
+<p>Arrival order has no effect once items are in the queue: <code>(3, "low-A")</code> was
+    submitted first but served last.</p>
 </li>
 </ol>
 <h2 id="check-for-understanding">Check for Understanding</h2>
-<p>If the queue's capacity was limited to two objects at a time,
-would the behavior of this program change?</p>
+<p>If you changed the label <code>"high-B"</code> to <code>"high-Z"</code>, would <code>(1, "high-D")</code> or
+<code>(1, "high-Z")</code> be served first, and why?</p>
 
 
 
