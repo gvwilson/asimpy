@@ -34,6 +34,8 @@ nav = [
     { "FirstOf" = "tutorial/10_first_of.md" },
     { "Interrupt" = "tutorial/11_interrupt.md" },
     { "Preemptive Resource" = "tutorial/12_preemptive.md" },
+    { "Little's Law" = "tutorial/13_littles.md" },
+    { "Sojourn Time" = "tutorial/14_sojourn.md" },
   ]},
 ]
 
