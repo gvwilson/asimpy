@@ -1102,10 +1102,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#chart" class="md-nav__link">
+  <a href="#the-error" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chart
+        The Error
       
     </span>
   </a>
@@ -1230,10 +1230,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#chart" class="md-nav__link">
+  <a href="#the-error" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chart
+        The Error
       
     </span>
   </a>
@@ -1297,20 +1297,15 @@ sojourn time.</p>
 
 import random
 import statistics
-from pathlib import Path
 
-import altair as alt
-import polars as pl
 from prettytable import PrettyTable, TableStyle
 
 from asimpy import Environment, Process, Resource
 
 SEED = 192                  # random seed for reproducibility
-SIM_TIME = 20_000           # simulated time units per scenario
+SIM_TIME = 1000             # simulated time units per scenario
 SAMPLE_INTERVAL = 1         # sim-time units between Monitor samples
 SERVICE_RATE = 1.0          # exponential service rate (mu) for random service
-DETERMINISTIC_SERVICE = 1.0 # fixed service time for M/D/1 (= 1/mu)
-CHART_PATH = Path(__file__).parent.parent / &quot;pages&quot; / &quot;tutorial&quot; / &quot;13_littles.svg&quot;
 
 
 class RandomCustomer(Process):
@@ -1341,34 +1336,6 @@ class RandomArrivals(Process):
             RandomCustomer(self._env, self.server, self.in_system, self.sojourn_times)
 
 
-class DeterministicCustomer(Process):
-    def init(self, server, in_system, sojourn_times):
-        self.server = server
-        self.in_system = in_system
-        self.sojourn_times = sojourn_times
-
-    async def run(self):
-        arrival = self.now
-        self.in_system[0] += 1
-        async with self.server:
-            await self.timeout(DETERMINISTIC_SERVICE)
-        self.in_system[0] -= 1
-        self.sojourn_times.append(self.now - arrival)
-
-
-class DeterministicArrivals(Process):
-    def init(self, rate, server, in_system, sojourn_times):
-        self.rate = rate
-        self.server = server
-        self.in_system = in_system
-        self.sojourn_times = sojourn_times
-
-    async def run(self):
-        while True:
-            await self.timeout(random.expovariate(self.rate))
-            DeterministicCustomer(self._env, self.server, self.in_system, self.sojourn_times)
-
-
 class Monitor(Process):
     def init(self, in_system, samples):
         self.in_system = in_system
@@ -1380,13 +1347,13 @@ class Monitor(Process):
             await self.timeout(SAMPLE_INTERVAL)
 
 
-def run_scenario(label, arrivals_cls, lam, capacity):
+def run_scenario(lam, capacity):
     in_system = [0]
     sojourns = []
     samples = []
     env = Environment()
     server = Resource(env, capacity=capacity)
-    arrivals_cls(env, lam, server, in_system, sojourns)
+    RandomArrivals(env, lam, server, in_system, sojourns)
     Monitor(env, in_system, samples)
     env.run(until=SIM_TIME)
     L_direct = statistics.mean(samples)
@@ -1395,58 +1362,178 @@ def run_scenario(label, arrivals_cls, lam, capacity):
     L_little = lam_obs * W
     error = 100.0 * (L_little - L_direct) / L_direct
     return {
-        &quot;label&quot;: label,
-        &quot;lambda&quot;: round(lam_obs, 4),
-        &quot;W&quot;: round(W, 4),
-        &quot;L_direct&quot;: round(L_direct, 4),
-        &quot;L_little&quot;: round(L_little, 4),
+        &quot;lambda&quot;: round(lam_obs, 3),
+        &quot;capacity&quot;: capacity,
+        &quot;W&quot;: round(W, 3),
+        &quot;L_direct&quot;: round(L_direct, 3),
+        &quot;L_little&quot;: round(L_little, 3),
         &quot;error_%&quot;: round(error, 2),
     }
 
 
 def main():
     random.seed(SEED)
-    rows = [
-        run_scenario(&quot;M/M/1 (rho=0.70)&quot;, RandomArrivals, 0.7, 1),
-        run_scenario(&quot;M/D/1 (rho=0.70)&quot;, DeterministicArrivals, 0.7, 1),
-        run_scenario(&quot;M/M/3 (rho=0.80/server)&quot;, RandomArrivals, 2.4, 3),
-    ]
+    rows = []
+    for lam in (0.5, 1.0, 1.5, 2.0, 2.5):
+        for capacity in (2, 3, 4):
+            rows.append(run_scenario(lam, capacity))
 
     table = PrettyTable(list(rows[0].keys()))
-    table.align[&quot;label&quot;] = &quot;l&quot;
+    table.align = &quot;r&quot;
     for row in rows:
         table.add_row(list(row.values()))
     table.set_style(TableStyle.MARKDOWN)
     print(table)
-
-    df = pl.DataFrame(rows)
-    max_val = max(df[&quot;L_direct&quot;].to_list()) * 1.1
-    diagonal = (
-        alt.Chart(pl.DataFrame({&quot;x&quot;: [0.0, max_val], &quot;y&quot;: [0.0, max_val]}))
-        .mark_line(color=&quot;gray&quot;, strokeDash=[4, 4])
-        .encode(x=&quot;x:Q&quot;, y=&quot;y:Q&quot;)
-    )
-    points = (
-        alt.Chart(df)
-        .mark_point(size=100, filled=True)
-        .encode(
-            x=alt.X(&quot;L_direct:Q&quot;, title=&quot;L (direct sample)&quot;),
-            y=alt.Y(&quot;L_little:Q&quot;, title=&quot;L = lambda * W (Little's Law)&quot;),
-            color=alt.Color(&quot;label:N&quot;, title=&quot;Configuration&quot;),
-        )
-    )
-    chart = (diagonal + points).properties(title=&quot;Little's Law: Direct Sample vs. lambda * W&quot;)
-    chart.save(str(CHART_PATH))
 
 
 if __name__ == &quot;__main__&quot;:
     main()
 
 </code></pre>
-<h2 id="chart">Chart</h2>
-<p><img alt="Little's Law scatter plot" src="../13_littles.svg" /></p>
-<p>Each point is one configuration. The dashed diagonal is the line L_direct =
-L_little; points on the diagonal mean the two estimates agree exactly.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">lambda</th>
+<th style="text-align: right;">capacity</th>
+<th style="text-align: right;">W</th>
+<th style="text-align: right;">L_direct</th>
+<th style="text-align: right;">L_little</th>
+<th style="text-align: right;">error_%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0.497</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">0.586</td>
+<td style="text-align: right;">-0.7</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.007</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.57</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.494</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.027</td>
+<td style="text-align: right;">0.504</td>
+<td style="text-align: right;">0.508</td>
+<td style="text-align: right;">0.6</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.017</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.238</td>
+<td style="text-align: right;">1.266</td>
+<td style="text-align: right;">1.259</td>
+<td style="text-align: right;">-0.51</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.004</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">1.106</td>
+<td style="text-align: right;">1.104</td>
+<td style="text-align: right;">-0.16</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.994</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.972</td>
+<td style="text-align: right;">0.964</td>
+<td style="text-align: right;">-0.79</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.515</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.515</td>
+<td style="text-align: right;">3.818</td>
+<td style="text-align: right;">3.81</td>
+<td style="text-align: right;">-0.22</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.521</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.166</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">1.774</td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.515</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.007</td>
+<td style="text-align: right;">1.543</td>
+<td style="text-align: right;">1.526</td>
+<td style="text-align: right;">-1.16</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.981</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20.542</td>
+<td style="text-align: right;">41.35</td>
+<td style="text-align: right;">40.693</td>
+<td style="text-align: right;">-1.59</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.02</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.355</td>
+<td style="text-align: right;">2.746</td>
+<td style="text-align: right;">2.737</td>
+<td style="text-align: right;">-0.34</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.026</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.128</td>
+<td style="text-align: right;">2.292</td>
+<td style="text-align: right;">2.285</td>
+<td style="text-align: right;">-0.28</td>
+</tr>
+<tr>
+<td style="text-align: right;">1.884</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">124.022</td>
+<td style="text-align: right;">311.087</td>
+<td style="text-align: right;">233.658</td>
+<td style="text-align: right;">-24.89</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.489</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.996</td>
+<td style="text-align: right;">4.973</td>
+<td style="text-align: right;">4.968</td>
+<td style="text-align: right;">-0.1</td>
+</tr>
+<tr>
+<td style="text-align: right;">2.532</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.135</td>
+<td style="text-align: right;">2.839</td>
+<td style="text-align: right;">2.873</td>
+<td style="text-align: right;">1.19</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-error">The Error</h2>
+<p>The large error (-24.89%) for lam=2.5, capacity=2 is a stability problem, not a simulation bug.
+The problem is that Little's Law only holds in steady state. For an M/M/c queue, steady state requires
+that the arrival rate (lambda) be less than capacity times service rate (mu).
+With <code>SERVICE_RATE</code> = 1.0 and <code>capacity</code> = 2,
+the maximum sustainable throughput is 2 * 1.0 = 2.0.
+At λ = 2.5, the load exceeds service capacity, so the queue grows without bound.
+By the time the simulation is done,
+hundreds of customers are waiting in queue,
+and their sojourns are never recorded.</p>
 <h2 id="key-points">Key Points</h2>
 <ol>
 <li>

@@ -24,12 +24,17 @@ sojourn time.
 
 --8<-- "output/13_littles.txt"
 
-## Chart
+## The Error
 
-![Little's Law scatter plot](13_littles.svg)
-
-Each point is one configuration. The dashed diagonal is the line L_direct =
-L_little; points on the diagonal mean the two estimates agree exactly.
+The large error (-24.89%) for lam=2.5, capacity=2 is a stability problem, not a simulation bug.
+The problem is that Little's Law only holds in steady state. For an M/M/c queue, steady state requires
+that the arrival rate (lambda) be less than capacity times service rate (mu).
+With `SERVICE_RATE` = 1.0 and `capacity` = 2,
+the maximum sustainable throughput is 2 * 1.0 = 2.0.
+At λ = 2.5, the load exceeds service capacity, so the queue grows without bound.
+By the time the simulation is done,
+hundreds of customers are waiting in queue,
+and their sojourns are never recorded.
 
 ## Key Points
 
