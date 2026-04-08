@@ -10,6 +10,10 @@ commands:
 	| sed -e 's/## //g' \
 	| column -t -s ':'
 
+## benchmark: run benchmark and save result
+benchmark:
+	@python benchmarks/benchmark.py --version --output output/benchmark.md
+
 ## check: check code issues
 check:
 	@ruff check .

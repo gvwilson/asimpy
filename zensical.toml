@@ -9,6 +9,7 @@ nav = [
     { "License" = "license.md" },
     { "Code of Conduct" = "conduct.md" },
     { "Design" = "design.md" },
+    { "Benchmark" = "benchmark.md" },
   ]},
   { "API" = [
     { "Core" = "api/core.md" },
