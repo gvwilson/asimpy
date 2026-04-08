@@ -3,7 +3,11 @@
 from .allof import AllOf
 from .barrier import Barrier
 from .container import Container, ContainerEmpty, ContainerFull
-from .core import Environment, Event, Interrupt, Process, Timeout
+from .environment import Environment
+from .event import Event
+from .interrupt import Interrupt
+from .process import Process
+from .timeout import Timeout
 from .firstof import FirstOf
 from .queue import PriorityQueue, Queue, QueueEmpty, QueueFull
 from .preemptive import Preempted, PreemptiveResource
@@ -34,4 +38,4 @@ __all__ = [
     "Timeout",
 ]
 
-__version__ = "0.17.1"
+__version__ = "0.18.0"

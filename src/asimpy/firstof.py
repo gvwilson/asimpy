@@ -1,7 +1,7 @@
 """Wait for the first of a set of events to complete."""
 
 from typing import Any
-from .core import Event
+from .event import Event
 
 
 class FirstOf(Event):

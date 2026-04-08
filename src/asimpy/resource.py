@@ -1,7 +1,7 @@
 """Shared resource with limited capacity (discrete slots)."""
 
 from collections import deque
-from .core import _CANCELLED, Event
+from .event import _CANCELLED, Event
 
 
 class Resource:

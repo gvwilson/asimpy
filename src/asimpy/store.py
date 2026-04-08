@@ -1,7 +1,7 @@
 """Store of heterogeneous objects with optional filter on get."""
 
 from typing import Any, Callable
-from .core import _CANCELLED, Event
+from .event import _CANCELLED, Event
 
 
 class StoreEmpty(Exception):

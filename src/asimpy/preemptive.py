@@ -5,10 +5,11 @@ import itertools
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .core import _CANCELLED, Event
+from .event import _CANCELLED, Event
 
 if TYPE_CHECKING:
-    from .core import Environment, Process
+    from .environment import Environment
+    from .process import Process
 
 
 @dataclass

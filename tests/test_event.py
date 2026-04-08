@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import Mock
 from asimpy import Environment, Event, Process
-from asimpy.core import _PENDING
+from asimpy.event import _PENDING
 
 
 def test_event_initialization():

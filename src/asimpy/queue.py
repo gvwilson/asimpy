@@ -3,7 +3,7 @@
 import bisect
 from collections import deque
 from typing import Any
-from .core import _CANCELLED, Event
+from .event import _CANCELLED, Event
 
 
 class QueueEmpty(Exception):

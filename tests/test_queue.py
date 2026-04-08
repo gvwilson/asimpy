@@ -2,7 +2,7 @@
 
 import pytest
 from asimpy import Environment, Queue, Process, QueueEmpty, QueueFull
-from asimpy.core import _CANCELLED
+from asimpy.event import _CANCELLED, Event
 
 
 def test_queue_put_and_get():
@@ -392,8 +392,6 @@ def test_queue_cancel_blocked_put():
 
 def test_queue_get_skips_cancelled_putter():
     """get() skips cancelled putters (lazy deletion) and promotes the next valid one."""
-    from asimpy.core import Event
-
     env = Environment()
     q = Queue(env, capacity=1)
     q._add("item")  # fill the queue

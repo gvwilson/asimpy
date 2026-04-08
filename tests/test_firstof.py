@@ -2,7 +2,7 @@
 
 import pytest
 from asimpy import Environment, Event, FirstOf, Process, Queue, Timeout
-from asimpy.core import _CANCELLED
+from asimpy.event import _CANCELLED
 
 
 def test_firstof_single_event():

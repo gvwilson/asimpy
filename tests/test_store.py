@@ -2,6 +2,7 @@
 
 import pytest
 from asimpy import Environment, Process, Store, StoreEmpty, StoreFull
+from asimpy.event import Event
 
 
 def test_store_default_capacity():
@@ -334,7 +335,6 @@ def test_store_promote_putter_skips_cancelled():
 
 def test_store_sleep_wake_pattern():
     """A sleeping process parks itself in a Store; a waker claims and wakes it."""
-    from asimpy.core import Event
 
     class Sleeper(Process):
         def init(self, store):

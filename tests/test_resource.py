@@ -2,7 +2,7 @@
 
 import pytest
 from asimpy import Environment, Resource, Process
-from asimpy.core import _CANCELLED, Event
+from asimpy.event import _CANCELLED, Event
 
 
 def test_resource_default_capacity():

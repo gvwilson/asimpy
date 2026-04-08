@@ -1,7 +1,7 @@
 """Wait for all of a set of events to complete."""
 
 from typing import Any
-from .core import Event
+from .event import Event
 
 
 class AllOf(Event):

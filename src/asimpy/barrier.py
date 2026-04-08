@@ -1,6 +1,6 @@
 """Barrier that holds multiple processes until released."""
 
-from .core import Event
+from .event import Event
 
 
 class Barrier:

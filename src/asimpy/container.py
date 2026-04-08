@@ -1,7 +1,7 @@
 """Homogeneous resource (continuous or discrete amounts)."""
 
 from typing import Union
-from .core import _CANCELLED, Event
+from .event import _CANCELLED, Event
 
 Amount = Union[int, float]
 

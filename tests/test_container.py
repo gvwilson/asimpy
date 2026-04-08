@@ -1,7 +1,7 @@
 """Test asimpy Container."""
 
 import pytest
-from asimpy import Container, ContainerEmpty, ContainerFull, Environment, Process
+from asimpy import Container, ContainerEmpty, ContainerFull, Environment, FirstOf, Process
 
 
 def test_container_default_init():
@@ -280,8 +280,6 @@ def test_container_put_skips_cancelled_putter():
 
 def test_container_firstof_item_wins():
     """When a pre-triggered get event wins FirstOf, the level stays reduced."""
-    from asimpy import FirstOf
-
     class Racer(Process):
         def init(self, c):
             self.c = c
