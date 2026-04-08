@@ -68,6 +68,20 @@ def test_process_now_property():
     assert proc.end_time == 10
 
 
+def test_process_log():
+    """Test that process can log a message."""
+
+    class LogCheckProcess(Process):
+        async def run(self):
+            await self.timeout(3)
+            self.log("process", "message")
+
+    env = Environment()
+    proc = LogCheckProcess(env)
+    env.run()
+    assert env.get_log() == [(3, "process", "message")]
+
+
 def test_process_interrupt():
     """Test process interruption."""
 

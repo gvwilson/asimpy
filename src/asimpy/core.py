@@ -143,21 +143,6 @@ class Process(ABC):
 
     Subclasses implement run() as an async method.  Optionally override
     init() for setup that must happen before the coroutine is created.
-
-    Example::
-
-        class Worker(Process):
-            def init(self, name):
-                self.name = name
-
-            async def run(self):
-                while True:
-                    await self.timeout(1.0)
-                    print(f"{self.name} at t={self.now}")
-
-        env = Environment()
-        Worker(env, "alice")
-        env.run(until=10)
     """
 
     def __init__(self, env: "Environment", *args: Any, **kwargs: Any):
@@ -183,6 +168,10 @@ class Process(ABC):
     def now(self) -> float | int:
         """Shortcut to the current simulation time."""
         return self._env.now
+
+    def log(self, name: str, message: str) -> None:
+        """Record a log message in the environment."""
+        self._env.log(name, message)
 
     def timeout(self, delay: float | int) -> Timeout:
         """Return a Timeout event for `delay` simulated time units."""

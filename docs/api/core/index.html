@@ -699,6 +699,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#asimpy.core.Process.log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.core.Process.resume" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1757,6 +1768,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#asimpy.core.Process.log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#asimpy.core.Process.resume" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,20 +2327,6 @@ Does nothing if the event is already cancelled.</p>
         <p>Abstract base class for all simulation processes.</p>
 <p>Subclasses implement run() as an async method.  Optionally override
 init() for setup that must happen before the coroutine is created.</p>
-<p>Example::</p>
-<pre><code>class Worker(Process):
-    def init(self, name):
-        self.name = name
-
-    async def run(self):
-        while True:
-            await self.timeout(1.0)
-            print(f"{self.name} at t={self.now}")
-
-env = Environment()
-Worker(env, "alice")
-env.run(until=10)
-</code></pre>
 
 
 
@@ -2395,6 +2403,24 @@ env.run(until=10)
         <p>Throw an Interrupt into this process.</p>
 <p>The Interrupt is delivered at the process's current await point.
 Has no effect if the process has already finished.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="asimpy.core.Process.log" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Record a log message in the environment.</p>
 
 
     </div>
