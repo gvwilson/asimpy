@@ -7,7 +7,8 @@ authors = [
     {name = "Greg Wilson", email = "gvwilson@third-bit.com"},
 ]
 readme = "README.md"
-dependencies = []
+dependencies = [
+]
 
 [project.urls]
 Repository = "https://github.com/gvwilson/asimpy"
@@ -33,6 +34,7 @@ dev = [
     "prettytable>=3.17.0",
     "pytest>=9.0.2",
     "ruff>=0.14.10",
+    "simpy>=4.1.1",
     "twine>=6.2.0",
     "ty>=0.0.11",
     "vl-convert-python>=1.9.0.post1",

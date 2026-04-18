@@ -23,6 +23,7 @@ method-call overhead with no scheduler involvement.
 import argparse
 import csv
 import sys
+import polars as pl
 from prettytable import PrettyTable, TableStyle
 
 from asimpy import __version__ as asimpy_version
@@ -824,6 +825,23 @@ BENCHMARKS = [
 ]
 
 
+def benchmark():
+    """Run all benchmarks and return results as a Polars DataFrame."""
+    features, executions, instructions, instr_per_exec = [], [], [], []
+    for name, func in BENCHMARKS:
+        count = count_instructions(func, NUM)
+        features.append(name)
+        executions.append(NUM)
+        instructions.append(count)
+        instr_per_exec.append(count / NUM)
+    return pl.DataFrame({
+        "Feature": features,
+        "Executions": executions,
+        "Instructions": instructions,
+        "Instr/Execution": instr_per_exec,
+    })
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Benchmark asimpy features.")
     parser.add_argument(
@@ -849,10 +867,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    rows = []
-    for name, func in BENCHMARKS:
-        instructions = count_instructions(func, NUM)
-        rows.append((name, NUM, instructions, f"{instructions / NUM:.1f}"))
+    df = benchmark()
 
     newline = "" if args.format == "csv" else None
     out = open(args.output, "w", newline=newline) if args.output else sys.stdout
@@ -862,7 +877,9 @@ def main():
         if args.format == "csv":
             writer = csv.writer(out)
             writer.writerow(["Feature", "Executions", "Instructions", "Instr/Execution"])
-            writer.writerows(rows)
+            for row in df.iter_rows():
+                feature, execs, instr, rate = row
+                writer.writerow([feature, execs, instr, f"{rate:.1f}"])
         else:
             table = PrettyTable()
             table.set_style(TableStyle.MARKDOWN)
@@ -871,8 +888,9 @@ def main():
             table.align["Executions"] = "r"
             table.align["Instructions"] = "r"
             table.align["Instr/Execution"] = "r"
-            for row in rows:
-                table.add_row(row)
+            for row in df.iter_rows():
+                feature, execs, instr, rate = row
+                table.add_row([feature, execs, instr, f"{rate:.1f}"])
             print(table, file=out)
     finally:
         if args.output:
