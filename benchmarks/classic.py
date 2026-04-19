@@ -17,6 +17,7 @@ Adaptations:
 import argparse
 import csv
 import sys
+import time
 import polars as pl
 from prettytable import PrettyTable, TableStyle
 
@@ -570,17 +571,25 @@ BENCHMARKS = [
 def benchmark():
     """Run all benchmarks and return results as a Polars DataFrame."""
     features, executions, instructions, instr_per_exec = [], [], [], []
+    elapsed_s_col, sec_per_exec = [], []
     for name, func in BENCHMARKS:
+        t0 = time.perf_counter()
+        func(NUM)
+        elapsed = time.perf_counter() - t0
         count = count_instructions(func, NUM)
         features.append(name)
         executions.append(NUM)
         instructions.append(count)
         instr_per_exec.append(count / NUM)
+        elapsed_s_col.append(elapsed * 1e6)
+        sec_per_exec.append(elapsed / NUM * 1e6)
     return pl.DataFrame({
-        "Feature": features,
-        "Executions": executions,
-        "Instructions": instructions,
-        "Instr/Execution": instr_per_exec,
+        "feature": features,
+        "executions": executions,
+        "instructions": instructions,
+        "instr_per_execution": instr_per_exec,
+        "elapsed_usec": elapsed_s_col,
+        "usec_per_execution": sec_per_exec,
     })
 
 
@@ -618,21 +627,23 @@ def main():
             print(f"# simpy version {simpy_version}\n", file=out)
         if args.format == "csv":
             writer = csv.writer(out)
-            writer.writerow(["Feature", "Executions", "Instructions", "Instr/Execution"])
+            writer.writerow(["feature", "executions", "instructions", "instr_per_execution", "elapsed_usec", "usec_per_execution"])
             for row in df.iter_rows():
-                feature, execs, instr, rate = row
-                writer.writerow([feature, execs, instr, f"{rate:.1f}"])
+                feature, execs, instr, rate, elapsed, usec = row
+                writer.writerow([feature, execs, instr, f"{rate:.1f}", f"{elapsed:.3f}", f"{usec:.3f}"])
         else:
             table = PrettyTable()
             table.set_style(TableStyle.MARKDOWN)
-            table.field_names = ["Feature", "Executions", "Instructions", "Instr/Execution"]
-            table.align["Feature"] = "l"
-            table.align["Executions"] = "r"
-            table.align["Instructions"] = "r"
-            table.align["Instr/Execution"] = "r"
+            table.field_names = ["feature", "executions", "instructions", "instr_per_execution", "elapsed_usec", "usec_per_execution"]
+            table.align["feature"] = "l"
+            table.align["executions"] = "r"
+            table.align["instructions"] = "r"
+            table.align["instr_per_execution"] = "r"
+            table.align["elapsed_usec"] = "r"
+            table.align["usec_per_execution"] = "r"
             for row in df.iter_rows():
-                feature, execs, instr, rate = row
-                table.add_row([feature, execs, instr, f"{rate:.1f}"])
+                feature, execs, instr, rate, elapsed, usec = row
+                table.add_row([feature, execs, instr, f"{rate:.1f}", f"{elapsed:.3f}", f"{usec:.3f}"])
             print(table, file=out)
     finally:
         if args.output:

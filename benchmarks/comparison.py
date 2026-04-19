@@ -40,9 +40,9 @@ _SIMPY_ALIASES = {
 
 
 def _apply_aliases(df, aliases):
-    """Return df with Feature values renamed according to aliases."""
+    """Return df with feature values renamed according to aliases."""
     return df.with_columns(
-        pl.col("Feature").replace(
+        pl.col("feature").replace(
             old=list(aliases.keys()),
             new=list(aliases.values()),
         )
@@ -53,36 +53,50 @@ def benchmark():
     """Run both benchmark suites and return a combined comparison DataFrame.
 
     Columns:
-      Feature       - benchmark name
-      asimpy        - asimpy instructions per execution (null if not measured)
-      simpy         - simpy instructions per execution (null if not measured)
-      asimpy/simpy  - ratio of asimpy to simpy cost (null if either is missing)
+      feature       - benchmark name
+      asimpy_instr  - asimpy instructions per execution (null if not measured)
+      simpy_instr   - simpy instructions per execution (null if not measured)
+      instr_ratio   - asimpy_instr / simpy_instr (null if either is missing)
+      asimpy_sec    - asimpy seconds per execution (null if not measured)
+      simpy_sec     - simpy seconds per execution (null if not measured)
+      time_ratio    - asimpy_sec / simpy_sec (null if either is missing)
     """
     asimpy_df = _apply_aliases(
         asimpy_benchmark().select(
-            pl.col("Feature"),
-            pl.col("Instr/Execution").alias("asimpy"),
+            pl.col("feature"),
+            pl.col("instr_per_execution").alias("asimpy_instr"),
+            pl.col("usec_per_execution").alias("asimpy_usec"),
         ),
         _ASIMPY_ALIASES,
     )
     simpy_df = _apply_aliases(
         simpy_benchmark().select(
-            pl.col("Feature"),
-            pl.col("Instr/Execution").alias("simpy"),
+            pl.col("feature"),
+            pl.col("instr_per_execution").alias("simpy_instr"),
+            pl.col("usec_per_execution").alias("simpy_usec"),
         ),
         _SIMPY_ALIASES,
     )
 
-    df = asimpy_df.join(simpy_df, on="Feature", how="full", coalesce=True)
+    df = asimpy_df.join(simpy_df, on="feature", how="full", coalesce=True)
     df = df.with_columns(
-        (pl.col("asimpy") / pl.col("simpy")).alias("asimpy/simpy")
+        (pl.col("asimpy_instr") / pl.col("simpy_instr")).alias("instr_ratio"),
+        (pl.col("asimpy_usec") / pl.col("simpy_usec")).alias("time_ratio"),
     )
-    return df.sort("Feature")
+    return df.select(
+        "feature", "asimpy_instr", "simpy_instr", "instr_ratio",
+        "asimpy_usec", "simpy_usec", "time_ratio",
+    ).sort("feature")
 
 
 def _fmt_float(val):
     """Format a float to one decimal place, or 'N/A' for None."""
     return "N/A" if val is None else f"{val:.1f}"
+
+
+def _fmt_usec(val):
+    """Format a microseconds value to three decimal places, or 'N/A' for None."""
+    return "N/A" if val is None else f"{val:.3f}"
 
 
 def _fmt_ratio(val):
@@ -117,19 +131,30 @@ def main():
     try:
         if args.format == "csv":
             writer = csv.writer(out)
-            writer.writerow(["Feature", "asimpy", "simpy", "asimpy/simpy"])
-            for feature, asimpy, simpy, ratio in df.iter_rows():
-                writer.writerow([feature, _fmt_float(asimpy), _fmt_float(simpy), _fmt_ratio(ratio)])
+            writer.writerow(["feature", "asimpy_instr", "simpy_instr", "instr_ratio", "asimpy_usec", "simpy_usec", "time_ratio"])
+            for feature, asimpy_instr, simpy_instr, instr_ratio, asimpy_usec, simpy_usec, time_ratio in df.iter_rows():
+                writer.writerow([
+                    feature,
+                    _fmt_float(asimpy_instr), _fmt_float(simpy_instr), _fmt_ratio(instr_ratio),
+                    _fmt_usec(asimpy_usec), _fmt_usec(simpy_usec), _fmt_ratio(time_ratio),
+                ])
         else:
             table = PrettyTable()
             table.set_style(TableStyle.MARKDOWN)
-            table.field_names = ["Feature", "asimpy", "simpy", "asimpy/simpy"]
-            table.align["Feature"] = "l"
-            table.align["asimpy"] = "r"
-            table.align["simpy"] = "r"
-            table.align["asimpy/simpy"] = "r"
-            for feature, asimpy, simpy, ratio in df.iter_rows():
-                table.add_row([feature, _fmt_float(asimpy), _fmt_float(simpy), _fmt_ratio(ratio)])
+            table.field_names = ["feature", "asimpy_instr", "simpy_instr", "instr_ratio", "asimpy_usec", "simpy_usec", "time_ratio"]
+            table.align["feature"] = "l"
+            table.align["asimpy_instr"] = "r"
+            table.align["simpy_instr"] = "r"
+            table.align["instr_ratio"] = "r"
+            table.align["asimpy_usec"] = "r"
+            table.align["simpy_usec"] = "r"
+            table.align["time_ratio"] = "r"
+            for feature, asimpy_instr, simpy_instr, instr_ratio, asimpy_usec, simpy_usec, time_ratio in df.iter_rows():
+                table.add_row([
+                    feature,
+                    _fmt_float(asimpy_instr), _fmt_float(simpy_instr), _fmt_ratio(instr_ratio),
+                    _fmt_usec(asimpy_usec), _fmt_usec(simpy_usec), _fmt_ratio(time_ratio),
+                ])
             print(table, file=out)
     finally:
         if args.output:
